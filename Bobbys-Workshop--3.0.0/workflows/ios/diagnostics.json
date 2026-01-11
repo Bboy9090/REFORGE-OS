@@ -1,0 +1,83 @@
+{
+  "id": "ios-diagnostics",
+  "name": "iOS Device Diagnostics",
+  "description": "Comprehensive diagnostic scan of iOS device",
+  "platform": "ios",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "steps": [
+    {
+      "id": "check-connection",
+      "name": "Verify iOS Connection",
+      "type": "command",
+      "action": "ideviceinfo",
+      "success_criteria": "device info returned",
+      "on_failure": "abort"
+    },
+    {
+      "id": "get-device-info",
+      "name": "Get Device Information",
+      "type": "command",
+      "action": "ideviceinfo -k DeviceName -k ProductVersion -k ProductType -k UniqueDeviceID -k SerialNumber",
+      "success_criteria": "device details returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "battery-status",
+      "name": "Check Battery Status",
+      "type": "command",
+      "action": "ideviceinfo -k BatteryCurrentCapacity -k BatteryIsCharging",
+      "success_criteria": "battery info returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "storage-status",
+      "name": "Check Storage Status",
+      "type": "command",
+      "action": "ideviceinfo -k TotalDataCapacity -k TotalDataAvailable",
+      "success_criteria": "storage info returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "activation-status",
+      "name": "Check Activation Status",
+      "type": "command",
+      "action": "ideviceinfo -k ActivationState",
+      "success_criteria": "activation state returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "system-logs",
+      "name": "Collect System Logs",
+      "type": "command",
+      "action": "idevicesyslog --trigger",
+      "success_criteria": "logs triggered",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_udid",
+      "device_name",
+      "product_type",
+      "ios_version",
+      "battery_level",
+      "battery_charging",
+      "storage_total",
+      "storage_available",
+      "activation_state"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "version": "1.0.0",
+    "author": "Bobby's World Tools",
+    "created_at": 1700000000000,
+    "updated_at": 1734426000000,
+    "tags": ["ios", "diagnostics"]
+  }
+}

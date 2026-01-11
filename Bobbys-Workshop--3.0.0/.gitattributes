@@ -1,0 +1,2 @@
+# Enforce consistent line endings for Rust lockfile to avoid CRLF/LF churn on Windows
+src-tauri/Cargo.lock text eol=lf

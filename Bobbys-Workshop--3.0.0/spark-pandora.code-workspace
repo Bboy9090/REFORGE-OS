@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "/workspaces/spark-template"
+    },
+    {
+      "path": "/workspaces/pandora-codex"
+    }
+  ],
+  "settings": {
+    "powershell.cwd": "spark-template"
+  }
+}

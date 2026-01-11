@@ -1,0 +1,9 @@
+⚠️⚠️⚠️ DO NOT PUSH THIS FOLDER TO GITHUB ⚠️⚠️⚠️
+
+This is a LOCAL EXPERIMENTAL VERSION
+
+This folder contains experimental code that should NOT be mixed with your GitHub "Bobby's Workshop" repository.
+
+KEEP THIS LOCAL ONLY!
+
+If you want to track this separately, use a DIFFERENT git repository.

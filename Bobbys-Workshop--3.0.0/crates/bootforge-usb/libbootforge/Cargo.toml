@@ -1,0 +1,23 @@
+[package]
+name = "libbootforge"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+thiserror = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full", "sync", "time"] }
+tokio-stream = "0.1"
+uuid = { version = "1", features = ["serde", "v4"] }
+log = "0.4"
+env_logger = "0.11"
+sha2 = "0.10"
+hex = "0.4"
+indicatif = "0.17"
+nusb = "0.1"
+futures-lite = "2"
+chrono = { version = "0.4", features = ["serde"] }
+
+[dev-dependencies]
+tempfile = "3"

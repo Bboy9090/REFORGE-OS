@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "bobbys secret rooms1.2",
+  "version": "1.2.0",
+  "identifier": "com.bboy9090.bobbyssecretrooms",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:5173",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "bobbys secret rooms1.2",
+        "width": 1280,
+        "height": 800,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [
+      "bundle/resources/**/*",
+      "../core/**/*"
+    ],
+    "copyright": "",
+    "category": "DeveloperTool",
+    "shortDescription": "Bobby's Workshop - Device Flashing & Diagnostics",
+    "longDescription": "Professional device flashing and diagnostics tool"
+  },
+  "plugins": {}
+}

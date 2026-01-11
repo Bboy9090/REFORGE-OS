@@ -1,0 +1,97 @@
+{
+  "id": "android-fastboot-unlock",
+  "name": "Fastboot Bootloader Unlock",
+  "description": "Unlock device bootloader via Fastboot (manufacturer-authorized only)",
+  "platform": "android",
+  "category": "bypass",
+  "risk_level": "destructive",
+  "requires_authorization": true,
+  "authorization_prompt": "This operation will ERASE ALL DATA on the device and void warranty. Proceed only with owner authorization.",
+  "legal_notice": "WARNING: This operation will factory reset the device. Ensure data is backed up.",
+  "steps": [
+    {
+      "id": "check-fastboot",
+      "name": "Verify Fastboot Connection",
+      "type": "command",
+      "action": "fastboot devices",
+      "success_criteria": "device listed",
+      "on_failure": "abort"
+    },
+    {
+      "id": "get-bootloader-status",
+      "name": "Get Bootloader Lock Status",
+      "type": "command",
+      "action": "fastboot getvar unlocked",
+      "success_criteria": "status returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "require-authorization",
+      "name": "Require User Authorization",
+      "type": "prompt",
+      "action": "confirm_unlock",
+      "prompt_text": "Type 'UNLOCK' to confirm you want to unlock the bootloader (ERASES ALL DATA)",
+      "required_input": "UNLOCK",
+      "on_failure": "abort"
+    },
+    {
+      "id": "log-shadow",
+      "name": "Log to Shadow Logs",
+      "type": "log",
+      "action": "shadow_log",
+      "log_data": {
+        "operation": "bootloader_unlock_initiated",
+        "device_serial": "$device_serial",
+        "timestamp": "$timestamp",
+        "authorization": "explicit_user_confirmation"
+      },
+      "on_failure": "continue"
+    },
+    {
+      "id": "execute-unlock",
+      "name": "Execute Bootloader Unlock",
+      "type": "command",
+      "action": "fastboot oem unlock",
+      "success_criteria": "unlock command sent",
+      "on_failure": "retry",
+      "note": "Command varies by manufacturer. Modern devices may require 'fastboot flashing unlock' (Pixel), 'fastboot oem unlock' (older devices), or manufacturer-specific commands. Verify compatibility before execution."
+    },
+    {
+      "id": "wait-device",
+      "name": "Wait for Device Reboot",
+      "type": "wait",
+      "action": "wait_for_fastboot",
+      "timeout": 60,
+      "on_failure": "continue"
+    },
+    {
+      "id": "verify-unlock",
+      "name": "Verify Bootloader Unlocked",
+      "type": "command",
+      "action": "fastboot getvar unlocked",
+      "success_criteria": "unlocked: yes",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_serial",
+      "bootloader_status_before",
+      "bootloader_status_after",
+      "unlock_success",
+      "timestamp",
+      "authorization_confirmed"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "version": "1.0.0",
+    "author": "Bobby's World Tools",
+    "created_at": 1700000000000,
+    "updated_at": 1734426000000,
+    "tags": ["android", "bypass", "fastboot", "bootloader-unlock", "authorization-required"]
+  }
+}

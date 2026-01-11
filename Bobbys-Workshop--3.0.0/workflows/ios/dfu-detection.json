@@ -1,0 +1,63 @@
+{
+  "id": "ios-dfu-detection",
+  "name": "DFU Mode Detection",
+  "description": "Detect and verify iOS device in DFU (Device Firmware Update) mode",
+  "platform": "ios",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "steps": [
+    {
+      "id": "check-recovery-mode",
+      "name": "Check for Recovery Mode Device",
+      "type": "command",
+      "action": "irecovery -q",
+      "success_criteria": "device found",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-mode",
+      "name": "Check Device Mode",
+      "type": "command",
+      "action": "irecovery -m",
+      "success_criteria": "mode returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "get-device-info",
+      "name": "Get Device Information in DFU",
+      "type": "command",
+      "action": "irecovery -qv",
+      "success_criteria": "device info returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "verify-dfu",
+      "name": "Verify DFU Mode",
+      "type": "check",
+      "action": "check_dfu_mode",
+      "success_criteria": "mode is DFU",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_found",
+      "device_mode",
+      "is_dfu_mode",
+      "device_model",
+      "device_serial"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "version": "1.0.0",
+    "author": "Bobby's World Tools",
+    "created_at": 1700000000000,
+    "updated_at": 1734426000000,
+    "tags": ["ios", "diagnostics", "dfu"]
+  }
+}

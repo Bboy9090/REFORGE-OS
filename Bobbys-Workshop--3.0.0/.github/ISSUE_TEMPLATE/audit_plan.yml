@@ -1,0 +1,308 @@
+name: 🔍 Audit Plan
+description: Plan a systematic audit of codebase quality/security/truth
+title: "[Audit] "
+labels: ["audit", "quality", "needs-review"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Audit Plan Template
+        
+        Use this template to plan comprehensive audits of:
+        - Production reality (placeholders, mocks, fake success)
+        - Security vulnerabilities
+        - Code quality and technical debt
+        - Documentation accuracy
+        - Test coverage and reliability
+
+  - type: dropdown
+    id: audit-type
+    attributes:
+      label: Audit Type
+      description: What are we auditing?
+      options:
+        - Production Reality (placeholders/mocks/stubs)
+        - Security (secrets/vulnerabilities/permissions)
+        - Code Quality (technical debt/patterns)
+        - Test Coverage (gaps/flaky tests)
+        - Documentation Accuracy (outdated/incorrect)
+        - Performance (bottlenecks/inefficiencies)
+        - Dependencies (outdated/vulnerable packages)
+        - Comprehensive (all of the above)
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Audit Scope
+      description: What areas/files/features to audit?
+      placeholder: |
+        **In Scope:**
+        - src/ directory (all production code)
+        - server/ directory (backend APIs)
+        - .github/workflows/ (CI/CD pipelines)
+        
+        **Out of Scope:**
+        - tests/ directory (allowed to have mocks)
+        - docs/ directory (documentation only)
+        - archive/ directory (old code)
+    validations:
+      required: true
+
+  - type: textarea
+    id: objectives
+    attributes:
+      label: Audit Objectives
+      description: What do we want to achieve?
+      placeholder: |
+        1. Identify all placeholder code in production paths
+        2. Find hardcoded secrets or credentials
+        3. Locate untested code paths
+        4. Document technical debt severity
+        5. Create actionable remediation plan
+    validations:
+      required: true
+
+  - type: textarea
+    id: methodology
+    attributes:
+      label: Audit Methodology
+      description: How will the audit be conducted?
+      placeholder: |
+        **Phase 1: Automated Scanning (1 day)**
+        - Run ESLint/TypeScript for code quality
+        - Use grep/ripgrep for placeholder patterns
+        - Scan with git-secrets for credentials
+        - Generate coverage report
+        
+        **Phase 2: Manual Review (2-3 days)**
+        - Review critical paths (authentication, payments, data handling)
+        - Test documented features manually
+        - Review error handling patterns
+        - Check API contracts
+        
+        **Phase 3: Reporting (1 day)**
+        - Categorize findings by severity
+        - Create GitHub issues for each finding
+        - Propose remediation timeline
+        - Document process improvements
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: audit-areas
+    attributes:
+      label: Areas to Audit
+      description: Check all that apply
+      options:
+        - label: Frontend code (src/)
+        - label: Backend code (server/)
+        - label: Build scripts (scripts/)
+        - label: CI/CD workflows (.github/workflows/)
+        - label: Configuration files
+        - label: Database schemas/migrations
+        - label: API routes and handlers
+        - label: Authentication/Authorization logic
+        - label: Error handling patterns
+        - label: Logging and monitoring
+        - label: Third-party integrations
+        - label: Documentation accuracy
+
+  - type: textarea
+    id: search-patterns
+    attributes:
+      label: Search Patterns (for automated scanning)
+      description: Regex/keywords to search for
+      placeholder: |
+        **Placeholder Patterns:**
+        - TODO, FIXME, HACK, STUB, MOCK
+        - "coming soon", "not implemented", "placeholder"
+        - `return true; // fake success`
+        
+        **Security Patterns:**
+        - API_KEY, SECRET, PASSWORD (hardcoded)
+        - eval(), exec() (code injection)
+        - shell=True (command injection)
+        - http:// in production (insecure)
+        
+        **Quality Patterns:**
+        - catch {} (empty error handling)
+        - any (TypeScript type escape)
+        - @ts-ignore (type checker bypass)
+        - console.log (debug statements)
+
+  - type: textarea
+    id: expected-findings
+    attributes:
+      label: Expected Findings
+      description: What do you anticipate discovering?
+      placeholder: |
+        Based on previous experience:
+        - 10-15 TODO comments in production code
+        - 3-5 areas with minimal error handling
+        - Possibly 1-2 hardcoded test credentials
+        - Some functions without type hints
+        - 2-3 flaky tests
+
+  - type: textarea
+    id: success-criteria
+    attributes:
+      label: Success Criteria
+      description: When is the audit complete?
+      placeholder: |
+        Audit is complete when:
+        - [ ] All scoped files have been reviewed
+        - [ ] Findings are documented with file:line references
+        - [ ] Each finding has severity classification
+        - [ ] GitHub issues created for each finding
+        - [ ] Remediation plan with timeline created
+        - [ ] Summary report published
+
+  - type: dropdown
+    id: timeline
+    attributes:
+      label: Timeline
+      description: How long will this audit take?
+      options:
+        - 1 day (quick scan)
+        - 2-3 days (standard audit)
+        - 1 week (comprehensive audit)
+        - 2+ weeks (deep dive audit)
+    validations:
+      required: true
+
+  - type: textarea
+    id: deliverables
+    attributes:
+      label: Audit Deliverables
+      description: What will be produced?
+      placeholder: |
+        1. **Audit Report** (docs/audits/[date]-[type]-audit.md)
+           - Executive summary
+           - Methodology
+           - Findings by severity
+           - Statistics and metrics
+           - Recommendations
+        
+        2. **GitHub Issues**
+           - One issue per finding (or grouped by component)
+           - Labeled by severity (critical, high, medium, low)
+           - Assigned to relevant team members
+        
+        3. **Remediation Roadmap**
+           - Prioritized list of fixes
+           - Estimated effort per fix
+           - Dependencies between fixes
+           - Timeline for completion
+        
+        4. **Process Improvements**
+           - CI checks to prevent regression
+           - Documentation updates
+           - Code review checklist additions
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: agent-assignments
+    attributes:
+      label: Agent Assignments
+      description: Which agents will participate?
+      options:
+        - label: Audit Hunter (placeholder detection)
+        - label: Security Guard (secrets, vulnerabilities)
+        - label: CI Surgeon (test reliability)
+        - label: Backend Integrity (API validation)
+        - label: Frontend Parity (UI wiring)
+        - label: Tooling Refiner (code quality)
+        - label: Docs Curator (documentation accuracy)
+
+  - type: textarea
+    id: tools
+    attributes:
+      label: Tools & Scripts
+      description: Tools to use for automation
+      placeholder: |
+        **Static Analysis:**
+        - ESLint (code quality)
+        - TypeScript compiler (type errors)
+        - SonarQube or similar (complexity)
+        
+        **Security:**
+        - git-secrets (credential scanning)
+        - npm audit (dependency vulnerabilities)
+        - Snyk or similar (security scanning)
+        
+        **Testing:**
+        - vitest --coverage (test coverage)
+        - Test output analysis
+        
+        **Custom Scripts:**
+        - scripts/find-placeholders.sh
+        - scripts/check-todos.js
+
+  - type: textarea
+    id: reporting-format
+    attributes:
+      label: Reporting Format
+      description: Template for findings
+      placeholder: |
+        Each finding should include:
+        
+        **Finding ID:** AUDIT-001
+        **Severity:** Critical | High | Medium | Low
+        **Category:** Placeholder | Security | Quality | Documentation
+        **Location:** file.ts:line
+        **Description:** [What was found]
+        **Evidence:** [Code snippet or screenshot]
+        **Impact:** [How this affects users/system]
+        **Recommendation:** [Specific fix needed]
+        **Effort:** Small | Medium | Large
+    validations:
+      required: true
+
+  - type: dropdown
+    id: follow-up
+    attributes:
+      label: Follow-up Action
+      description: What happens after the audit?
+      options:
+        - Create issues and assign
+        - Create issues only (no assignment)
+        - Create epic/project board for tracking
+        - Immediate remediation (fix during audit)
+        - Schedule review meeting
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks & Considerations
+      description: Potential challenges
+      placeholder: |
+        - Large codebase may take longer than estimated
+        - Some findings may require architectural changes
+        - Team bandwidth for remediation may be limited
+        - Breaking changes possible during fixes
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Planning Checklist
+      description: Ensure audit is well-planned
+      options:
+        - label: Scope is clearly defined
+          required: true
+        - label: Methodology is documented
+          required: true
+        - label: Success criteria are measurable
+          required: true
+        - label: Timeline is realistic
+          required: true
+        - label: Deliverables are specified
+          required: true
+        - label: Follow-up process is defined
+          required: true

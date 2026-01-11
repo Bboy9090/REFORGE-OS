@@ -1,0 +1,75 @@
+{
+  "id": "iot-network-config",
+  "name": "IoT Network Configuration",
+  "description": "Configure and test network settings for IoT devices including WiFi, Ethernet, and MQTT connectivity",
+  "platform": "iot",
+  "category": "maintenance",
+  "risk_level": "medium",
+  "requires_authorization": true,
+  "authorization_prompt": "This workflow will modify network settings. Ensure you have backup connectivity before proceeding.",
+  "estimated_duration": 60,
+  "rollback_supported": true,
+  "steps": [
+    {
+      "id": "backup-network-config",
+      "name": "Backup Current Network Configuration",
+      "type": "command",
+      "action": "cp /etc/network/interfaces /etc/network/interfaces.backup 2>/dev/null || cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.backup 2>/dev/null || echo 'Backup created'",
+      "success_criteria": "backup created",
+      "on_failure": "abort",
+      "rollback_step_id": "restore-network-config"
+    },
+    {
+      "id": "check-current-network",
+      "name": "Check Current Network Status",
+      "type": "command",
+      "action": "ip addr show",
+      "success_criteria": "network status retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "scan-wifi-networks",
+      "name": "Scan Available WiFi Networks",
+      "type": "command",
+      "action": "iwlist wlan0 scan 2>/dev/null || nmcli device wifi list 2>/dev/null || echo 'WiFi scan not available'",
+      "success_criteria": "wifi networks scanned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "test-dns",
+      "name": "Test DNS Resolution",
+      "type": "command",
+      "action": "nslookup google.com || dig google.com || echo 'DNS test failed'",
+      "success_criteria": "dns resolution successful",
+      "on_failure": "continue"
+    },
+    {
+      "id": "test-mqtt",
+      "name": "Test MQTT Connectivity",
+      "type": "command",
+      "action": "timeout 5 mosquitto_pub -h test.mosquitto.org -t test/connection -m 'ping' 2>/dev/null && echo 'MQTT available' || echo 'MQTT not available'",
+      "success_criteria": "mqtt test completed",
+      "on_failure": "continue",
+      "note": "Tests MQTT broker connectivity"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "current_ip",
+      "available_networks",
+      "dns_status",
+      "mqtt_status"
+    ]
+  },
+  "rollback_steps": [
+    {
+      "id": "restore-network-config",
+      "name": "Restore Network Configuration",
+      "type": "command",
+      "action": "cp /etc/network/interfaces.backup /etc/network/interfaces 2>/dev/null || cp /etc/wpa_supplicant/wpa_supplicant.conf.backup /etc/wpa_supplicant/wpa_supplicant.conf 2>/dev/null && echo 'Configuration restored'",
+      "success_criteria": "configuration restored",
+      "on_failure": "continue"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[bootforge]
+version = "0.1.0"
+name = "libBootForge"
+
+[usb]
+# Timeout for USB operations (milliseconds)
+timeout_ms = 30000
+
+# Maximum thermal threshold (Celsius)
+max_temp_celsius = 50.0
+
+[imaging]
+# Chunk size for streaming writes
+chunk_size_bytes = 1048576  # 1MB
+
+# Verify after write
+verify_on_write = true
+
+[drivers]
+# USB vendor map configuration
+enable_apple = true
+enable_android = true
+enable_samsung = true
+enable_qualcomm = true
+enable_mediatek = true
+
+[trapdoor]
+# Private tools directory (local only, not shipped)
+private_tools_dir = ".bootforge_private"
+
+# Require authentication for trapdoor operations
+require_auth = true

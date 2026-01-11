@@ -1,0 +1,153 @@
+{
+  "id": "iot-firmware-update",
+  "name": "IoT Device Firmware Update",
+  "description": "Workflow for safely updating firmware on IoT devices with backup and rollback capabilities",
+  "platform": "iot",
+  "category": "maintenance",
+  "risk_level": "high",
+  "requires_authorization": true,
+  "authorization_prompt": "Type 'UPDATE FIRMWARE' to confirm",
+  "supported_devices": ["iot", "embedded"],
+  "estimated_duration": "10-20 minutes",
+  "steps": [
+    {
+      "id": "device-backup",
+      "name": "Backup Device Configuration",
+      "type": "command",
+      "action": "backupDeviceConfig",
+      "description": "Backup current device configuration and firmware",
+      "success_criteria": "Backup completed successfully",
+      "on_failure": "abort",
+      "timeout": 60000
+    },
+    {
+      "id": "firmware-download",
+      "name": "Download Firmware",
+      "type": "command",
+      "action": "downloadFirmware",
+      "description": "Download latest firmware from manufacturer",
+      "success_criteria": "Firmware downloaded and verified",
+      "on_failure": "abort",
+      "timeout": 300000
+    },
+    {
+      "id": "verify-checksum",
+      "name": "Verify Firmware Checksum",
+      "type": "check",
+      "action": "verifyFirmwareChecksum",
+      "description": "Verify firmware integrity via checksum",
+      "success_criteria": "Checksum matches",
+      "on_failure": "abort",
+      "timeout": 10000
+    },
+    {
+      "id": "pre-update-check",
+      "name": "Pre-Update Device Check",
+      "type": "check",
+      "action": "preUpdateCheck",
+      "description": "Verify device is ready for firmware update",
+      "success_criteria": "Device ready for update",
+      "on_failure": "abort",
+      "timeout": 15000,
+      "checks": [
+        "battery_level",
+        "storage_space",
+        "network_connectivity"
+      ]
+    },
+    {
+      "id": "upload-firmware",
+      "name": "Upload Firmware to Device",
+      "type": "command",
+      "action": "uploadFirmware",
+      "description": "Upload firmware to IoT device",
+      "success_criteria": "Firmware uploaded successfully",
+      "on_failure": "abort",
+      "timeout": 180000
+    },
+    {
+      "id": "flash-firmware",
+      "name": "Flash Firmware",
+      "type": "command",
+      "action": "flashFirmware",
+      "description": "Flash new firmware to device",
+      "success_criteria": "Firmware flashed successfully",
+      "on_failure": "rollback",
+      "timeout": 300000
+    },
+    {
+      "id": "device-reboot",
+      "name": "Reboot Device",
+      "type": "command",
+      "action": "rebootDevice",
+      "description": "Reboot device to apply firmware",
+      "success_criteria": "Device rebooted",
+      "on_failure": "continue",
+      "timeout": 60000
+    },
+    {
+      "id": "post-update-verification",
+      "name": "Verify Firmware Update",
+      "type": "check",
+      "action": "verifyFirmwareUpdate",
+      "description": "Verify firmware was updated successfully",
+      "success_criteria": "New firmware version confirmed",
+      "on_failure": "rollback",
+      "timeout": 30000,
+      "retry_count": 3,
+      "retry_delay": 10000
+    },
+    {
+      "id": "functional-test",
+      "name": "Device Functional Test",
+      "type": "check",
+      "action": "functionalTest",
+      "description": "Test basic device functionality",
+      "success_criteria": "All basic functions working",
+      "on_failure": "rollback",
+      "timeout": 60000
+    },
+    {
+      "id": "update-complete",
+      "name": "Update Complete",
+      "type": "log",
+      "action": "shadow_log",
+      "log_data": {
+        "operation": "iot_firmware_update_complete",
+        "message": "IoT firmware update completed successfully"
+      },
+      "description": "Log successful firmware update",
+      "success_criteria": "Logged",
+      "on_failure": "continue"
+    }
+  ],
+  "rollback_steps": [
+    {
+      "id": "restore-backup",
+      "name": "Restore Previous Firmware",
+      "type": "command",
+      "action": "restoreFirmwareBackup",
+      "description": "Restore previous firmware from backup"
+    }
+  ],
+  "output_format": {
+    "type": "json",
+    "fields": [
+      "device_id",
+      "old_firmware_version",
+      "new_firmware_version",
+      "update_status",
+      "backup_location"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "author": "Bobby's World Tools",
+    "version": "1.0.0",
+    "created_at": 1734393600000,
+    "updated_at": 1734426000000,
+    "tags": ["iot", "firmware", "update", "maintenance"]
+  }
+}

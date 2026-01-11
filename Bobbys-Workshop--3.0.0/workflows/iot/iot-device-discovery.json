@@ -1,0 +1,156 @@
+{
+  "id": "iot-device-discovery",
+  "name": "IoT Device Discovery and Diagnostics",
+  "description": "Comprehensive workflow for discovering and diagnosing IoT devices on the network including smart home devices, sensors, and embedded systems",
+  "platform": "iot",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "supported_devices": ["iot", "embedded", "smart-home"],
+  "estimated_duration": "5-8 minutes",
+  "steps": [
+    {
+      "id": "network-scan",
+      "name": "Network Device Scan",
+      "type": "probe",
+      "action": "scanNetwork",
+      "description": "Scan local network for IoT devices",
+      "success_criteria": "Network scan completed",
+      "on_failure": "abort",
+      "timeout": 60000,
+      "scan_parameters": {
+        "protocols": ["mdns", "upnp", "ssdp"],
+        "port_range": "1-65535",
+        "timeout_per_host": 3000
+      }
+    },
+    {
+      "id": "mqtt-discovery",
+      "name": "MQTT Device Discovery",
+      "type": "probe",
+      "action": "discoverMqttDevices",
+      "description": "Discover IoT devices using MQTT protocol",
+      "success_criteria": "MQTT broker connected",
+      "on_failure": "continue",
+      "timeout": 30000,
+      "mqtt_config": {
+        "broker": "localhost",
+        "port": 1883,
+        "topics": ["homeassistant/+/config", "zigbee2mqtt/+"]
+      }
+    },
+    {
+      "id": "mdns-scan",
+      "name": "mDNS Service Discovery",
+      "type": "probe",
+      "action": "mdnsScan",
+      "description": "Discover devices via mDNS/Bonjour",
+      "success_criteria": "mDNS scan completed",
+      "on_failure": "continue",
+      "timeout": 30000,
+      "service_types": [
+        "_http._tcp",
+        "_homekit._tcp",
+        "_hap._tcp",
+        "_mqtt._tcp"
+      ]
+    },
+    {
+      "id": "device-identification",
+      "name": "Device Type Identification",
+      "type": "check",
+      "action": "identifyDeviceTypes",
+      "description": "Identify device types and manufacturers",
+      "success_criteria": "Device types identified",
+      "on_failure": "continue",
+      "timeout": 20000
+    },
+    {
+      "id": "connectivity-test",
+      "name": "IoT Device Connectivity Test",
+      "type": "check",
+      "action": "testIotConnectivity",
+      "description": "Test connectivity to discovered IoT devices",
+      "success_criteria": "Connectivity tested",
+      "on_failure": "continue",
+      "retry_count": 2,
+      "retry_delay": 5000
+    },
+    {
+      "id": "firmware-version",
+      "name": "Firmware Version Check",
+      "type": "check",
+      "action": "checkFirmwareVersions",
+      "description": "Check firmware versions of discovered devices",
+      "success_criteria": "Firmware versions retrieved",
+      "on_failure": "continue",
+      "timeout": 30000
+    },
+    {
+      "id": "security-scan",
+      "name": "IoT Security Scan",
+      "type": "check",
+      "action": "scanIotSecurity",
+      "description": "Check for common IoT security issues",
+      "success_criteria": "Security scan completed",
+      "on_failure": "continue",
+      "timeout": 45000,
+      "checks": [
+        "default_credentials",
+        "open_ports",
+        "unencrypted_communication",
+        "outdated_firmware"
+      ]
+    },
+    {
+      "id": "device-health",
+      "name": "Device Health Status",
+      "type": "check",
+      "action": "checkDeviceHealth",
+      "description": "Check health status of IoT devices",
+      "success_criteria": "Health status retrieved",
+      "on_failure": "continue",
+      "timeout": 30000,
+      "health_checks": [
+        "uptime",
+        "memory_usage",
+        "cpu_usage",
+        "signal_strength"
+      ]
+    },
+    {
+      "id": "discovery-summary",
+      "name": "Generate Discovery Report",
+      "type": "log",
+      "action": "public_log",
+      "log_data": {
+        "operation": "iot_discovery_complete",
+        "message": "IoT device discovery and diagnostics completed"
+      },
+      "description": "Log completion of IoT discovery workflow",
+      "success_criteria": "Summary logged",
+      "on_failure": "continue"
+    }
+  ],
+  "output_format": {
+    "type": "json",
+    "fields": [
+      "discovered_devices",
+      "device_types",
+      "connectivity_status",
+      "firmware_versions",
+      "security_issues",
+      "health_status"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "author": "Bobby's World Tools",
+    "version": "1.0.0",
+    "created_at": 1734393600000,
+    "updated_at": 1734426000000,
+    "tags": ["iot", "discovery", "diagnostics", "smart-home", "embedded"]
+  }
+}

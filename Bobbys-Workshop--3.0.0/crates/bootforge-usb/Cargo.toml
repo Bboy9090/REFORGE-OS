@@ -1,0 +1,6 @@
+[workspace]
+members = ["libbootforge", "bootforge-cli", "bootforge-usb-builder", "trapdoor-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"

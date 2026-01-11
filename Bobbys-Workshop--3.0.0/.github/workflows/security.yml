@@ -1,0 +1,136 @@
+name: Security Scan
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+      - 'copilot/**'
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # Run weekly on Mondays at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  dependency-scan:
+    name: Scan Dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run npm audit
+        run: npm audit --production
+        continue-on-error: true
+      
+      - name: Check for vulnerable dependencies
+        run: |
+          echo "Checking for security vulnerabilities..."
+          npm audit --json > audit-results.json || true
+          
+          # Check if there are high or critical vulnerabilities
+          HIGH_VULNS=$(cat audit-results.json | grep -o '"severity":"high"' | wc -l)
+          CRITICAL_VULNS=$(cat audit-results.json | grep -o '"severity":"critical"' | wc -l)
+          
+          echo "High vulnerabilities: $HIGH_VULNS"
+          echo "Critical vulnerabilities: $CRITICAL_VULNS"
+          
+          if [ "$CRITICAL_VULNS" -gt 0 ]; then
+            echo "⚠️  Critical vulnerabilities found!"
+          fi
+        continue-on-error: true
+      
+      - name: Upload audit results
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-results
+          path: audit-results.json
+          retention-days: 30
+
+  code-scanning:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript', 'typescript']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        continue-on-error: true
+
+  secrets-scan:
+    name: Scan for Secrets
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Run secret detection
+        run: |
+          echo "Scanning for exposed secrets..."
+          
+          # Check for common secret patterns in code
+          if grep -r -E "(password|secret|api[_-]?key|token|private[_-]?key)" --include="*.js" --include="*.ts" --include="*.json" . | grep -v "node_modules" | grep -v ".git"; then
+            echo "⚠️  Potential secrets detected in code. Please review."
+          else
+            echo "✓ No obvious secrets detected"
+          fi
+        continue-on-error: true
+
+  license-check:
+    name: Check License Compliance
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check licenses
+        run: |
+          echo "Checking dependency licenses..."
+          npx license-checker --summary
+        continue-on-error: true

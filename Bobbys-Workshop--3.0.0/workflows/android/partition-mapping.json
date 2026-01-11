@@ -1,0 +1,63 @@
+{
+  "id": "android-partition-mapping",
+  "name": "Partition Mapping",
+  "description": "Map device partition layout via Fastboot",
+  "platform": "android",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "steps": [
+    {
+      "id": "check-fastboot",
+      "name": "Verify Fastboot Connection",
+      "type": "command",
+      "action": "fastboot devices",
+      "success_criteria": "device listed",
+      "on_failure": "abort"
+    },
+    {
+      "id": "get-partition-list",
+      "name": "Get Partition List",
+      "type": "command",
+      "action": "fastboot getvar all",
+      "success_criteria": "variables returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "get-partition-sizes",
+      "name": "Get Partition Sizes",
+      "type": "command",
+      "action": "fastboot getvar partition-size",
+      "success_criteria": "sizes returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "get-partition-types",
+      "name": "Get Partition Types",
+      "type": "command",
+      "action": "fastboot getvar partition-type",
+      "success_criteria": "types returned",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_serial",
+      "partitions",
+      "partition_sizes",
+      "partition_types",
+      "total_storage"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "version": "1.0.0",
+    "author": "Bobby's World Tools",
+    "created_at": 1700000000000,
+    "updated_at": 1734426000000,
+    "tags": ["android", "diagnostics", "fastboot", "partitions"]
+  }
+}

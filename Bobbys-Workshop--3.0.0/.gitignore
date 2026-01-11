@@ -1,0 +1,102 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*-dist
+*.local
+
+# Collected release artifacts (do not commit)
+dist-artifacts/
+
+# Local installer output artifacts (do not commit)
+dist-installer/
+BobbysWorkshop-Portable-*.zip
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.env
+**/agent-eval-report*
+packages
+pids
+.file-manifest
+.devcontainer/
+
+.spark-workbench-id
+
+# Pandora Codex Bobby Vault - NEVER COMMIT
+.pandora_private/tools/
+.pandora_private/logs/
+.pandora_private/manifests/tools.local.json
+.pandora_private/manifests/*.local.json
+
+# Runtime reports and evidence bundles (may contain sensitive data)
+runtime/reports/*.json
+runtime/reports/*.bundle
+
+# Rust build artifacts
+/libs/bootforgeusb/target/
+/libs/bootforgeusb/Cargo.lock
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+# Python lib directories (not project source)
+/lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+server/node_modules
+
+# Bobby's Secret Workshop - NEVER COMMIT SENSITIVE DATA
+secrets/
+logs/shadow/
+pandora_box/binaries/
+pandora_box/exploits/
+tools/binaries/
+devices/*.json
+!devices/README.md
+logs/public/*.log
+logs/shadow/*.enc
+
+# Local dev-only tools and audit outputs
+git-audit.log
+debug-log.txt
+tools/tauri-cli-v1/
+
+# macOS build artifacts
+src-tauri/target/
+*.app
+*.dmg
+dist/*.dmg
+dist/*.app

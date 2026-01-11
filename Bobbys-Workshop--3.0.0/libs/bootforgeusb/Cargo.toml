@@ -1,0 +1,33 @@
+[package]
+name = "bootforgeusb"
+version = "0.2.0"
+edition = "2021"
+authors = ["Pandora Codex Team"]
+description = "Evidence-based USB device detection with per-device correlation for Pandora Codex - no fake outputs, only proven facts"
+license = "MIT"
+
+[lib]
+name = "bootforgeusb"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "bootforgeusb"
+path = "src/main.rs"
+
+[dependencies]
+rusb = "0.9"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+pyo3 = { version = "0.22", features = ["extension-module"], optional = true }
+thiserror = "2.0"
+log = "0.4"
+env_logger = "0.11"
+
+[features]
+default = ["python"]
+python = ["pyo3"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

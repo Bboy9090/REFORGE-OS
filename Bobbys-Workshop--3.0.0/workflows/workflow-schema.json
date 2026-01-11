@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Workflow Schema",
+  "description": "JSON Schema for Bobby's World workflow definitions",
+  "type": "object",
+  "required": ["id", "name", "platform", "category", "risk_level", "steps"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the workflow",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the workflow",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of what the workflow does"
+    },
+    "platform": {
+      "type": "string",
+      "description": "Target platform for the workflow",
+      "enum": ["android", "ios", "windows", "iot", "universal"]
+    },
+    "category": {
+      "type": "string",
+      "description": "Workflow category",
+      "enum": ["diagnostics", "bypass", "flashing", "recovery", "maintenance", "testing"]
+    },
+    "risk_level": {
+      "type": "string",
+      "description": "Risk level of the workflow",
+      "enum": ["low", "medium", "high", "destructive"]
+    },
+    "requires_authorization": {
+      "type": "boolean",
+      "description": "Whether explicit user authorization is required",
+      "default": false
+    },
+    "authorization_prompt": {
+      "type": "string",
+      "description": "Prompt text for authorization (if required)"
+    },
+    "legal_notice": {
+      "type": "string",
+      "description": "Legal notice or warning for the workflow"
+    },
+    "estimated_duration": {
+      "type": "integer",
+      "description": "Estimated duration in seconds",
+      "minimum": 1
+    },
+    "rollback_supported": {
+      "type": "boolean",
+      "description": "Whether this workflow supports rollback on failure",
+      "default": false
+    },
+    "steps": {
+      "type": "array",
+      "description": "Array of workflow steps",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/step"
+      }
+    },
+    "output": {
+      "type": "object",
+      "description": "Output format specification",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": ["json", "text", "xml"]
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rollback_steps": {
+      "type": "array",
+      "description": "Steps to execute if workflow fails (rollback)",
+      "items": {
+        "$ref": "#/definitions/step"
+      }
+    }
+  },
+  "definitions": {
+    "step": {
+      "type": "object",
+      "required": ["id", "name", "type", "on_failure"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique step identifier",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable step name"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of step",
+          "enum": ["command", "check", "wait", "prompt", "log"]
+        },
+        "action": {
+          "type": "string",
+          "description": "Action to perform for this step"
+        },
+        "success_criteria": {
+          "type": "string",
+          "description": "Criteria for determining step success"
+        },
+        "on_failure": {
+          "type": "string",
+          "description": "Action to take on step failure",
+          "enum": ["abort", "continue", "retry"]
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Timeout in seconds",
+          "minimum": 1
+        },
+        "retry_count": {
+          "type": "integer",
+          "description": "Number of retries for this step",
+          "minimum": 0,
+          "maximum": 5,
+          "default": 0
+        },
+        "prompt_text": {
+          "type": "string",
+          "description": "Prompt text for user (if type is prompt)"
+        },
+        "required_input": {
+          "type": "string",
+          "description": "Required input text for authorization"
+        },
+        "log_data": {
+          "type": "object",
+          "description": "Data to log (if type is log)"
+        },
+        "note": {
+          "type": "string",
+          "description": "Additional notes or warnings for this step"
+        },
+        "rollback_step_id": {
+          "type": "string",
+          "description": "ID of step to execute to rollback this step"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,196 @@
+name: CI - Parallel Test Suite
+
+on:
+  push:
+    branches: [ main, develop, 'copilot/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+# Set default permissions to read-only
+permissions:
+  contents: read
+
+jobs:
+  # Job 1: Test Trapdoor APIs
+  test-trapdoor-api:
+    name: Test Trapdoor API
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          npm ci
+          cd server && npm ci
+      
+      - name: Start server in background
+        run: |
+          cd server
+          npm start &
+          sleep 5
+        env:
+          ADMIN_API_KEY: test-admin-key
+      
+      - name: Run Trapdoor API tests
+        run: node tests/trapdoor-api.test.js
+        env:
+          ADMIN_API_KEY: test-admin-key
+
+  # Job 2: Test Workflow System
+  test-workflow-system:
+    name: Test Workflow System
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run Workflow System tests
+        run: node tests/workflow-system.test.js
+
+  # Job 3: Lint and Build Frontend
+  lint-build-frontend:
+    name: Lint and Build Frontend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true
+      
+      - name: Build frontend
+        run: npm run build
+
+  # Job 4: Test Backend Components
+  test-backend:
+    name: Test Backend Components
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install server dependencies
+        run: cd server && npm ci
+      
+      - name: Verify server starts
+        run: |
+          cd server
+          timeout 10 npm start || code=$?; if [ $code -ne 124 ]; then exit $code; fi
+        continue-on-error: true
+
+  # Job 5: Security Audit
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+      
+      - name: Check for security vulnerabilities in server
+        run: cd server && npm audit --audit-level=moderate
+        continue-on-error: true
+
+  # Job 6: Code Quality Checks
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check TypeScript compilation
+        run: npx tsc --noEmit
+        continue-on-error: true
+      
+      - name: Validate workflow JSON schemas
+        run: |
+          echo "Validating workflow JSON files..."
+          for file in workflows/**/*.json; do
+            if [ -f "$file" ]; then
+              echo "Validating $file"
+              node -e "JSON.parse(require('fs').readFileSync('$file', 'utf8'))"
+            fi
+          done
+
+# Summary job that depends on all test jobs
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [test-trapdoor-api, test-workflow-system, lint-build-frontend, test-backend, security-audit, code-quality]
+    if: always()
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Check test results
+        run: |
+          echo "Test suite completed"
+          echo "Trapdoor API: ${{ needs.test-trapdoor-api.result }}"
+          echo "Workflow System: ${{ needs.test-workflow-system.result }}"
+          echo "Frontend: ${{ needs.lint-build-frontend.result }}"
+          echo "Backend: ${{ needs.test-backend.result }}"
+          echo "Security: ${{ needs.security-audit.result }}"
+          echo "Code Quality: ${{ needs.code-quality.result }}"

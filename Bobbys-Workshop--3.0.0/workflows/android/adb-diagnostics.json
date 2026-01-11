@@ -1,0 +1,85 @@
+{
+  "id": "android-adb-diagnostics",
+  "name": "ADB Device Diagnostics",
+  "description": "Comprehensive diagnostic scan of Android device via ADB",
+  "platform": "android",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "steps": [
+    {
+      "id": "check-adb",
+      "name": "Verify ADB Connection",
+      "type": "command",
+      "action": "adb devices",
+      "success_criteria": "device listed with 'device' status",
+      "on_failure": "abort"
+    },
+    {
+      "id": "get-device-info",
+      "name": "Get Device Information",
+      "type": "command",
+      "action": "adb shell getprop",
+      "success_criteria": "properties returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "battery-status",
+      "name": "Check Battery Status",
+      "type": "command",
+      "action": "adb shell dumpsys battery",
+      "success_criteria": "battery data returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "storage-status",
+      "name": "Check Storage Status",
+      "type": "command",
+      "action": "adb shell df",
+      "success_criteria": "storage data returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "memory-status",
+      "name": "Check Memory Status",
+      "type": "command",
+      "action": "adb shell dumpsys meminfo",
+      "success_criteria": "memory data returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "thermal-status",
+      "name": "Check Thermal Status",
+      "type": "command",
+      "action": "adb shell dumpsys thermalservice",
+      "success_criteria": "thermal data returned",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_serial",
+      "manufacturer",
+      "model",
+      "android_version",
+      "battery_level",
+      "battery_health",
+      "storage_total",
+      "storage_available",
+      "memory_total",
+      "memory_available",
+      "thermal_status"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "version": "1.0.0",
+    "author": "Bobby's World Tools",
+    "created_at": 1700000000000,
+    "updated_at": 1734426000000,
+    "tags": ["android", "diagnostics", "adb"]
+  }
+}

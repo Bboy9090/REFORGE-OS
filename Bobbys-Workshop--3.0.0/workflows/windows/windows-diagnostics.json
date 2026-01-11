@@ -1,0 +1,118 @@
+{
+  "id": "windows-diagnostics",
+  "name": "Windows Device Diagnostics",
+  "description": "Comprehensive diagnostic workflow for Windows-based devices including system health checks, driver validation, and hardware diagnostics",
+  "platform": "windows",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "supported_devices": ["windows"],
+  "estimated_duration": "3-5 minutes",
+  "steps": [
+    {
+      "id": "system-info",
+      "name": "System Information Collection",
+      "type": "command",
+      "action": "systeminfo",
+      "description": "Collect comprehensive Windows system information",
+      "success_criteria": "Command executes successfully",
+      "on_failure": "abort",
+      "timeout": 30000
+    },
+    {
+      "id": "disk-health",
+      "name": "Disk Health Check",
+      "type": "command",
+      "action": "wmic diskdrive get status",
+      "description": "Check hard drive health status",
+      "success_criteria": "All drives show OK status",
+      "on_failure": "continue",
+      "timeout": 15000
+    },
+    {
+      "id": "memory-test",
+      "name": "Memory Diagnostics",
+      "type": "command",
+      "action": "wmic memorychip get Capacity,Speed,Manufacturer",
+      "description": "Verify RAM configuration and status",
+      "success_criteria": "Memory information retrieved",
+      "on_failure": "continue",
+      "timeout": 10000
+    },
+    {
+      "id": "driver-check",
+      "name": "Driver Verification",
+      "type": "command",
+      "action": "driverquery",
+      "description": "List all installed drivers",
+      "success_criteria": "Driver list retrieved",
+      "on_failure": "continue",
+      "timeout": 20000
+    },
+    {
+      "id": "network-adapters",
+      "name": "Network Adapter Status",
+      "type": "command",
+      "action": "netsh interface show interface",
+      "description": "Check network adapter status and connectivity",
+      "success_criteria": "Network adapters detected",
+      "on_failure": "continue",
+      "timeout": 10000
+    },
+    {
+      "id": "battery-report",
+      "name": "Battery Health Report",
+      "type": "command",
+      "action": "powercfg /batteryreport /duration 14",
+      "description": "Generate battery health report for laptop devices",
+      "success_criteria": "Battery report generated",
+      "on_failure": "continue",
+      "timeout": 15000
+    },
+    {
+      "id": "event-log-errors",
+      "name": "Recent System Errors",
+      "type": "command",
+      "action": "wevtutil qe System /c:10 /rd:true /f:text /q:\"*[System[(Level=1 or Level=2)]]\"",
+      "description": "Check recent critical and error events",
+      "success_criteria": "Event log queried successfully",
+      "on_failure": "continue",
+      "timeout": 20000
+    },
+    {
+      "id": "diagnostic-summary",
+      "name": "Generate Diagnostic Summary",
+      "type": "log",
+      "action": "public_log",
+      "log_data": {
+        "operation": "windows_diagnostics_complete",
+        "message": "Windows diagnostics completed"
+      },
+      "description": "Log completion of diagnostic workflow",
+      "success_criteria": "Summary logged",
+      "on_failure": "continue"
+    }
+  ],
+  "output_format": {
+    "type": "json",
+    "fields": [
+      "system_info",
+      "disk_health",
+      "memory_status",
+      "driver_list",
+      "network_status",
+      "battery_health",
+      "recent_errors"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "author": "Bobby's World Tools",
+    "version": "1.0.0",
+    "created_at": 1734393600000,
+    "updated_at": 1734426000000,
+    "tags": ["windows", "diagnostics", "system-health", "hardware"]
+  }
+}

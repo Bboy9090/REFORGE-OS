@@ -1,0 +1,91 @@
+{
+  "version": "1.0",
+  "rules": [
+    {
+      "id": "allow_detection_all_roles",
+      "name": "Allow Detection for All Roles",
+      "description": "Detection operations are safe and allowed for all users",
+      "conditions": {
+        "action_types": [
+          "detect_usb_devices",
+          "detect_android_adb",
+          "detect_android_fastboot",
+          "detect_ios_devices",
+          "device_info"
+        ]
+      },
+      "action": "allow"
+    },
+    {
+      "id": "allow_reboot_tech_and_above",
+      "name": "Allow Reboot for Tech Role and Above",
+      "description": "Reboot operations require at least tech role",
+      "conditions": {
+        "roles": ["tech", "admin", "owner"],
+        "action_types": ["reboot_device"],
+        "risk_levels": ["medium"]
+      },
+      "action": "allow_with_requirements",
+      "requirements": ["typed_confirmation"]
+    },
+    {
+      "id": "destructive_requires_admin",
+      "name": "Destructive Actions Require Admin",
+      "description": "Flash, erase, and unlock operations require admin role or higher",
+      "conditions": {
+        "roles": ["admin", "owner"],
+        "action_types": [
+          "flash_partition",
+          "erase_partition",
+          "unlock_bootloader"
+        ],
+        "risk_levels": ["destructive"]
+      },
+      "action": "allow_with_requirements",
+      "requirements": [
+        "typed_confirmation",
+        "device_state_validation",
+        "additional_evidence"
+      ]
+    },
+    {
+      "id": "deny_destructive_for_tech",
+      "name": "Deny Destructive Actions for Tech Role",
+      "description": "Tech role cannot perform destructive operations without supervisor approval",
+      "conditions": {
+        "roles": ["tech"],
+        "risk_levels": ["destructive"]
+      },
+      "action": "deny",
+      "deny_reason": "Destructive operations require admin or owner role. Please request supervisor approval."
+    },
+    {
+      "id": "deny_without_device_state",
+      "name": "Deny Actions Without Valid Device State",
+      "description": "Actions requiring specific device states must have validated device connection",
+      "conditions": {
+        "action_types": [
+          "flash_partition",
+          "erase_partition",
+          "unlock_bootloader"
+        ],
+        "device_states": ["unknown_usb", null]
+      },
+      "action": "deny",
+      "deny_reason": "Device state must be confirmed before performing this action. Please ensure device is in correct mode (e.g., fastboot)."
+    },
+    {
+      "id": "allow_audit_logging_always",
+      "name": "Allow Audit Logging Always",
+      "description": "Audit logging operations are always allowed",
+      "conditions": {
+        "action_types": ["audit_log"]
+      },
+      "action": "allow"
+    }
+  ],
+  "default_policy": {
+    "action": "deny",
+    "deny_reason": "No policy rule matched this action. Contact administrator to add appropriate policy."
+  }
+}

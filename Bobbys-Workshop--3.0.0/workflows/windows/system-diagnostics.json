@@ -1,0 +1,112 @@
+{
+  "id": "windows-system-diagnostics",
+  "name": "Windows System Diagnostics",
+  "description": "Comprehensive system diagnostics for Windows devices including hardware health, driver status, and system logs",
+  "platform": "windows",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "estimated_duration": 180,
+  "rollback_supported": false,
+  "steps": [
+    {
+      "id": "check-system-info",
+      "name": "Gather System Information",
+      "type": "command",
+      "action": "systeminfo",
+      "success_criteria": "system info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-disk-health",
+      "name": "Check Disk Health",
+      "type": "command",
+      "action": "wmic diskdrive get status",
+      "success_criteria": "disk status retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-memory",
+      "name": "Check Memory Status",
+      "type": "command",
+      "action": "wmic MEMORYCHIP get BankLabel,Capacity,Speed,MemoryType",
+      "success_criteria": "memory info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-cpu",
+      "name": "Check CPU Information",
+      "type": "command",
+      "action": "wmic cpu get name,numberofcores,maxclockspeed",
+      "success_criteria": "cpu info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-temperatures",
+      "name": "Check System Temperatures",
+      "type": "command",
+      "action": "wmic /namespace:\\root\\wmi PATH MSAcpi_ThermalZoneTemperature get CurrentTemperature",
+      "success_criteria": "temperature data retrieved",
+      "on_failure": "continue",
+      "note": "May not be available on all systems"
+    },
+    {
+      "id": "check-battery",
+      "name": "Check Battery Status",
+      "type": "command",
+      "action": "wmic path win32_battery get BatteryStatus,EstimatedChargeRemaining,EstimatedRunTime",
+      "success_criteria": "battery info retrieved",
+      "on_failure": "continue",
+      "note": "Only applicable for laptops"
+    },
+    {
+      "id": "check-drivers",
+      "name": "Check Driver Status",
+      "type": "command",
+      "action": "driverquery /v",
+      "success_criteria": "driver list retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-event-logs",
+      "name": "Check System Event Logs",
+      "type": "command",
+      "action": "wevtutil qe System /c:10 /rd:true /f:text",
+      "success_criteria": "event logs retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-network",
+      "name": "Check Network Adapters",
+      "type": "command",
+      "action": "wmic nicconfig get description,ipaddress,macaddress",
+      "success_criteria": "network info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-smart",
+      "name": "Check SMART Status",
+      "type": "command",
+      "action": "wmic diskdrive get model,status,size,mediatype",
+      "success_criteria": "smart status retrieved",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "os_version",
+      "computer_name",
+      "manufacturer",
+      "model",
+      "cpu_info",
+      "memory_total",
+      "disk_health",
+      "battery_status",
+      "driver_issues",
+      "event_errors",
+      "network_adapters",
+      "smart_status"
+    ]
+  }
+}

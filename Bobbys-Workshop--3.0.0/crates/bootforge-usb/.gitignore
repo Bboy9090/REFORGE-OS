@@ -1,0 +1,7 @@
+/target/
+Cargo.lock
+.bootforge_private/
+*.log
+.DS_Store
+.env
+.env.local

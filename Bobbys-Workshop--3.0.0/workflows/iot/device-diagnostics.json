@@ -1,0 +1,109 @@
+{
+  "id": "iot-device-diagnostics",
+  "name": "IoT Device Diagnostics",
+  "description": "General diagnostics for IoT devices including network connectivity, firmware version, and sensor health",
+  "platform": "iot",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "estimated_duration": 120,
+  "rollback_supported": false,
+  "steps": [
+    {
+      "id": "check-connectivity",
+      "name": "Check Network Connectivity",
+      "type": "command",
+      "action": "ping -c 4 8.8.8.8",
+      "success_criteria": "ping successful",
+      "on_failure": "continue",
+      "note": "Checks basic internet connectivity"
+    },
+    {
+      "id": "check-wifi-signal",
+      "name": "Check WiFi Signal Strength",
+      "type": "command",
+      "action": "iwconfig 2>&1 | grep -i quality",
+      "success_criteria": "signal info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-firmware",
+      "name": "Check Firmware Version",
+      "type": "command",
+      "action": "cat /etc/os-release",
+      "success_criteria": "firmware info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-uptime",
+      "name": "Check System Uptime",
+      "type": "command",
+      "action": "uptime",
+      "success_criteria": "uptime retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-memory",
+      "name": "Check Memory Usage",
+      "type": "command",
+      "action": "free -m",
+      "success_criteria": "memory info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-storage",
+      "name": "Check Storage Space",
+      "type": "command",
+      "action": "df -h",
+      "success_criteria": "storage info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-temperature",
+      "name": "Check CPU Temperature",
+      "type": "command",
+      "action": "cat /sys/class/thermal/thermal_zone0/temp 2>/dev/null || sensors 2>/dev/null || echo 'Temperature monitoring not available'",
+      "success_criteria": "temperature data retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-processes",
+      "name": "Check Running Processes",
+      "type": "command",
+      "action": "ps aux | head -20",
+      "success_criteria": "process list retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-network-interfaces",
+      "name": "Check Network Interfaces",
+      "type": "command",
+      "action": "ifconfig -a",
+      "success_criteria": "network interfaces listed",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-logs",
+      "name": "Check System Logs",
+      "type": "command",
+      "action": "dmesg | tail -50",
+      "success_criteria": "logs retrieved",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_id",
+      "firmware_version",
+      "network_connectivity",
+      "wifi_signal_strength",
+      "uptime",
+      "memory_usage",
+      "storage_available",
+      "cpu_temperature",
+      "active_processes",
+      "network_interfaces"
+    ]
+  }
+}

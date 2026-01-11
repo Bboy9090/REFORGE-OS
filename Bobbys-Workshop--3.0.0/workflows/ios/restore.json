@@ -1,0 +1,97 @@
+{
+  "id": "ios-restore",
+  "name": "iOS Device Restore",
+  "description": "Full iOS device restore via iTunes/Finder or libimobiledevice",
+  "platform": "ios",
+  "category": "restore",
+  "risk_level": "high",
+  "requires_authorization": true,
+  "authorization_prompt": "This operation will ERASE ALL DATA on the device. Proceed only with owner authorization.",
+  "legal_notice": "WARNING: This operation will factory reset the device. Ensure data is backed up via iCloud or iTunes.",
+  "steps": [
+    {
+      "id": "check-ios-connection",
+      "name": "Verify iOS Device Connection",
+      "type": "command",
+      "action": "ideviceinfo",
+      "success_criteria": "device info returned",
+      "on_failure": "abort"
+    },
+    {
+      "id": "get-device-info",
+      "name": "Get Device Information",
+      "type": "command",
+      "action": "ideviceinfo -k DeviceName -k ProductVersion -k UniqueDeviceID",
+      "success_criteria": "device details returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "require-authorization",
+      "name": "Require User Authorization",
+      "type": "prompt",
+      "action": "confirm_restore",
+      "prompt_text": "Type 'RESTORE' to confirm you want to restore the device (ERASES ALL DATA)",
+      "required_input": "RESTORE",
+      "on_failure": "abort"
+    },
+    {
+      "id": "log-shadow",
+      "name": "Log to Shadow Logs",
+      "type": "log",
+      "action": "shadow_log",
+      "log_data": {
+        "operation": "ios_restore_initiated",
+        "device_udid": "$device_udid",
+        "timestamp": "$timestamp",
+        "authorization": "explicit_user_confirmation"
+      },
+      "on_failure": "continue"
+    },
+    {
+      "id": "enter-recovery-mode",
+      "name": "Enter Recovery Mode",
+      "type": "command",
+      "action": "ideviceenterrecovery $device_udid",
+      "success_criteria": "device entered recovery",
+      "on_failure": "retry"
+    },
+    {
+      "id": "wait-recovery",
+      "name": "Wait for Recovery Mode",
+      "type": "wait",
+      "action": "wait_for_recovery",
+      "timeout": 30,
+      "on_failure": "continue"
+    },
+    {
+      "id": "restore-device",
+      "name": "Restore Device",
+      "type": "command",
+      "action": "idevicerestore --latest",
+      "success_criteria": "restore completed",
+      "on_failure": "abort"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_udid",
+      "device_name",
+      "ios_version_before",
+      "ios_version_after",
+      "restore_success",
+      "timestamp",
+      "authorization_confirmed"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "version": "1.0.0",
+    "author": "Bobby's World Tools",
+    "created_at": 1700000000000,
+    "updated_at": 1734426000000,
+    "tags": ["ios", "restore", "authorization-required"]
+  }
+}

@@ -1,0 +1,216 @@
+name: ✨ Feature Request (Agent-Ready)
+description: Propose a new feature with implementation guidance
+title: "[Feature] "
+labels: ["enhancement", "needs-review"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request Template
+        
+        This template helps AI agents understand and implement your feature request.
+        Provide as much detail as possible for efficient implementation.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: |
+        As a user, I need to flash multiple devices simultaneously because
+        flashing devices one-by-one takes too long for large batches.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How should this feature work?
+      placeholder: |
+        Add a "Batch Flash" mode that:
+        1. Allows selecting multiple devices
+        2. Flashes them in parallel (up to 4 at a time)
+        3. Shows progress for each device
+        4. Reports success/failure per device
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other approaches you've thought about
+      placeholder: |
+        - Sequential flashing with progress bar (too slow)
+        - Unlimited parallel flashing (might overload system)
+        - Cloud-based flashing service (adds complexity)
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature?
+      options:
+        - Critical (blocking workflow)
+        - High (significant improvement)
+        - Medium (nice to have)
+        - Low (minor enhancement)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: Your guess at implementation difficulty
+      options:
+        - Low (UI change, configuration)
+        - Medium (new feature, limited scope)
+        - High (major architectural change)
+        - Unknown
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: Describe from user's perspective
+      placeholder: |
+        **As a** device refurbisher
+        **I want to** flash firmware to 10+ devices at once
+        **So that** I can process batches efficiently
+        
+        **Acceptance Criteria:**
+        - [ ] Can select multiple devices (checkbox UI)
+        - [ ] Can start batch flash operation
+        - [ ] See real-time progress per device
+        - [ ] Receive summary report (X succeeded, Y failed)
+        - [ ] Can retry failed devices
+
+  - type: textarea
+    id: ui-mockup
+    attributes:
+      label: UI/UX Mockup (Optional)
+      description: Sketch or describe the interface
+      placeholder: |
+        ```
+        ┌─────────────────────────────────────┐
+        │ Batch Flash Mode                    │
+        ├─────────────────────────────────────┤
+        │ ☑ Device 1 (Pixel 6)    [▓▓▓▓░] 80% │
+        │ ☑ Device 2 (Galaxy S21) [▓▓▓▓▓] 100%│
+        │ ☑ Device 3 (OnePlus 9)  [▓░░░░] 20% │
+        │ ☐ Device 4 (Pixel 7)    [     ] 0%  │
+        │                                     │
+        │ [Cancel] [Start Batch Flash]        │
+        └─────────────────────────────────────┘
+        ```
+
+  - type: checkboxes
+    id: affected-areas
+    attributes:
+      label: Affected Components
+      description: Which parts of the codebase will change?
+      options:
+        - label: Frontend UI (React components)
+        - label: Backend API (new endpoints)
+        - label: WebSocket (real-time updates)
+        - label: Device manager (core logic)
+        - label: Database/storage (new models)
+        - label: Configuration (new settings)
+        - label: Testing (new test suites)
+        - label: Documentation
+
+  - type: textarea
+    id: technical-notes
+    attributes:
+      label: Technical Implementation Notes
+      description: Technical details for developers/agents
+      placeholder: |
+        - Use Promise.allSettled() for parallel operations
+        - Limit concurrency with p-limit or similar
+        - Store batch state in Redux/Zustand
+        - Add new API endpoint: POST /api/batch/flash
+        - WebSocket events: batch:progress, batch:complete
+        - Consider memory usage with large batches
+
+  - type: textarea
+    id: related-files
+    attributes:
+      label: Files That May Need Changes
+      description: Suggest files to modify
+      placeholder: |
+        - src/components/DeviceList.tsx (add checkboxes)
+        - src/components/BatchFlashPanel.tsx (new component)
+        - server/api/batch.js (new API routes)
+        - core/flash-manager.ts (parallel flash logic)
+        - tests/batch-flash.test.ts (new tests)
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: New Dependencies (if any)
+      description: Libraries that may be needed
+      placeholder: |
+        - p-limit (concurrency control)
+        - react-virtualized (efficient list rendering)
+
+  - type: dropdown
+    id: breaking-change
+    attributes:
+      label: Breaking Change?
+      description: Will this break existing functionality?
+      options:
+        - No (backward compatible)
+        - Yes (requires migration)
+        - Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: testing-strategy
+    attributes:
+      label: Testing Strategy
+      description: How should this be tested?
+      placeholder: |
+        **Unit Tests:**
+        - Test parallel flash logic with mocked devices
+        - Test progress tracking accuracy
+        - Test error handling (device disconnected mid-flash)
+        
+        **Integration Tests:**
+        - Test API endpoints with multiple devices
+        - Test WebSocket progress updates
+        
+        **Manual Tests:**
+        - Flash 2, 5, and 10 devices simultaneously
+        - Test with slow devices (timeout handling)
+        - Test device disconnection during batch
+
+  - type: textarea
+    id: documentation
+    attributes:
+      label: Documentation Needs
+      description: What documentation should be added/updated?
+      placeholder: |
+        - Add "Batch Flashing" section to README
+        - Update API docs with new endpoint
+        - Add troubleshooting guide for batch failures
+        - Update screenshots with new UI
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission Checklist
+      description: Ensure complete feature request
+      options:
+        - label: I've searched existing issues (no duplicate)
+          required: true
+        - label: I've described the problem clearly
+          required: true
+        - label: I've proposed a specific solution
+          required: true
+        - label: I've considered alternatives
+          required: true

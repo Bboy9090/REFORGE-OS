@@ -1,0 +1,147 @@
+  copilot/vscode-mjam8njk-odg3                                       [m 5c30e1d [[34morigin/copilot/vscode-mjam8njk-odg3[m: behind 7] Checkpoint from VS Code for cloud agent session
+* [32mmain-tool-kit                                                      [m 33979b1 [[34morigin/main-tool-kit[m: ahead 5, behind 9] test: add vitest-report.json with summary of latest test results
++ [36mworktree-2025-12-17T22-39-44                                       [m 5d1975d ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-17T22-39-44[m) [[34morigin/worktree-2025-12-17T22-39-44[m: ahead 1] Add comprehensive testing framework and quick start guide
++ [36mworktree-2025-12-18T06-00-40                                       [m c99b697 ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-18T06-00-40[m) [[34morigin/worktree-2025-12-18T06-00-40[m] feat: Complete branch merge and testing framework for Bobby's Workshop
++ [36mworktree-2025-12-19T10-19-37                                       [m 33979b1 ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-19T10-19-37[m) test: add vitest-report.json with summary of latest test results
+  [31mremotes/origin/Bboy9090-patch-1                                    [m 62c2f5d Add CodeQL analysis workflow configuration
+  [31mremotes/origin/Bboy9090-patch-2                                    [m 42178dd Add rust-clippy analysis workflow
+  [31mremotes/origin/HEAD                                                [m -> origin/main-tool-kit
+  [31mremotes/origin/copilot/add-branch-protection-checks                [m d078a6b Address code review comments - clarify bypass actors and linear history
+  [31mremotes/origin/copilot/add-copilot-instructions-file               [m a36fba9 Add explicit permissions to ci-guardrails.yml for security
+  [31mremotes/origin/copilot/add-parallel-tasking-features               [m b322d9f Update API_DOCUMENTATION.md
+  [31mremotes/origin/copilot/ai-operating-system-readiness               [m 6f87c87 Add security summary for production readiness certification
+  [31mremotes/origin/copilot/audit-hunter-task                           [m 648e24a Add comprehensive team deployment roles documentation
+  [31mremotes/origin/copilot/audit-repo-for-placeholders                 [m 7672459 Update audit document with app-context fix summary
+  [31mremotes/origin/copilot/close-issue-28-tasks                        [m 4980395 Merge branch 'main-tool-kit' into copilot/close-issue-28-tasks
+  [31mremotes/origin/copilot/enable-auto-merge-feature                   [m ffafcba Address PR review feedback - fix security, syntax, and documentation issues
+  [31mremotes/origin/copilot/enhance-project-to-perfection               [m 6af49e3 Add final summary document - Enhancement complete
+  [31mremotes/origin/copilot/enhance-trapdoor-api-workflow               [m d21e8c0 Fix security vulnerability in GitHub Actions workflow
+  [31mremotes/origin/copilot/enhance-trapdoor-apis                       [m 225e3c0 Complete implementation: All requirements delivered
+  [31mremotes/origin/copilot/export-chat-history                         [m b39ca74 Initial plan
+  [31mremotes/origin/copilot/fix-ci-issues-and-reliability               [m 32ee409 Fix code review feedback and update README
+  [31mremotes/origin/copilot/fix-failing-builds-and-tests                [m 8f507fa Address code review feedback: replace deprecated substr() with substring()
+  [31mremotes/origin/copilot/fix-test-failures                           [m eeac00a Potential fix for code scanning alert no. 22: Uncontrolled command line
+  [31mremotes/origin/copilot/polish-gui-and-enhance-backend              [m c6abd30 Add Tauri desktop app wrapper with auto-start backend servers
+  [31mremotes/origin/copilot/purge-placeholders-and-mocks                [m 39e03eb Fix .gitignore and add truth-first library stubs (Phase 0 complete)
+  [31mremotes/origin/copilot/scan-repo-for-placeholders                  [m eb16bb8 Phase 0: Add completion documentation
+  [31mremotes/origin/copilot/sub-pr-30                                   [m 2aec287 security: upgrade multer to 2.0.2 to fix DoS vulnerabilities
+  [31mremotes/origin/copilot/sub-pr-30-again                             [m 915da48 Merge security fix from base branch to synchronize branches
+  [31mremotes/origin/copilot/sub-pr-30-another-one                       [m b649f15 Fix trapdoor API tests to set up own test server and add missing getLogStats method
+  [31mremotes/origin/copilot/sub-pr-30-yet-again                         [m 917405b Implement E2E tests for workflow execution with mocked devices
+  [31mremotes/origin/copilot/update-game-sound-effects                   [m 59f0a8e Add audio notifications to iOS and MTK flash components
+  [31mremotes/origin/copilot/update-package-dependencies                 [m 4f09d65 Address code review feedback
+  [31mremotes/origin/copilot/update-pr-link-and-risk-fields              [m 737bf97 Final refinements: use replaceAll for status formatting, make pr_link non-optional
+  [31mremotes/origin/copilot/vscode-mjam8njk-odg3                        [m 6502f57 Add missing checkmark emoji to workflow system test log
+  [31mremotes/origin/dependabot/npm_and_yarn/eslint-9.39.2               [m a75c90d Bump eslint from 9.39.1 to 9.39.2
+  [31mremotes/origin/dependabot/npm_and_yarn/octokit/core-7.0.6          [m 3d90720 Bump @octokit/core from 6.1.6 to 7.0.6
+  [31mremotes/origin/dependabot/npm_and_yarn/react-19.2.3                [m 877dd83 Bump react from 19.2.0 to 19.2.3
+  [31mremotes/origin/dependabot/npm_and_yarn/react-dom-19.2.3            [m 0a6638f Bump react-dom from 19.2.0 to 19.2.3
+  [31mremotes/origin/dependabot/npm_and_yarn/react-resizable-panels-4.0.7[m 20faa0f Bump react-resizable-panels from 2.1.9 to 4.0.7
+  [31mremotes/origin/dependabot/npm_and_yarn/tailwindcss/vite-4.1.18     [m bd9a8b1 Bump @tailwindcss/vite from 4.1.17 to 4.1.18
+  [31mremotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.50.0    [m 9d17736 Bump typescript-eslint from 8.48.0 to 8.50.0
+  [31mremotes/origin/dependabot/npm_and_yarn/uuid-13.0.0                 [m e5be099 Bump uuid from 11.1.0 to 13.0.0
+  [31mremotes/origin/dependabot/npm_and_yarn/vitest-4.0.16               [m 4516ee1 Bump vitest from 2.1.9 to 4.0.16
+  [31mremotes/origin/dependabot/npm_and_yarn/vitest/coverage-v8-4.0.16   [m c05fa18 Bump @vitest/coverage-v8 from 2.1.9 to 4.0.16
+  [31mremotes/origin/integrate/all-into-main                             [m 44efd66 Add Trapdoor integration tests and ADB unit coverage
+  [31mremotes/origin/main                                                [m a50a8e7 g
+  [31mremotes/origin/main-tool-kit                                       [m d7f95df Merge pull request #63 from Bboy9090/copilot/polish-gui-and-enhance-backend
+  [31mremotes/origin/worktree-2025-12-17T22-39-44                        [m 9d1db09 Merge remote-tracking branch 'origin/integrate/all-into-main' into main-tool-kit
+  [31mremotes/origin/worktree-2025-12-18T06-00-40                        [m c99b697 feat: Complete branch merge and testing framework for Bobby's Workshop
+  copilot/vscode-mjam8njk-odg3                                       [m 5c30e1d [[34morigin/copilot/vscode-mjam8njk-odg3[m: behind 7] Checkpoint from VS Code for cloud agent session
+* [32mmain-tool-kit                                                      [m 33979b1 [[34morigin/main-tool-kit[m: ahead 5, behind 9] test: add vitest-report.json with summary of latest test results
++ [36mworktree-2025-12-17T22-39-44                                       [m 5d1975d ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-17T22-39-44[m) [[34morigin/worktree-2025-12-17T22-39-44[m: ahead 1] Add comprehensive testing framework and quick start guide
++ [36mworktree-2025-12-18T06-00-40                                       [m c99b697 ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-18T06-00-40[m) [[34morigin/worktree-2025-12-18T06-00-40[m] feat: Complete branch merge and testing framework for Bobby's Workshop
++ [36mworktree-2025-12-19T10-19-37                                       [m 33979b1 ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-19T10-19-37[m) test: add vitest-report.json with summary of latest test results
+  [31mremotes/origin/Bboy9090-patch-1                                    [m 62c2f5d Add CodeQL analysis workflow configuration
+  [31mremotes/origin/Bboy9090-patch-2                                    [m 42178dd Add rust-clippy analysis workflow
+  [31mremotes/origin/HEAD                                                [m -> origin/main-tool-kit
+  [31mremotes/origin/copilot/add-branch-protection-checks                [m d078a6b Address code review comments - clarify bypass actors and linear history
+  [31mremotes/origin/copilot/add-copilot-instructions-file               [m a36fba9 Add explicit permissions to ci-guardrails.yml for security
+  [31mremotes/origin/copilot/add-parallel-tasking-features               [m b322d9f Update API_DOCUMENTATION.md
+  [31mremotes/origin/copilot/ai-operating-system-readiness               [m 6f87c87 Add security summary for production readiness certification
+  [31mremotes/origin/copilot/audit-hunter-task                           [m 648e24a Add comprehensive team deployment roles documentation
+  [31mremotes/origin/copilot/audit-repo-for-placeholders                 [m 7672459 Update audit document with app-context fix summary
+  [31mremotes/origin/copilot/close-issue-28-tasks                        [m 4980395 Merge branch 'main-tool-kit' into copilot/close-issue-28-tasks
+  [31mremotes/origin/copilot/enable-auto-merge-feature                   [m ffafcba Address PR review feedback - fix security, syntax, and documentation issues
+  [31mremotes/origin/copilot/enhance-project-to-perfection               [m 6af49e3 Add final summary document - Enhancement complete
+  [31mremotes/origin/copilot/enhance-trapdoor-api-workflow               [m d21e8c0 Fix security vulnerability in GitHub Actions workflow
+  [31mremotes/origin/copilot/enhance-trapdoor-apis                       [m 225e3c0 Complete implementation: All requirements delivered
+  [31mremotes/origin/copilot/export-chat-history                         [m b39ca74 Initial plan
+  [31mremotes/origin/copilot/fix-ci-issues-and-reliability               [m 32ee409 Fix code review feedback and update README
+  [31mremotes/origin/copilot/fix-failing-builds-and-tests                [m 8f507fa Address code review feedback: replace deprecated substr() with substring()
+  [31mremotes/origin/copilot/fix-test-failures                           [m eeac00a Potential fix for code scanning alert no. 22: Uncontrolled command line
+  [31mremotes/origin/copilot/polish-gui-and-enhance-backend              [m c6abd30 Add Tauri desktop app wrapper with auto-start backend servers
+  [31mremotes/origin/copilot/purge-placeholders-and-mocks                [m 39e03eb Fix .gitignore and add truth-first library stubs (Phase 0 complete)
+  [31mremotes/origin/copilot/scan-repo-for-placeholders                  [m eb16bb8 Phase 0: Add completion documentation
+  [31mremotes/origin/copilot/sub-pr-30                                   [m 2aec287 security: upgrade multer to 2.0.2 to fix DoS vulnerabilities
+  [31mremotes/origin/copilot/sub-pr-30-again                             [m 915da48 Merge security fix from base branch to synchronize branches
+  [31mremotes/origin/copilot/sub-pr-30-another-one                       [m b649f15 Fix trapdoor API tests to set up own test server and add missing getLogStats method
+  [31mremotes/origin/copilot/sub-pr-30-yet-again                         [m 917405b Implement E2E tests for workflow execution with mocked devices
+  [31mremotes/origin/copilot/update-game-sound-effects                   [m 59f0a8e Add audio notifications to iOS and MTK flash components
+  [31mremotes/origin/copilot/update-package-dependencies                 [m 4f09d65 Address code review feedback
+  [31mremotes/origin/copilot/update-pr-link-and-risk-fields              [m 737bf97 Final refinements: use replaceAll for status formatting, make pr_link non-optional
+  [31mremotes/origin/copilot/vscode-mjam8njk-odg3                        [m 6502f57 Add missing checkmark emoji to workflow system test log
+  [31mremotes/origin/dependabot/npm_and_yarn/eslint-9.39.2               [m a75c90d Bump eslint from 9.39.1 to 9.39.2
+  [31mremotes/origin/dependabot/npm_and_yarn/octokit/core-7.0.6          [m 3d90720 Bump @octokit/core from 6.1.6 to 7.0.6
+  [31mremotes/origin/dependabot/npm_and_yarn/react-19.2.3                [m 877dd83 Bump react from 19.2.0 to 19.2.3
+  [31mremotes/origin/dependabot/npm_and_yarn/react-dom-19.2.3            [m 0a6638f Bump react-dom from 19.2.0 to 19.2.3
+  [31mremotes/origin/dependabot/npm_and_yarn/react-resizable-panels-4.0.7[m 20faa0f Bump react-resizable-panels from 2.1.9 to 4.0.7
+  [31mremotes/origin/dependabot/npm_and_yarn/tailwindcss/vite-4.1.18     [m bd9a8b1 Bump @tailwindcss/vite from 4.1.17 to 4.1.18
+  [31mremotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.50.0    [m 9d17736 Bump typescript-eslint from 8.48.0 to 8.50.0
+  [31mremotes/origin/dependabot/npm_and_yarn/uuid-13.0.0                 [m e5be099 Bump uuid from 11.1.0 to 13.0.0
+  [31mremotes/origin/dependabot/npm_and_yarn/vitest-4.0.16               [m 4516ee1 Bump vitest from 2.1.9 to 4.0.16
+  [31mremotes/origin/dependabot/npm_and_yarn/vitest/coverage-v8-4.0.16   [m c05fa18 Bump @vitest/coverage-v8 from 2.1.9 to 4.0.16
+  [31mremotes/origin/integrate/all-into-main                             [m 44efd66 Add Trapdoor integration tests and ADB unit coverage
+  [31mremotes/origin/main                                                [m a50a8e7 g
+  [31mremotes/origin/main-tool-kit                                       [m d7f95df Merge pull request #63 from Bboy9090/copilot/polish-gui-and-enhance-backend
+  [31mremotes/origin/worktree-2025-12-17T22-39-44                        [m 9d1db09 Merge remote-tracking branch 'origin/integrate/all-into-main' into main-tool-kit
+  [31mremotes/origin/worktree-2025-12-18T06-00-40                        [m c99b697 feat: Complete branch merge and testing framework for Bobby's Workshop
+  copilot/vscode-mjam8njk-odg3                                       [m 5c30e1d [[34morigin/copilot/vscode-mjam8njk-odg3[m: behind 7] Checkpoint from VS Code for cloud agent session
+* [32mmain-tool-kit                                                      [m 33979b1 [[34morigin/main-tool-kit[m: ahead 5, behind 9] test: add vitest-report.json with summary of latest test results
++ [36mworktree-2025-12-17T22-39-44                                       [m 5d1975d ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-17T22-39-44[m) [[34morigin/worktree-2025-12-17T22-39-44[m: ahead 1] Add comprehensive testing framework and quick start guide
++ [36mworktree-2025-12-18T06-00-40                                       [m c99b697 ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-18T06-00-40[m) [[34morigin/worktree-2025-12-18T06-00-40[m] feat: Complete branch merge and testing framework for Bobby's Workshop
++ [36mworktree-2025-12-19T10-19-37                                       [m 33979b1 ([36mC:/Users/Bobby/Bobbys-Workshop-.worktrees/worktree-2025-12-19T10-19-37[m) test: add vitest-report.json with summary of latest test results
+  [31mremotes/origin/Bboy9090-patch-1                                    [m 62c2f5d Add CodeQL analysis workflow configuration
+  [31mremotes/origin/Bboy9090-patch-2                                    [m 42178dd Add rust-clippy analysis workflow
+  [31mremotes/origin/HEAD                                                [m -> origin/main-tool-kit
+  [31mremotes/origin/copilot/add-branch-protection-checks                [m d078a6b Address code review comments - clarify bypass actors and linear history
+  [31mremotes/origin/copilot/add-copilot-instructions-file               [m a36fba9 Add explicit permissions to ci-guardrails.yml for security
+  [31mremotes/origin/copilot/add-parallel-tasking-features               [m b322d9f Update API_DOCUMENTATION.md
+  [31mremotes/origin/copilot/ai-operating-system-readiness               [m 6f87c87 Add security summary for production readiness certification
+  [31mremotes/origin/copilot/audit-hunter-task                           [m 648e24a Add comprehensive team deployment roles documentation
+  [31mremotes/origin/copilot/audit-repo-for-placeholders                 [m 7672459 Update audit document with app-context fix summary
+  [31mremotes/origin/copilot/close-issue-28-tasks                        [m 4980395 Merge branch 'main-tool-kit' into copilot/close-issue-28-tasks
+  [31mremotes/origin/copilot/enable-auto-merge-feature                   [m ffafcba Address PR review feedback - fix security, syntax, and documentation issues
+  [31mremotes/origin/copilot/enhance-project-to-perfection               [m 6af49e3 Add final summary document - Enhancement complete
+  [31mremotes/origin/copilot/enhance-trapdoor-api-workflow               [m d21e8c0 Fix security vulnerability in GitHub Actions workflow
+  [31mremotes/origin/copilot/enhance-trapdoor-apis                       [m 225e3c0 Complete implementation: All requirements delivered
+  [31mremotes/origin/copilot/export-chat-history                         [m b39ca74 Initial plan
+  [31mremotes/origin/copilot/fix-ci-issues-and-reliability               [m 32ee409 Fix code review feedback and update README
+  [31mremotes/origin/copilot/fix-failing-builds-and-tests                [m 8f507fa Address code review feedback: replace deprecated substr() with substring()
+  [31mremotes/origin/copilot/fix-test-failures                           [m eeac00a Potential fix for code scanning alert no. 22: Uncontrolled command line
+  [31mremotes/origin/copilot/polish-gui-and-enhance-backend              [m c6abd30 Add Tauri desktop app wrapper with auto-start backend servers
+  [31mremotes/origin/copilot/purge-placeholders-and-mocks                [m 39e03eb Fix .gitignore and add truth-first library stubs (Phase 0 complete)
+  [31mremotes/origin/copilot/scan-repo-for-placeholders                  [m eb16bb8 Phase 0: Add completion documentation
+  [31mremotes/origin/copilot/sub-pr-30                                   [m 2aec287 security: upgrade multer to 2.0.2 to fix DoS vulnerabilities
+  [31mremotes/origin/copilot/sub-pr-30-again                             [m 915da48 Merge security fix from base branch to synchronize branches
+  [31mremotes/origin/copilot/sub-pr-30-another-one                       [m b649f15 Fix trapdoor API tests to set up own test server and add missing getLogStats method
+  [31mremotes/origin/copilot/sub-pr-30-yet-again                         [m 917405b Implement E2E tests for workflow execution with mocked devices
+  [31mremotes/origin/copilot/update-game-sound-effects                   [m 59f0a8e Add audio notifications to iOS and MTK flash components
+  [31mremotes/origin/copilot/update-package-dependencies                 [m 4f09d65 Address code review feedback
+  [31mremotes/origin/copilot/update-pr-link-and-risk-fields              [m 737bf97 Final refinements: use replaceAll for status formatting, make pr_link non-optional
+  [31mremotes/origin/copilot/vscode-mjam8njk-odg3                        [m 6502f57 Add missing checkmark emoji to workflow system test log
+  [31mremotes/origin/dependabot/npm_and_yarn/eslint-9.39.2               [m a75c90d Bump eslint from 9.39.1 to 9.39.2
+  [31mremotes/origin/dependabot/npm_and_yarn/octokit/core-7.0.6          [m 3d90720 Bump @octokit/core from 6.1.6 to 7.0.6
+  [31mremotes/origin/dependabot/npm_and_yarn/react-19.2.3                [m 877dd83 Bump react from 19.2.0 to 19.2.3
+  [31mremotes/origin/dependabot/npm_and_yarn/react-dom-19.2.3            [m 0a6638f Bump react-dom from 19.2.0 to 19.2.3
+  [31mremotes/origin/dependabot/npm_and_yarn/react-resizable-panels-4.0.7[m 20faa0f Bump react-resizable-panels from 2.1.9 to 4.0.7
+  [31mremotes/origin/dependabot/npm_and_yarn/tailwindcss/vite-4.1.18     [m bd9a8b1 Bump @tailwindcss/vite from 4.1.17 to 4.1.18
+  [31mremotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.50.0    [m 9d17736 Bump typescript-eslint from 8.48.0 to 8.50.0
+  [31mremotes/origin/dependabot/npm_and_yarn/uuid-13.0.0                 [m e5be099 Bump uuid from 11.1.0 to 13.0.0
+  [31mremotes/origin/dependabot/npm_and_yarn/vitest-4.0.16               [m 4516ee1 Bump vitest from 2.1.9 to 4.0.16
+  [31mremotes/origin/dependabot/npm_and_yarn/vitest/coverage-v8-4.0.16   [m c05fa18 Bump @vitest/coverage-v8 from 2.1.9 to 4.0.16
+  [31mremotes/origin/integrate/all-into-main                             [m 44efd66 Add Trapdoor integration tests and ADB unit coverage
+  [31mremotes/origin/main                                                [m a50a8e7 g
+  [31mremotes/origin/main-tool-kit                                       [m d7f95df Merge pull request #63 from Bboy9090/copilot/polish-gui-and-enhance-backend
+  [31mremotes/origin/worktree-2025-12-17T22-39-44                        [m 9d1db09 Merge remote-tracking branch 'origin/integrate/all-into-main' into main-tool-kit
+  [31mremotes/origin/worktree-2025-12-18T06-00-40                        [m c99b697 feat: Complete branch merge and testing framework for Bobby's Workshop

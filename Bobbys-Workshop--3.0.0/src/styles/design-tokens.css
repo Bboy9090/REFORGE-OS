@@ -1,0 +1,223 @@
+/**
+ * Bobby's Workshop Design Tokens
+ * Street + Neon + Worn — Canon Color Ways
+ * 
+ * These tokens describe meaning in the world, not generic colors.
+ * Use them to maintain the Bronx apartment workshop aesthetic.
+ */
+
+:root {
+  /* ============================================
+     SURFACES (The Apartment)
+     ============================================ */
+  
+  /* Midnight Workbench - Default / Main App */
+  --surface-midnight-room: #0F1114;
+  --surface-workbench-steel: #161A1F;
+  --surface-basement-concrete: #1C2127;
+  --surface-drawer-hidden: #12161A;
+  --surface-crt-glass: rgba(255, 255, 255, 0.06);
+  
+  /* ============================================
+     INK (Text & Content)
+     ============================================ */
+  
+  --ink-primary: #E8EAED;
+  --ink-muted: #9AA0A6;
+  --ink-inverse: #0B0D10;
+  --ink-graffiti: #2DD4FF;
+  --ink-lyric: #FF3DBB;
+  --ink-tape-text: #141414;
+  
+  /* ============================================
+     ACCENTS (Graffiti & Neon)
+     ============================================ */
+  
+  /* Spray Paint Cyan - Primary Accent */
+  --accent-spray-cyan: #2DD4FF;
+  --glow-neon-buzz: 0 0 12px rgba(45, 212, 255, 0.55);
+  
+  /* Neon Magenta - Secondary Accent / Space Jam Punch */
+  --accent-spray-magenta: #FF3DBB;
+  --glow-magenta-buzz: 0 0 14px rgba(255, 61, 187, 0.45);
+  
+  /* Tape Yellow - Caution / Labels / Sharpie Notes */
+  --accent-tape-yellow: #FFD400;
+  
+  /* Chrome Steel - Borders / Hardware Feel */
+  --accent-chrome-steel: #8B949E;
+  
+  /* CRT Green - Terminal Flavor */
+  --terminal-crt-green: #35FF9A;
+  --terminal-crt-dim: rgba(53, 255, 154, 0.22);
+  
+  /* ============================================
+     STATES (System Status)
+     ============================================ */
+  
+  --state-locked: #8B949E;
+  --state-ready: #35FF9A;
+  --state-warning: #FFD400;
+  --state-danger: #E11D48;
+  --state-denied: #B91C1C;
+  
+  /* ============================================
+     GLOW & SHADOW (Atmosphere)
+     ============================================ */
+  
+  --glow-warning-pulse: 0 0 16px rgba(225, 29, 72, 0.45);
+  --glow-crt-flicker: 0 0 8px rgba(53, 255, 154, 0.3);
+  
+  --shadow-workbench-heavy: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-drawer-inset: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  /* ============================================
+     BORDERS (Hardware Feel)
+     ============================================ */
+  
+  --border-hairline: rgba(255, 255, 255, 0.10);
+  --border-panel: rgba(255, 255, 255, 0.18);
+  --border-accent: rgba(45, 212, 255, 0.3);
+  
+  /* ============================================
+     MOTION (Boom-Bap Rhythm)
+     ============================================ */
+  
+  --motion-snap: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-slide-drawer: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-flicker: 0.1s linear;
+  --motion-shake-deny: 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  --motion-hold-confirm: 2s linear;
+  
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+  
+  /* Font Families */
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Courier New', monospace;
+  --font-tag: 'Comic Sans MS', 'Marker Felt', 'Chalkboard', cursive; /* Handwritten/sharpie accent */
+  
+  /* Font Sizes */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+  
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+  
+  /* ============================================
+     SPACING (Workbench Rhythm)
+     ============================================ */
+  
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  
+  /* ============================================
+     Z-INDEX LAYERS
+     ============================================ */
+  
+  --z-base: 0;
+  --z-workbench: 10;
+  --z-toolbox: 20;
+  --z-overlay: 30;
+  --z-trapdoor: 40;
+  --z-modal: 50;
+  --z-alert: 60;
+}
+
+/* ============================================
+   THEME PRESETS
+   ============================================ */
+
+/* Classic Bronx Night (default) */
+.theme-bronx-night {
+  --theme-primary: var(--accent-spray-cyan);
+  --theme-secondary: var(--accent-tape-yellow);
+  --theme-surface: var(--surface-midnight-room);
+}
+
+/* Space Jam After-Hours */
+.theme-space-jam {
+  --theme-primary: var(--accent-spray-magenta);
+  --theme-secondary: var(--accent-spray-cyan);
+  --theme-surface: var(--surface-midnight-room);
+}
+
+/* Basement Terminal Mode */
+.theme-terminal {
+  --theme-primary: var(--terminal-crt-green);
+  --theme-secondary: var(--accent-chrome-steel);
+  --theme-surface: var(--surface-basement-concrete);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Neon Glow Effects */
+.glow-cyan {
+  box-shadow: var(--glow-neon-buzz);
+}
+
+.glow-magenta {
+  box-shadow: var(--glow-magenta-buzz);
+}
+
+.glow-danger {
+  box-shadow: var(--glow-warning-pulse);
+}
+
+/* Motion Classes */
+.motion-snap {
+  transition: all var(--motion-snap);
+}
+
+.motion-slide {
+  transition: transform var(--motion-slide-drawer);
+}
+
+/* CRT Flicker Animation */
+@keyframes crt-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.98; }
+}
+
+.crt-flicker {
+  animation: crt-flicker 0.15s infinite;
+}
+
+/* Shake Denial Animation */
+@keyframes shake-deny {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.shake-deny {
+  animation: shake-deny var(--motion-shake-deny);
+}
+
+/* Hold Confirm Progress */
+@keyframes hold-progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.hold-progress {
+  animation: hold-progress var(--motion-hold-confirm) linear;
+}
+

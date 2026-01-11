@@ -1,0 +1,133 @@
+{
+  "version": "1.0",
+  "capabilities": [
+    {
+      "id": "detect_usb_devices",
+      "name": "Detect USB Devices",
+      "description": "Enumerate USB devices with evidence-based classification",
+      "category": "detect",
+      "requires_tools": ["bootforgeusb"],
+      "risk_level": "low",
+      "platforms": ["all"]
+    },
+    {
+      "id": "detect_android_adb",
+      "name": "Detect Android via ADB",
+      "description": "Detect Android devices connected via ADB",
+      "category": "detect",
+      "requires_tools": ["adb"],
+      "risk_level": "low",
+      "platforms": ["android"]
+    },
+    {
+      "id": "detect_android_fastboot",
+      "name": "Detect Android Fastboot Mode",
+      "description": "Detect Android devices in bootloader/fastboot mode",
+      "category": "detect",
+      "requires_tools": ["fastboot"],
+      "risk_level": "low",
+      "platforms": ["android"]
+    },
+    {
+      "id": "detect_ios_devices",
+      "name": "Detect iOS Devices",
+      "description": "Detect iOS devices in normal, recovery, or DFU mode",
+      "category": "detect",
+      "requires_tools": ["idevice_id"],
+      "risk_level": "low",
+      "platforms": ["ios"]
+    },
+    {
+      "id": "flash_partition",
+      "name": "Flash Partition",
+      "description": "Flash a firmware image to a device partition",
+      "category": "action",
+      "requires_tools": ["fastboot"],
+      "risk_level": "destructive",
+      "platforms": ["android"]
+    },
+    {
+      "id": "erase_partition",
+      "name": "Erase Partition",
+      "description": "Erase a device partition",
+      "category": "action",
+      "requires_tools": ["fastboot"],
+      "risk_level": "destructive",
+      "platforms": ["android"]
+    },
+    {
+      "id": "unlock_bootloader",
+      "name": "Unlock Bootloader",
+      "description": "Unlock device bootloader (OEM unlock)",
+      "category": "action",
+      "requires_tools": ["fastboot"],
+      "risk_level": "destructive",
+      "platforms": ["android"]
+    },
+    {
+      "id": "device_info",
+      "name": "Get Device Information",
+      "description": "Retrieve device properties and information",
+      "category": "detect",
+      "requires_tools": ["adb", "fastboot"],
+      "risk_level": "low",
+      "platforms": ["android"]
+    },
+    {
+      "id": "reboot_device",
+      "name": "Reboot Device",
+      "description": "Reboot device to system, bootloader, or recovery",
+      "category": "action",
+      "requires_tools": ["adb", "fastboot"],
+      "risk_level": "medium",
+      "platforms": ["android"]
+    },
+    {
+      "id": "audit_log",
+      "name": "Create Audit Log",
+      "description": "Generate structured audit log with evidence bundle",
+      "category": "audit",
+      "requires_tools": [],
+      "risk_level": "low",
+      "platforms": ["all"]
+    }
+  ],
+  "tools": [
+    {
+      "id": "adb",
+      "name": "Android Debug Bridge",
+      "command": "adb",
+      "version_check": "adb --version",
+      "install_url": "https://developer.android.com/studio/releases/platform-tools",
+      "capabilities": ["detect_android_adb", "device_info", "reboot_device"],
+      "required_on": ["all"]
+    },
+    {
+      "id": "fastboot",
+      "name": "Fastboot",
+      "command": "fastboot",
+      "version_check": "fastboot --version",
+      "install_url": "https://developer.android.com/studio/releases/platform-tools",
+      "capabilities": ["detect_android_fastboot", "flash_partition", "erase_partition", "unlock_bootloader", "device_info", "reboot_device"],
+      "required_on": ["all"]
+    },
+    {
+      "id": "idevice_id",
+      "name": "libimobiledevice idevice_id",
+      "command": "idevice_id",
+      "version_check": "idevice_id --version",
+      "install_url": "https://libimobiledevice.org/",
+      "capabilities": ["detect_ios_devices"],
+      "required_on": ["all"]
+    },
+    {
+      "id": "bootforgeusb",
+      "name": "BootForgeUSB",
+      "command": "bootforgeusb",
+      "version_check": "bootforgeusb version",
+      "install_url": "https://github.com/pandora-codex/bootforgeusb",
+      "capabilities": ["detect_usb_devices"],
+      "required_on": ["all"]
+    }
+  ]
+}

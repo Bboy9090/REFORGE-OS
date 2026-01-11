@@ -1,0 +1,169 @@
+name: 🐛 Bug Report (Agent-Ready)
+description: Report a bug with full context for AI agents to investigate
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug Report Template
+        
+        This template provides structured information for both human reviewers and AI agents.
+        Fill in all sections to enable fast, accurate bug resolution.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Clear description of what's broken
+      placeholder: |
+        When I click "Flash Device", the UI shows success but the device is not flashed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Exact steps to trigger the bug
+      placeholder: |
+        1. Connect Android device via USB
+        2. Click "Scan Devices"
+        3. Select device from list
+        4. Click "Flash Device"
+        5. Observe: Success message shown, but device not flashed
+      value: |
+        1. 
+        2. 
+        3. 
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen
+      placeholder: Device should be flashed with selected firmware
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happens
+      placeholder: UI shows success but device is unchanged
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs & Error Messages
+      description: Relevant logs, stack traces, console output
+      placeholder: |
+        Paste logs here. Use code blocks:
+        ```
+        [ERROR] Flash operation failed: Device not in fastboot mode
+        ```
+      render: shell
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Impact level
+      options:
+        - Critical (blocks core functionality)
+        - High (major feature broken)
+        - Medium (workaround exists)
+        - Low (minor issue)
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Application version (check About page or package.json)
+      placeholder: "v0.1.0"
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: Your OS
+      options:
+        - Windows 10
+        - Windows 11
+        - macOS (Intel)
+        - macOS (Apple Silicon)
+        - Linux (Ubuntu)
+        - Linux (Fedora)
+        - Linux (Arch)
+        - Linux (Other)
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Additional environment info
+      placeholder: |
+        - Node.js version: 20.10.0
+        - Browser (if relevant): Chrome 120
+        - Device model: Pixel 6
+        - Connected devices: 1
+
+  - type: textarea
+    id: investigation
+    attributes:
+      label: Investigation Notes (Optional)
+      description: Any troubleshooting you've already done
+      placeholder: |
+        - Checked logs: found error "DEVICE_NOT_READY"
+        - Tried restarting app: same issue
+        - Device shows in `adb devices` output
+
+  - type: checkboxes
+    id: agent-hints
+    attributes:
+      label: Agent Investigation Hints
+      description: Check areas where the bug likely exists
+      options:
+        - label: Frontend UI (React components)
+        - label: Backend API (Express routes)
+        - label: WebSocket communication
+        - label: Device detection/scanning
+        - label: Flash operation logic
+        - label: Error handling
+        - label: Configuration/environment
+
+  - type: textarea
+    id: related-files
+    attributes:
+      label: Potentially Related Files
+      description: Files you think might be involved
+      placeholder: |
+        - src/components/FlashButton.tsx
+        - server/api/flash.js
+        - core/device-manager.ts
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission Checklist
+      description: Ensure quality bug report
+      options:
+        - label: I've searched existing issues (no duplicate)
+          required: true
+        - label: I can reproduce this consistently
+          required: true
+        - label: I've included relevant logs/errors
+          required: true
+        - label: I've specified my OS and version
+          required: true

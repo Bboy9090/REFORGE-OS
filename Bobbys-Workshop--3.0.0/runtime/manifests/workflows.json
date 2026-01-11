@@ -1,0 +1,111 @@
+{
+  "version": "1.0",
+  "workflows": [
+    {
+      "id": "smoke_test_detection",
+      "name": "Smoke Test: Device Detection",
+      "description": "Validate basic device detection capabilities",
+      "steps": [
+        {
+          "id": "detect_usb",
+          "capability": "detect_usb_devices",
+          "params": {},
+          "expected_result": "success"
+        },
+        {
+          "id": "detect_adb",
+          "capability": "detect_android_adb",
+          "params": {},
+          "expected_result": "success_or_no_devices"
+        },
+        {
+          "id": "detect_fastboot",
+          "capability": "detect_android_fastboot",
+          "params": {},
+          "expected_result": "success_or_no_devices"
+        }
+      ],
+      "risk_level": "low"
+    },
+    {
+      "id": "full_device_dossier",
+      "name": "Create Full Device Dossier",
+      "description": "Gather all evidence about a connected device",
+      "steps": [
+        {
+          "id": "usb_scan",
+          "capability": "detect_usb_devices",
+          "params": {},
+          "required": true
+        },
+        {
+          "id": "adb_check",
+          "capability": "detect_android_adb",
+          "params": {},
+          "required": false
+        },
+        {
+          "id": "fastboot_check",
+          "capability": "detect_android_fastboot",
+          "params": {},
+          "required": false
+        },
+        {
+          "id": "device_props",
+          "capability": "device_info",
+          "params": {},
+          "required": false
+        },
+        {
+          "id": "create_audit",
+          "capability": "audit_log",
+          "params": {},
+          "required": true
+        }
+      ],
+      "risk_level": "low"
+    },
+    {
+      "id": "flash_firmware_safe",
+      "name": "Flash Firmware (Safe)",
+      "description": "Flash firmware with full safety checks and evidence collection",
+      "steps": [
+        {
+          "id": "verify_device_state",
+          "capability": "detect_android_fastboot",
+          "params": {},
+          "required": true,
+          "validation": "device_must_be_in_fastboot_mode"
+        },
+        {
+          "id": "collect_pre_flash_evidence",
+          "capability": "device_info",
+          "params": {},
+          "required": true
+        },
+        {
+          "id": "flash_partition",
+          "capability": "flash_partition",
+          "params": {
+            "requires_confirmation": true
+          },
+          "required": true
+        },
+        {
+          "id": "collect_post_flash_evidence",
+          "capability": "device_info",
+          "params": {},
+          "required": true
+        },
+        {
+          "id": "create_flash_audit",
+          "capability": "audit_log",
+          "params": {},
+          "required": true
+        }
+      ],
+      "risk_level": "destructive",
+      "requires_policy": ["admin", "owner"]
+    }
+  ]
+}

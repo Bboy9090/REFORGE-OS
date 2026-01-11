@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- 90s / futuristic neon dusk background -->
+    <radialGradient id="bg" cx="50%" cy="32%" r="78%">
+      <stop offset="0%" stop-color="#1B2B7A"/>
+      <stop offset="45%" stop-color="#0B1030"/>
+      <stop offset="100%" stop-color="#050611"/>
+    </radialGradient>
+
+    <linearGradient id="horizon" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.0"/>
+      <stop offset="55%" stop-color="#22D3EE" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#A78BFA" stop-opacity="0.15"/>
+    </linearGradient>
+
+    <linearGradient id="neon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="45%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#A78BFA"/>
+    </linearGradient>
+
+    <linearGradient id="neonHot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F472B6"/>
+      <stop offset="55%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#A78BFA"/>
+    </linearGradient>
+
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.72 0" result="g"/>
+      <feMerge>
+        <feMergeNode in="g"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Rounded app tile -->
+  <rect x="0" y="0" width="1024" height="1024" rx="240" ry="240" fill="url(#bg)"/>
+
+  <!-- Neon horizon glow -->
+  <rect x="0" y="520" width="1024" height="504" fill="url(#horizon)"/>
+
+  <!-- Subtle frame ring -->
+  <rect x="78" y="78" width="868" height="868" rx="210" ry="210" fill="none" stroke="#22D3EE" stroke-opacity="0.16" stroke-width="6"/>
+
+  <!-- NYC skyline silhouette (stylized) -->
+  <path
+    d="
+      M120 720
+      L120 650 L150 650 L150 610 L180 610 L180 660 L210 660 L210 560 L240 560 L240 700
+      L270 700 L270 620 L290 620 L290 580 L310 580 L310 710
+      L340 710 L340 520 L380 520 L380 710
+      L410 710 L410 600 L430 600 L430 540 L450 540 L450 710
+      L480 710 L480 500 L510 500 L510 460 L520 460 L520 420 L540 420 L540 460 L550 460 L550 500 L580 500 L580 710
+      L610 710 L610 540 L640 540 L640 580 L660 580 L660 640 L690 640 L690 710
+      L720 710 L720 560 L745 560 L745 610 L770 610 L770 680 L790 680 L790 710
+      L820 710 L820 630 L850 630 L850 590 L880 590 L880 720
+      Z
+    "
+    fill="#02030A"
+    fill-opacity="0.92"
+  />
+
+  <!-- Skyline neon edge -->
+  <path
+    d="
+      M120 720
+      L120 650 L150 650 L150 610 L180 610 L180 660 L210 660 L210 560 L240 560 L240 700
+      L270 700 L270 620 L290 620 L290 580 L310 580 L310 710
+      L340 710 L340 520 L380 520 L380 710
+      L410 710 L410 600 L430 600 L430 540 L450 540 L450 710
+      L480 710 L480 500 L510 500 L510 460 L520 460 L520 420 L540 420 L540 460 L550 460 L550 500 L580 500 L580 710
+      L610 710 L610 540 L640 540 L640 580 L660 580 L660 640 L690 640 L690 710
+      L720 710 L720 560 L745 560 L745 610 L770 610 L770 680 L790 680 L790 710
+      L820 710 L820 630 L850 630 L850 590 L880 590 L880 720
+    "
+    fill="none"
+    stroke="url(#neon)"
+    stroke-opacity="0.70"
+    stroke-width="10"
+    stroke-linejoin="round"
+    filter="url(#soft)"
+  />
+
+  <!-- BW monogram (vector, no fonts) -->
+  <g filter="url(#glow)">
+    <!-- B (left) -->
+    <path
+      fill="url(#neonHot)"
+      fill-rule="evenodd"
+      d="
+        M290 270
+        H430
+        C493 270 530 308 530 360
+        C530 400 507 428 472 442
+        C520 457 550 490 550 540
+        C550 612 499 660 420 660
+        H290
+        Z
+
+        M350 330
+        V410
+        H420
+        C452 410 470 392 470 370
+        C470 346 452 330 420 330
+        Z
+
+        M350 470
+        V600
+        H420
+        C466 600 490 577 490 535
+        C490 493 466 470 420 470
+        Z
+      "
+    />
+
+    <!-- W (right) -->
+    <path
+      fill="url(#neon)"
+      d="
+        M560 270
+        H622
+        L675 520
+        L730 270
+        H794
+        L720 660
+        H658
+        L592 410
+        L526 660
+        H464
+        Z
+      "
+    />
+  </g>
+
+  <!-- Tiny neon spark accents -->
+  <g stroke="#22D3EE" stroke-opacity="0.55" stroke-width="8" stroke-linecap="round" filter="url(#soft)">
+    <path d="M176 360 L210 330"/>
+    <path d="M848 360 L814 330"/>
+    <path d="M512 196 L512 160"/>
+  </g>
+</svg>

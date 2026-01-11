@@ -1,0 +1,130 @@
+{
+  "id": "ios-device-restore",
+  "name": "iOS Device Restore Workflow",
+  "description": "Comprehensive iOS device restore and recovery workflow",
+  "platform": "ios",
+  "category": "recovery",
+  "risk_level": "medium",
+  "requires_authorization": false,
+  "steps": [
+    {
+      "id": "check-libimobiledevice",
+      "name": "Verify libimobiledevice Installation",
+      "type": "check",
+      "action": "check_tool_availability",
+      "tool": "ideviceinfo",
+      "success_criteria": "tool available",
+      "on_failure": "abort"
+    },
+    {
+      "id": "detect-device",
+      "name": "Detect Connected iOS Device",
+      "type": "command",
+      "action": "idevice_id -l",
+      "success_criteria": "device listed",
+      "on_failure": "abort"
+    },
+    {
+      "id": "get-device-info",
+      "name": "Retrieve Device Information",
+      "type": "command",
+      "action": "ideviceinfo",
+      "success_criteria": "device info returned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-device-mode",
+      "name": "Check Device Mode",
+      "type": "check",
+      "action": "check_device_mode",
+      "modes": ["normal", "recovery", "dfu"],
+      "success_criteria": "mode detected",
+      "on_failure": "continue"
+    },
+    {
+      "id": "backup-prompt",
+      "name": "Backup Recommendation",
+      "type": "prompt",
+      "action": "acknowledge_backup",
+      "prompt_text": "It is recommended to backup your device before restore. Type 'CONTINUE' to proceed without backup or 'BACKUP' to create backup first",
+      "required_input": "CONTINUE",
+      "on_failure": "continue"
+    },
+    {
+      "id": "log-restore-start",
+      "name": "Log Restore Operation Start",
+      "type": "log",
+      "action": "public_log",
+      "log_data": {
+        "operation": "ios_restore_started",
+        "device_udid": "$device_udid",
+        "timestamp": "$timestamp"
+      },
+      "on_failure": "continue"
+    },
+    {
+      "id": "enter-recovery",
+      "name": "Enter Recovery Mode (if needed)",
+      "type": "command",
+      "action": "ideviceenterrecovery $device_udid",
+      "success_criteria": "device in recovery",
+      "on_failure": "continue",
+      "note": "Only executed if device is not already in recovery or DFU mode"
+    },
+    {
+      "id": "restore-device",
+      "name": "Restore Device Using iTunes/Finder",
+      "type": "prompt",
+      "action": "user_restore_via_itunes",
+      "prompt_text": "Use iTunes (Windows/macOS Mojave or earlier) or Finder (macOS Catalina+) to restore the device. Click 'Restore iPhone' while holding Option (Mac) or Shift (Windows) to select custom IPSW. Type 'CONTINUE' once you have started the restore.",
+      "required_input": "CONTINUE",
+      "success_criteria": "user_confirms_completion",
+      "on_failure": "continue"
+    },
+    {
+      "id": "wait-restore-complete",
+      "name": "Wait for Restore Completion",
+      "type": "wait",
+      "action": "wait_for_normal_mode",
+      "timeout": 600,
+      "on_failure": "continue"
+    },
+    {
+      "id": "verify-restore",
+      "name": "Verify Device Restored Successfully",
+      "type": "command",
+      "action": "ideviceinfo",
+      "success_criteria": "device responds",
+      "on_failure": "continue"
+    },
+    {
+      "id": "log-restore-complete",
+      "name": "Log Restore Completion",
+      "type": "log",
+      "action": "public_log",
+      "log_data": {
+        "operation": "ios_restore_completed",
+        "device_udid": "$device_udid",
+        "timestamp": "$timestamp",
+        "success": "$workflow_success"
+      },
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_udid",
+      "device_name",
+      "product_type",
+      "ios_version",
+      "restore_success",
+      "timestamp"
+    ]
+  },
+  "requirements": {
+    "tools": ["libimobiledevice", "iTunes or Finder"],
+    "permissions": ["Device trusted on computer", "iTunes/Finder access"],
+    "notes": "This workflow guides the restore process but actual restoration happens through iTunes/Finder"
+  }
+}

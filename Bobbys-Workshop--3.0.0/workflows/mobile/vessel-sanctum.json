@@ -1,0 +1,281 @@
+{
+  "id": "vessel-sanctum",
+  "name": "VesselSanctum - Mobile Device Deep Diagnostics",
+  "description": "Comprehensive mobile device health check and diagnostics workflow for Android and iOS devices. Performs deep hardware analysis, connectivity testing, and system diagnostics.",
+  "platform": "mobile",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "supported_devices": ["android", "ios"],
+  "estimated_duration": "5-10 minutes",
+  "steps": [
+    {
+      "id": "detect-devices",
+      "name": "Device Detection",
+      "type": "probe",
+      "action": "probeDevices",
+      "description": "Detect all connected mobile devices across protocols",
+      "success_criteria": "At least one mobile device detected",
+      "on_failure": "abort",
+      "timeout": 10000
+    },
+    {
+      "id": "device-selection",
+      "name": "Device Selection",
+      "type": "prompt",
+      "action": "selectDevice",
+      "description": "User selects target device from detected devices",
+      "success_criteria": "Device selected",
+      "on_failure": "abort"
+    },
+    {
+      "id": "connectivity-test",
+      "name": "Connectivity Test",
+      "type": "check",
+      "action": "testDeviceConnection",
+      "description": "Verify stable connection to device",
+      "success_criteria": "Device responds to connectivity check",
+      "on_failure": "retry",
+      "retry_count": 3,
+      "retry_delay": 2000
+    },
+    {
+      "id": "device-info",
+      "name": "Basic Device Information",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell getprop",
+          "parse": "properties"
+        },
+        "ios": {
+          "action": "ideviceinfo",
+          "parse": "plist"
+        }
+      },
+      "description": "Retrieve device model, OS version, and basic properties",
+      "success_criteria": "Device information retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "battery-diagnostics",
+      "name": "Battery Health Check",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell dumpsys battery",
+          "parse": "battery_stats"
+        },
+        "ios": {
+          "action": "idevicediagnostics ioreg IOPMPowerSource",
+          "parse": "plist"
+        }
+      },
+      "description": "Check battery level, health, temperature, and cycle count",
+      "success_criteria": "Battery data retrieved",
+      "on_failure": "continue",
+      "health_thresholds": {
+        "battery_level": { "warn": 20, "critical": 10 },
+        "battery_health": { "warn": 80, "critical": 60 },
+        "temperature": { "warn": 40, "critical": 50 }
+      }
+    },
+    {
+      "id": "storage-diagnostics",
+      "name": "Storage Analysis",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell df",
+          "parse": "filesystem"
+        },
+        "ios": {
+          "action": "ideviceinfo -k TotalDiskCapacity -k TotalSystemAvailable",
+          "parse": "plist"
+        }
+      },
+      "description": "Analyze storage capacity, usage, and available space",
+      "success_criteria": "Storage data retrieved",
+      "on_failure": "continue",
+      "health_thresholds": {
+        "available_space_percent": { "warn": 20, "critical": 10 }
+      }
+    },
+    {
+      "id": "memory-diagnostics",
+      "name": "Memory Analysis",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell dumpsys meminfo",
+          "parse": "meminfo"
+        },
+        "ios": {
+          "action": "idevicediagnostics ioreg IOPlatformExpertDevice",
+          "parse": "plist"
+        }
+      },
+      "description": "Check RAM usage, available memory, and swap status",
+      "success_criteria": "Memory data retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "thermal-diagnostics",
+      "name": "Thermal Monitoring",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell dumpsys thermalservice",
+          "parse": "thermal"
+        },
+        "ios": {
+          "action": "idevicediagnostics ioreg AppleARMIODevice",
+          "parse": "plist"
+        }
+      },
+      "description": "Monitor device temperature and thermal zones",
+      "success_criteria": "Thermal data retrieved",
+      "on_failure": "continue",
+      "health_thresholds": {
+        "cpu_temp": { "warn": 70, "critical": 85 },
+        "battery_temp": { "warn": 45, "critical": 55 }
+      }
+    },
+    {
+      "id": "network-diagnostics",
+      "name": "Network Connectivity",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell dumpsys connectivity",
+          "parse": "connectivity"
+        },
+        "ios": {
+          "action": "ideviceinfo -k WiFiAddress -k BluetoothAddress",
+          "parse": "plist"
+        }
+      },
+      "description": "Check WiFi, Bluetooth, and cellular connectivity",
+      "success_criteria": "Network data retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "sensor-test",
+      "name": "Hardware Sensors Test",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell dumpsys sensorservice",
+          "parse": "sensors"
+        },
+        "ios": {
+          "action": "idevicediagnostics ioreg IOAccelerometer",
+          "parse": "plist"
+        }
+      },
+      "description": "Test accelerometer, gyroscope, proximity, and light sensors",
+      "success_criteria": "Sensor data retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "display-info",
+      "name": "Display Information",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell dumpsys display",
+          "parse": "display"
+        },
+        "ios": {
+          "action": "ideviceinfo -k ScreenWidth -k ScreenHeight",
+          "parse": "plist"
+        }
+      },
+      "description": "Get screen resolution, DPI, and refresh rate",
+      "success_criteria": "Display data retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "bootloader-status",
+      "name": "Bootloader Status (Android Only)",
+      "type": "check",
+      "platform_filter": ["android"],
+      "action": "checkBootloaderStatus",
+      "description": "Check if bootloader is locked or unlocked",
+      "success_criteria": "Bootloader status determined",
+      "on_failure": "continue"
+    },
+    {
+      "id": "security-status",
+      "name": "Security Status Check",
+      "type": "command",
+      "platform_specific": {
+        "android": {
+          "action": "adb shell getprop ro.boot.verifiedbootstate",
+          "parse": "security"
+        },
+        "ios": {
+          "action": "ideviceinfo -k PasswordProtected",
+          "parse": "plist"
+        }
+      },
+      "description": "Check device security features and lock status",
+      "success_criteria": "Security status retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "generate-report",
+      "name": "Generate Diagnostics Report",
+      "type": "report",
+      "action": "generateDiagnosticsReport",
+      "description": "Compile all diagnostic data into comprehensive report",
+      "success_criteria": "Report generated successfully",
+      "on_failure": "continue",
+      "report_format": "json"
+    },
+    {
+      "id": "health-score",
+      "name": "Calculate Device Health Score",
+      "type": "analysis",
+      "action": "calculateHealthScore",
+      "description": "Analyze all diagnostics and calculate overall device health score (0-100)",
+      "success_criteria": "Health score calculated",
+      "on_failure": "continue",
+      "scoring_weights": {
+        "battery_health": 0.25,
+        "storage_available": 0.20,
+        "thermal_status": 0.20,
+        "connectivity": 0.15,
+        "sensors": 0.10,
+        "security": 0.10
+      }
+    }
+  ],
+  "output": {
+    "format": "json",
+    "sections": [
+      "device_info",
+      "battery_diagnostics",
+      "storage_diagnostics",
+      "memory_diagnostics",
+      "thermal_diagnostics",
+      "network_diagnostics",
+      "sensor_status",
+      "display_info",
+      "security_status",
+      "health_score"
+    ],
+    "save_to": "diagnostics_reports/vessel-sanctum-{timestamp}.json"
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "author": "Bobby's World Tools",
+    "version": "1.0.0",
+    "created_at": 1734220800000,
+    "updated_at": 1734426000000,
+    "tags": ["diagnostics", "mobile", "android", "ios", "health-check", "vessel-sanctum"],
+    "workshop_vibe": "90s repair station aesthetic - honest, thorough, no-nonsense diagnostics"
+  }
+}

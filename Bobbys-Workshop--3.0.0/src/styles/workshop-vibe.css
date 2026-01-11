@@ -1,0 +1,689 @@
+/**
+ * Bobby's Workshop - 90s/00s Bronx Street Aesthetic
+ * Inspired by: Jordan's, Nikes, PlayStation, repair benches, candy wrappers
+ */
+
+/* Workshop Background Textures */
+.workshop-bg {
+  background: linear-gradient(135deg, #050505 0%, #0F0F0F 50%, #050505 100%);
+  position: relative;
+}
+
+.workshop-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(207, 162, 77, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 71, 20, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(46, 204, 113, 0.05) 0%, transparent 30%);
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Street Gradient Accents */
+.street-gradient {
+  background: linear-gradient(135deg, 
+    rgba(30, 202, 211, 0.1) 0%, 
+    rgba(207, 162, 77, 0.05) 50%, 
+    rgba(231, 76, 60, 0.05) 100%
+  );
+}
+
+/* Sneaker-Box Card Style */
+.sneaker-box-card {
+  background: linear-gradient(to bottom, #1A1A1A 0%, #0F0F0F 100%);
+  border: 2px solid rgba(207, 162, 77, 0.5);
+  box-shadow: 
+    0 8px 24px rgba(207, 162, 77, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 20px rgba(207, 162, 77, 0.15),
+    0 0 0 1px rgba(255, 71, 20, 0.3);
+  position: relative;
+}
+
+.sneaker-box-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(207, 162, 77, 0.8) 50%, 
+    transparent 100%
+  );
+}
+
+/* PlayStation Button Colors */
+.ps-triangle {
+  color: #2ECC71; /* Green */
+}
+
+.ps-circle {
+  color: #E74C3C; /* Red */
+}
+
+.ps-x {
+  color: #3498DB; /* Blue */
+}
+
+.ps-square {
+  color: #CFA24D; /* Gold */
+}
+
+/* Candy Wrapper Shimmer */
+.candy-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.candy-shimmer::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(207, 162, 77, 0.1) 50%,
+    transparent 70%
+  );
+  animation: candy-shine 3s ease-in-out infinite;
+}
+
+@keyframes candy-shine {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* Phone Stack Effect */
+.phone-stack {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.phone-stack::before,
+.phone-stack::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: -2px;
+  right: -2px;
+  bottom: -4px;
+  background: rgba(31, 38, 50, 0.6);
+  border-radius: inherit;
+  z-index: -1;
+  transform: translateZ(-2px);
+}
+
+.phone-stack::after {
+  top: 8px;
+  left: -4px;
+  right: -4px;
+  bottom: -8px;
+  background: rgba(31, 38, 50, 0.3);
+  transform: translateZ(-4px);
+}
+
+/* Laundry Pile Texture */
+.laundry-texture {
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(30, 202, 211, 0.02) 10px,
+      rgba(30, 202, 211, 0.02) 20px
+    );
+}
+
+/* Jordan/Nike Swoosh Accent */
+.swoosh-accent {
+  position: relative;
+}
+
+.swoosh-accent::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    rgba(30, 202, 211, 0.8) 0%, 
+    rgba(30, 202, 211, 0) 100%
+  );
+  border-radius: 2px;
+  transform: skewX(-20deg);
+}
+
+/* Repair Table Surface */
+.repair-table {
+  background: 
+    linear-gradient(180deg, rgba(18, 18, 18, 0.9) 0%, rgba(10, 10, 10, 0.9) 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.02) 0px,
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.02) 0px,
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 40px
+    );
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Street Sign Typography */
+.street-sign-text {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 900;
+  text-shadow: 
+    3px 3px 0 rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(207, 162, 77, 0.6),
+    0 0 60px rgba(207, 162, 77, 0.3);
+  color: #EDEDED;
+}
+
+/* Box of Phones Container */
+.phone-box {
+  background: linear-gradient(145deg, #0F0F0F 0%, #1A1A1A 100%);
+  border: 2px dashed rgba(207, 162, 77, 0.3);
+  position: relative;
+}
+
+.phone-box::before {
+  content: '📦';
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  font-size: 24px;
+  opacity: 0.4;
+  filter: grayscale(80%);
+}
+
+/* Graffiti Tag Accent */
+.graffiti-tag {
+  position: relative;
+  padding-left: 16px;
+}
+
+.graffiti-tag::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, 
+    rgba(207, 162, 77, 1) 0%, 
+    rgba(255, 107, 53, 1) 50%,
+    rgba(231, 76, 60, 1) 100%
+  );
+  border-radius: 2px;
+  box-shadow: 0 0 15px rgba(207, 162, 77, 0.6), 0 0 30px rgba(255, 71, 20, 0.4);
+}
+
+/* Device Status LED Effects */
+.status-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: relative;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.status-led.connected {
+  background: #2ECC71;
+  box-shadow: 0 0 8px rgba(46, 204, 113, 0.6), 0 0 16px rgba(46, 204, 113, 0.3);
+}
+
+.status-led.disconnected {
+  background: #8C8C8C;
+  box-shadow: 0 0 4px rgba(140, 140, 140, 0.3);
+  animation: none;
+}
+
+.status-led.error {
+  background: #E74C3C;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.6), 0 0 16px rgba(231, 76, 60, 0.3);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.95); }
+}
+
+/* Console Text Effect */
+.console-text {
+  font-family: 'Space Mono', 'Courier New', monospace;
+  color: #2ECC71;
+  text-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+  letter-spacing: 0.02em;
+}
+
+/* Worn Sticker Effect */
+.sticker-worn {
+  position: relative;
+  opacity: 0.85;
+}
+
+.sticker-worn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.03) 2px,
+    rgba(255, 255, 255, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+/* Workshop Ambient Glow */
+.ambient-glow-cyan {
+  box-shadow: 
+    0 0 20px rgba(30, 202, 211, 0.15),
+    0 0 40px rgba(30, 202, 211, 0.08);
+}
+
+.ambient-glow-gold {
+  box-shadow: 
+    0 0 20px rgba(207, 162, 77, 0.15),
+    0 0 40px rgba(207, 162, 77, 0.08);
+}
+
+/* Interactive Button Hover - Sneaker Colorway */
+.btn-sneaker {
+  background: linear-gradient(135deg, #CFA24D 0%, #FF6B35 100%);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  color: #0A0A0A;
+  font-weight: 700;
+}
+
+.btn-sneaker::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-sneaker:hover::before {
+  left: 100%;
+}
+
+.btn-sneaker:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 20px rgba(207, 162, 77, 0.5),
+    0 12px 40px rgba(255, 71, 20, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Device Card - Game Console Style */
+.device-card-console {
+  background: linear-gradient(145deg, #1A1A1A 0%, #0F0F0F 100%);
+  border: 1px solid rgba(30, 202, 211, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.device-card-console:hover {
+  border-color: rgba(30, 202, 211, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(30, 202, 211, 0.1);
+}
+
+/* Workshop Floor Grid */
+.floor-grid {
+  background-image: 
+    linear-gradient(rgba(207, 162, 77, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(207, 162, 77, 0.08) 1px, transparent 1px);
+  background-size: 60px 60px;
+
+/* Baseball Card Style */
+.baseball-card {
+  background: linear-gradient(to bottom, #F5F5DC 0%, #E8E8D0 100%);
+  border: 3px solid #C0A080;
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(192, 160, 128, 0.4);
+  position: relative;
+  padding: 12px;
+}
+
+.baseball-card::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.baseball-card-stats {
+  background: rgba(0, 0, 0, 0.85);
+  color: #FFD700;
+  font-family: 'Space Mono', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px;
+  border: 2px solid #C0A080;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* CD Jewel Case Effect */
+.cd-jewel-case {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(100, 100, 255, 0.05) 25%,
+    rgba(255, 100, 255, 0.05) 50%,
+    rgba(100, 255, 255, 0.05) 75%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  position: relative;
+  backdrop-filter: blur(2px);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.cd-jewel-case::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 1px,
+    rgba(255, 255, 255, 0.03) 1px,
+    rgba(255, 255, 255, 0.03) 2px
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.cd-jewel-case::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, 
+    rgba(0, 0, 0, 0.9) 0%, 
+    rgba(0, 0, 0, 0.5) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.cd-disc-shine {
+  background: conic-gradient(
+    from 0deg,
+    #FF6B9D 0deg,
+    #C371F5 60deg,
+    #00D4FF 120deg,
+    #7FFF00 180deg,
+    #FFD700 240deg,
+    #FF6B9D 300deg,
+    #FF6B9D 360deg
+  );
+  opacity: 0.15;
+  animation: cd-spin 8s linear infinite;
+}
+
+/* @keyframes cd-spin moved to tailwind.config.js to avoid CSS optimizer warning */
+
+/* Air Jordan Colorways */
+.jordan-bred {
+  background: linear-gradient(135deg, #000000 0%, #8B0000 100%);
+  border: 2px solid #DC143C;
+  color: #FFFFFF;
+  box-shadow: 
+    0 6px 16px rgba(220, 20, 60, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.jordan-royal {
+  background: linear-gradient(135deg, #000000 0%, #003DA5 100%);
+  border: 2px solid #1E40AF;
+  color: #FFFFFF;
+  box-shadow: 
+    0 6px 16px rgba(30, 64, 175, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.jordan-chicago {
+  background: linear-gradient(135deg, #F8F8F8 0%, #DC143C 50%, #000000 100%);
+  border: 2px solid #DC143C;
+  color: #000000;
+  box-shadow: 
+    0 6px 16px rgba(220, 20, 60, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.jordan-concord {
+  background: linear-gradient(135deg, #F8F8F8 0%, #8B7AC8 100%);
+  border: 2px solid #6A5ACD;
+  color: #000000;
+  box-shadow: 
+    0 6px 16px rgba(106, 90, 205, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.jordan-spacejam {
+  background: linear-gradient(135deg, #000000 0%, #1A1A2E 50%, #0F52BA 100%);
+  border: 2px solid #1E90FF;
+  color: #FFFFFF;
+  box-shadow: 
+    0 6px 16px rgba(30, 144, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.jordan-cement {
+  background: linear-gradient(135deg, #F5F5F5 0%, #A9A9A9 50%, #DC143C 100%);
+  border: 2px solid #808080;
+  color: #000000;
+  box-shadow: 
+    0 6px 16px rgba(128, 128, 128, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Boom Bap Aesthetic - Gritty SP-1200 vibes */
+.boom-bap-panel {
+  background: 
+    linear-gradient(180deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(139, 69, 19, 0.03) 0px,
+      rgba(139, 69, 19, 0.03) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  border: 3px solid rgba(139, 69, 19, 0.4);
+  box-shadow: 
+    inset 0 4px 8px rgba(0, 0, 0, 0.8),
+    inset 0 -2px 4px rgba(139, 69, 19, 0.2),
+    0 0 30px rgba(139, 69, 19, 0.15);
+  position: relative;
+}
+
+.boom-bap-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    rgba(255, 140, 0, 0.5) 50%,
+    transparent 100%
+  );
+}
+
+.boom-bap-text {
+  font-family: 'Space Mono', 'Courier New', monospace;
+  color: #FF8C00;
+  text-shadow: 
+    1px 1px 0 rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(255, 140, 0, 0.3);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.boom-bap-button {
+  background: linear-gradient(180deg, #2A1810 0%, #1A0F08 100%);
+  border: 2px solid rgba(139, 69, 19, 0.6);
+  color: #FF8C00;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 140, 0, 0.1),
+    0 0 15px rgba(139, 69, 19, 0.2);
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.boom-bap-button:hover {
+  background: linear-gradient(180deg, #3A2415 0%, #2A1810 100%);
+  border-color: rgba(255, 140, 0, 0.8);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 140, 0, 0.2),
+    0 0 25px rgba(255, 140, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.boom-bap-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(255, 140, 0, 0.2);
+}
+
+/* Vinyl Record Groove */
+.vinyl-groove {
+  background: 
+    radial-gradient(circle, 
+      #0A0A0A 0%,
+      #1A1A1A 30%,
+      #0F0F0F 60%,
+      #000000 100%
+    ),
+    repeating-radial-gradient(
+      circle,
+      transparent 0px,
+      transparent 1px,
+      rgba(255, 255, 255, 0.02) 1px,
+      rgba(255, 255, 255, 0.02) 2px
+    );
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.9),
+    0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+/* Cassette Tape Style */
+.cassette-tape {
+  background: linear-gradient(180deg, #2C2C2C 0%, #1A1A1A 100%);
+  border: 2px solid rgba(70, 70, 70, 0.8);
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.cassette-tape::before,
+.cassette-tape::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(30, 30, 30, 1) 40%,
+    rgba(10, 10, 10, 1) 100%
+  );
+  border-radius: 50%;
+  transform: translateY(-50%);
+  border: 2px solid rgba(100, 100, 100, 0.5);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.cassette-tape::before {
+  left: 20px;
+}
+
+.cassette-tape::after {
+  right: 20px;
+}
+
+/* Boombox Speaker Grill */
+.speaker-grill {
+  background: 
+    linear-gradient(180deg, #1A1A1A 0%, #0F0F0F 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.5) 0px,
+      rgba(0, 0, 0, 0.5) 2px,
+      rgba(255, 255, 255, 0.05) 2px,
+      rgba(255, 255, 255, 0.05) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.5) 0px,
+      rgba(0, 0, 0, 0.5) 2px,
+      rgba(255, 255, 255, 0.05) 2px,
+      rgba(255, 255, 255, 0.05) 4px
+    );
+  border: 2px solid rgba(100, 100, 100, 0.5);
+  border-radius: 8px;
+  box-shadow: 
+    inset 0 4px 8px rgba(0, 0, 0, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+}
+}

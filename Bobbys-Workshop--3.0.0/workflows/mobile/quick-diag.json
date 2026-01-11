@@ -1,0 +1,48 @@
+{
+  "id": "quick-diag",
+  "name": "Quick Mobile Diagnostics",
+  "description": "Fast 2-minute device health check for quick assessments",
+  "platform": "android",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "estimated_duration": 120,
+  "steps": [
+    {
+      "id": "detect",
+      "name": "Quick Device Detection",
+      "type": "check",
+      "action": "detect_device",
+      "success_criteria": "Device detected",
+      "on_failure": "continue"
+    },
+    {
+      "id": "battery",
+      "name": "Battery Quick Check",
+      "type": "command",
+      "action": "adb shell dumpsys battery",
+      "success_criteria": "Battery level retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "storage",
+      "name": "Storage Quick Check",
+      "type": "command",
+      "action": "adb shell df /data",
+      "success_criteria": "Storage info retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "status",
+      "name": "Generate Quick Status",
+      "type": "log",
+      "action": "public_log",
+      "success_criteria": "Status generated",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": ["device_info", "battery_level", "storage_available"]
+  }
+}

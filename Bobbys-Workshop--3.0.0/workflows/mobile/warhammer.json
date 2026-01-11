@@ -1,0 +1,332 @@
+{
+  "id": "warhammer",
+  "name": "Warhammer - Advanced Device Repair & Recovery",
+  "description": "Heavy-duty device repair workflow for bricked, bootloop, or critically malfunctioning devices. Includes firmware flashing, partition recovery, and emergency procedures.",
+  "platform": "mobile",
+  "category": "repair",
+  "risk_level": "high",
+  "requires_authorization": true,
+  "supported_devices": ["android"],
+  "estimated_duration": "15-30 minutes",
+  "warning": "⚠️ This workflow performs destructive operations. DATA LOSS MAY OCCUR. Ensure device backup exists before proceeding.",
+  "prerequisites": [
+    "Device bootloader must be unlockable",
+    "Firmware/ROM files must be available",
+    "Adequate battery charge (>50%)",
+    "USB cable and stable connection",
+    "Owner authorization required"
+  ],
+  "steps": [
+    {
+      "id": "auth-check",
+      "name": "Authorization Verification",
+      "type": "prompt",
+      "action": "requireAuthorization",
+      "description": "Verify user has authorization to perform advanced repair operations",
+      "success_criteria": "User confirms authorization and accepts data loss risk",
+      "on_failure": "abort",
+      "requires_confirmation": true,
+      "confirmation_text": "I understand this may erase all device data and accept responsibility"
+    },
+    {
+      "id": "detect-device",
+      "name": "Device Detection",
+      "type": "probe",
+      "action": "probeDevices",
+      "description": "Detect device in any mode (ADB, Fastboot, Recovery, Download Mode)",
+      "success_criteria": "Device detected in recoverable mode",
+      "on_failure": "prompt_manual_mode",
+      "timeout": 15000
+    },
+    {
+      "id": "identify-mode",
+      "name": "Identify Device Mode",
+      "type": "check",
+      "action": "identifyDeviceMode",
+      "description": "Determine current device state (normal, recovery, fastboot, download, bricked)",
+      "success_criteria": "Device mode identified",
+      "on_failure": "continue"
+    },
+    {
+      "id": "battery-check",
+      "name": "Battery Level Check",
+      "type": "check",
+      "action": "checkBatteryLevel",
+      "description": "Ensure adequate battery charge for firmware operations",
+      "success_criteria": "Battery level >= 50%",
+      "on_failure": "warn_and_continue",
+      "warning_message": "Low battery detected. Flash operations may fail if device powers off."
+    },
+    {
+      "id": "backup-critical-partitions",
+      "name": "Backup Critical Partitions",
+      "type": "command",
+      "action": "fastboot getvar all",
+      "description": "Save critical partition information for recovery",
+      "success_criteria": "Partition info saved",
+      "on_failure": "continue",
+      "save_output": true
+    },
+    {
+      "id": "enter-recovery-mode",
+      "name": "Enter Recovery Mode",
+      "type": "command",
+      "mode_specific": {
+        "android_os": "adb reboot bootloader",
+        "recovery": "skip",
+        "bootloader": "skip",
+        "bricked": "prompt_manual_entry"
+      },
+      "description": "Boot device into bootloader/fastboot mode for flashing",
+      "success_criteria": "Device in fastboot mode",
+      "on_failure": "retry",
+      "retry_count": 3,
+      "wait_after": 5000
+    },
+    {
+      "id": "verify-fastboot",
+      "name": "Verify Fastboot Mode",
+      "type": "command",
+      "action": "fastboot devices",
+      "description": "Confirm device is visible in fastboot mode",
+      "success_criteria": "Device listed in fastboot",
+      "on_failure": "abort",
+      "timeout": 10000
+    },
+    {
+      "id": "unlock-bootloader",
+      "name": "Unlock Bootloader (if needed)",
+      "type": "command",
+      "action": "fastboot oem unlock",
+      "description": "Unlock bootloader to allow custom firmware flashing",
+      "success_criteria": "Bootloader unlocked or already unlocked",
+      "on_failure": "prompt_manual_unlock",
+      "requires_confirmation": true,
+      "confirmation_text": "Unlocking bootloader will ERASE ALL DATA",
+      "warning": "Device must be unlockable. Some carriers lock bootloaders permanently."
+    },
+    {
+      "id": "firmware-selection",
+      "name": "Select Firmware Package",
+      "type": "prompt",
+      "action": "selectFirmware",
+      "description": "User selects appropriate firmware/ROM for device",
+      "success_criteria": "Firmware package selected and validated",
+      "on_failure": "abort",
+      "validation": {
+        "check_device_match": true,
+        "verify_file_integrity": true,
+        "minimum_required_files": ["boot.img", "system.img"]
+      }
+    },
+    {
+      "id": "flash-boot",
+      "name": "Flash Boot Partition",
+      "type": "command",
+      "action": "fastboot flash boot {firmware_path}/boot.img",
+      "description": "Flash kernel and ramdisk to boot partition",
+      "success_criteria": "Boot partition flashed successfully",
+      "on_failure": "abort",
+      "timeout": 60000,
+      "critical": true
+    },
+    {
+      "id": "flash-system",
+      "name": "Flash System Partition",
+      "type": "command",
+      "action": "fastboot flash system {firmware_path}/system.img",
+      "description": "Flash Android system image",
+      "success_criteria": "System partition flashed successfully",
+      "on_failure": "abort",
+      "timeout": 300000,
+      "critical": true,
+      "progress_tracking": true
+    },
+    {
+      "id": "flash-vendor",
+      "name": "Flash Vendor Partition (if available)",
+      "type": "command",
+      "action": "fastboot flash vendor {firmware_path}/vendor.img",
+      "description": "Flash vendor-specific libraries and drivers",
+      "success_criteria": "Vendor partition flashed or skipped if not present",
+      "on_failure": "continue",
+      "timeout": 120000,
+      "optional": true
+    },
+    {
+      "id": "flash-recovery",
+      "name": "Flash Recovery Partition",
+      "type": "command",
+      "action": "fastboot flash recovery {firmware_path}/recovery.img",
+      "description": "Flash custom recovery (TWRP/CWM) if available",
+      "success_criteria": "Recovery partition flashed or skipped",
+      "on_failure": "continue",
+      "timeout": 60000,
+      "optional": true
+    },
+    {
+      "id": "wipe-cache",
+      "name": "Wipe Cache Partition",
+      "type": "command",
+      "action": "fastboot erase cache",
+      "description": "Clear cache partition to prevent boot issues",
+      "success_criteria": "Cache partition wiped",
+      "on_failure": "continue"
+    },
+    {
+      "id": "wipe-data-prompt",
+      "name": "Data Wipe Confirmation",
+      "type": "prompt",
+      "action": "confirmDataWipe",
+      "description": "Ask user if full data wipe is needed (factory reset)",
+      "success_criteria": "User decision recorded",
+      "on_failure": "skip",
+      "default": "no"
+    },
+    {
+      "id": "wipe-userdata",
+      "name": "Wipe Userdata (Factory Reset)",
+      "type": "command",
+      "action": "fastboot -w",
+      "description": "Erase all user data and perform factory reset",
+      "success_criteria": "Userdata wiped",
+      "on_failure": "continue",
+      "conditional": "data_wipe_confirmed",
+      "requires_confirmation": true,
+      "confirmation_text": "This will erase ALL user data permanently"
+    },
+    {
+      "id": "relock-bootloader",
+      "name": "Re-lock Bootloader (optional)",
+      "type": "prompt",
+      "action": "promptRelock",
+      "description": "Ask if bootloader should be re-locked after flashing",
+      "success_criteria": "User decision recorded",
+      "on_failure": "skip",
+      "default": "no",
+      "warning": "Re-locking with custom firmware may brick the device"
+    },
+    {
+      "id": "lock-bootloader",
+      "name": "Lock Bootloader",
+      "type": "command",
+      "action": "fastboot oem lock",
+      "description": "Re-lock bootloader for security",
+      "success_criteria": "Bootloader locked",
+      "on_failure": "continue",
+      "conditional": "relock_confirmed",
+      "requires_confirmation": true
+    },
+    {
+      "id": "reboot-system",
+      "name": "Reboot to System",
+      "type": "command",
+      "action": "fastboot reboot",
+      "description": "Reboot device to newly flashed system",
+      "success_criteria": "Reboot command sent",
+      "on_failure": "manual_reboot",
+      "wait_after": 3000
+    },
+    {
+      "id": "first-boot-wait",
+      "name": "Wait for First Boot",
+      "type": "wait",
+      "action": "waitForDeviceBoot",
+      "description": "First boot may take 5-10 minutes. Please wait...",
+      "success_criteria": "Device boots successfully",
+      "on_failure": "bootloop_recovery",
+      "timeout": 600000,
+      "progress_indicator": true
+    },
+    {
+      "id": "verify-boot",
+      "name": "Verify Successful Boot",
+      "type": "check",
+      "action": "verifyDeviceBoot",
+      "description": "Check if device booted to Android system successfully",
+      "success_criteria": "Device detected in ADB with 'device' status",
+      "on_failure": "troubleshoot",
+      "retry_count": 3,
+      "retry_delay": 30000
+    },
+    {
+      "id": "post-flash-diagnostics",
+      "name": "Post-Flash Diagnostics",
+      "type": "command",
+      "action": "runVesselSanctum",
+      "description": "Run basic diagnostics to verify device health after repair",
+      "success_criteria": "Diagnostics completed",
+      "on_failure": "continue",
+      "workflow_reference": "vessel-sanctum",
+      "quick_mode": true
+    },
+    {
+      "id": "generate-repair-report",
+      "name": "Generate Repair Report",
+      "type": "report",
+      "action": "generateRepairReport",
+      "description": "Create detailed repair log with all steps and outcomes",
+      "success_criteria": "Report generated",
+      "on_failure": "continue",
+      "report_format": "json",
+      "include_logs": true,
+      "include_screenshots": false
+    }
+  ],
+  "troubleshooting": {
+    "bootloop_recovery": {
+      "description": "Device stuck in boot loop after flashing",
+      "steps": [
+        "Enter recovery mode manually",
+        "Wipe cache partition",
+        "Wipe dalvik cache",
+        "Factory reset if necessary",
+        "Reflash boot and system partitions"
+      ]
+    },
+    "fastboot_not_detected": {
+      "description": "Device not visible in fastboot mode",
+      "steps": [
+        "Check USB cable and port",
+        "Install/update fastboot drivers",
+        "Try different USB port (USB 2.0 preferred)",
+        "Manual bootloader entry: Power off, hold Vol Down + Power",
+        "Check device manager for unknown devices"
+      ]
+    },
+    "flash_failure": {
+      "description": "Partition flash operation failed",
+      "steps": [
+        "Verify firmware files are not corrupted",
+        "Check available space on device partitions",
+        "Retry flash operation",
+        "Try alternative fastboot binary",
+        "Boot to recovery and format partitions manually"
+      ]
+    }
+  },
+  "output": {
+    "format": "json",
+    "sections": [
+      "device_info",
+      "repair_operations",
+      "flash_results",
+      "boot_verification",
+      "post_diagnostics",
+      "troubleshooting_notes"
+    ],
+    "save_to": "repair_reports/warhammer-{timestamp}.json"
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "author": "Bobby's World Tools",
+    "version": "1.0.0",
+    "created_at": 1734220800000,
+    "updated_at": 1734426000000,
+    "tags": ["repair", "recovery", "firmware", "fastboot", "android", "warhammer", "advanced"],
+    "workshop_vibe": "Heavy-duty repair station - bringing dead devices back to life",
+    "legal_notice": "Use only on devices you own or have explicit authorization to repair. Unauthorized device modification may violate warranty and local laws."
+  }
+}

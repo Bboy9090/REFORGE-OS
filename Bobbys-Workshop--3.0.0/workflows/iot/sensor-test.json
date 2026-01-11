@@ -1,0 +1,82 @@
+{
+  "id": "iot-sensor-test",
+  "name": "IoT Sensor Testing",
+  "description": "Test and validate IoT device sensors including environmental sensors, motion detectors, and communication modules",
+  "platform": "iot",
+  "category": "testing",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "estimated_duration": 90,
+  "rollback_supported": false,
+  "steps": [
+    {
+      "id": "check-gpio",
+      "name": "Check GPIO Pins",
+      "type": "command",
+      "action": "gpio readall 2>/dev/null || echo 'GPIO utilities not available'",
+      "success_criteria": "gpio status retrieved",
+      "on_failure": "continue",
+      "note": "Raspberry Pi and similar devices"
+    },
+    {
+      "id": "check-i2c-devices",
+      "name": "Check I2C Devices",
+      "type": "command",
+      "action": "i2cdetect -y 1 2>/dev/null || echo 'I2C not available'",
+      "success_criteria": "i2c devices scanned",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-usb-devices",
+      "name": "Check USB Devices",
+      "type": "command",
+      "action": "lsusb",
+      "success_criteria": "usb devices listed",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-bluetooth",
+      "name": "Check Bluetooth Status",
+      "type": "command",
+      "action": "hciconfig 2>/dev/null || bluetoothctl show 2>/dev/null || echo 'Bluetooth not available'",
+      "success_criteria": "bluetooth status retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-serial-ports",
+      "name": "Check Serial Ports",
+      "type": "command",
+      "action": "ls -l /dev/tty* | grep -E 'USB|ACM|AMA'",
+      "success_criteria": "serial ports listed",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-camera",
+      "name": "Check Camera Devices",
+      "type": "command",
+      "action": "ls -l /dev/video* 2>/dev/null || echo 'No video devices found'",
+      "success_criteria": "camera devices checked",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-sound",
+      "name": "Check Sound Devices",
+      "type": "command",
+      "action": "aplay -l 2>/dev/null || amixer 2>/dev/null || echo 'Sound devices not available'",
+      "success_criteria": "sound devices checked",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "gpio_status",
+      "i2c_devices",
+      "usb_devices",
+      "bluetooth_status",
+      "serial_ports",
+      "camera_devices",
+      "sound_devices"
+    ]
+  }
+}

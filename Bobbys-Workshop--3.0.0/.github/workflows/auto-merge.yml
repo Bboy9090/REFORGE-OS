@@ -1,0 +1,87 @@
+---
+name: Auto-merge PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
+
+# Permissions required for auto-merge
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: Enable Auto-merge
+    runs-on: ubuntu-latest
+
+    # Only run on PRs from the same repo (not forks)
+    if: >
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.head.repo.full_name == github.repository) ||
+      (github.event_name == 'pull_request_review' &&
+       github.event.pull_request.head.repo.full_name == github.repository) ||
+      github.event_name == 'status' ||
+      (github.event_name == 'check_suite' &&
+       github.event.check_suite.pull_requests != null &&
+       length(github.event.check_suite.pull_requests) > 0)
+
+    steps:
+      - name: Get PR number
+        id: pr
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "number=${{ github.event.pull_request.number }}" \
+              >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "pull_request_review" ]; then
+            echo "number=${{ github.event.pull_request.number }}" \
+              >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "check_suite" ]; then
+            PR_NUM="${{ github.event.check_suite.pull_requests[0].number }}"
+            echo "number=$PR_NUM" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "status" ]; then
+            # Extract PR number from commit status context
+            PR_NUMBER=$(gh pr list --state open \
+              --json number,headRefOid \
+              --jq ".[] | select(.headRefOid == \"${{ github.event.sha }}\") \
+                | .number" | head -1)
+            echo "number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Enable auto-merge
+        if: steps.pr.outputs.number != ''
+        run: |
+          gh pr merge ${{ steps.pr.outputs.number }} --auto --squash || \
+          gh pr merge ${{ steps.pr.outputs.number }} --auto --merge || \
+          echo "Auto-merge already enabled or cannot be enabled"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+
+      - name: Add comment
+        if: >
+          steps.pr.outputs.number != '' &&
+          github.event_name == 'pull_request' &&
+          github.event.action == 'opened'
+        run: |
+          gh pr comment ${{ steps.pr.outputs.number }} \
+            --body "🤖 Auto-merge enabled. Will merge when all checks \
+              pass, approvals are in place, and branch protection \
+              rules are satisfied."
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        continue-on-error: true

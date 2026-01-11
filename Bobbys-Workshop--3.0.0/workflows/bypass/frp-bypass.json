@@ -1,0 +1,81 @@
+{
+  "id": "android-frp-bypass",
+  "name": "FRP Bypass Workflow",
+  "description": "Factory Reset Protection bypass for authorized devices only",
+  "platform": "android",
+  "category": "bypass",
+  "risk_level": "destructive",
+  "requires_authorization": true,
+  "authorization_prompt": "This operation will attempt to bypass Factory Reset Protection. You must have proof of ownership and authorization to proceed.",
+  "legal_notice": "WARNING: Bypassing FRP on devices you do not own is ILLEGAL. Use only on devices you own or have explicit written authorization to service.",
+  "steps": [
+    {
+      "id": "verify-frp-status",
+      "name": "Verify FRP Status",
+      "type": "command",
+      "action": "adb shell settings get secure android_id",
+      "success_criteria": "android_id returned",
+      "on_failure": "abort"
+    },
+    {
+      "id": "require-authorization",
+      "name": "Require User Authorization",
+      "type": "prompt",
+      "action": "confirm_ownership",
+      "prompt_text": "Type 'I OWN THIS DEVICE' to confirm you have legal authorization",
+      "required_input": "I OWN THIS DEVICE",
+      "on_failure": "abort"
+    },
+    {
+      "id": "log-shadow",
+      "name": "Log to Shadow Logs",
+      "type": "log",
+      "action": "shadow_log",
+      "log_data": {
+        "operation": "frp_bypass_initiated",
+        "device_serial": "$device_serial",
+        "timestamp": "$timestamp",
+        "authorization": "explicit_user_confirmation"
+      },
+      "on_failure": "continue"
+    },
+    {
+      "id": "execute-bypass",
+      "name": "Execute FRP Bypass",
+      "type": "command",
+      "action": "adb shell content delete --uri content://settings/secure --where \"name='lock_screen_owner_info'\"",
+      "success_criteria": "command executed",
+      "on_failure": "continue",
+      "note": "This is a basic FRP bypass method. Effectiveness varies by Android version and manufacturer. Modern devices (Android 8+) may require alternative methods. Always verify device compatibility before execution."
+    },
+    {
+      "id": "verify-bypass",
+      "name": "Verify Bypass Success",
+      "type": "check",
+      "action": "check_frp_status",
+      "success_criteria": "FRP disabled",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "device_serial",
+      "frp_status_before",
+      "frp_status_after",
+      "bypass_success",
+      "timestamp",
+      "authorization_confirmed"
+    ]
+  },
+  "metadata": {
+    "status": "done",
+    "pr_link": null,
+    "placeholder_found": false,
+    "version": "1.0.0",
+    "author": "Bobby's World Tools",
+    "created_at": 1700000000000,
+    "updated_at": 1734426000000,
+    "tags": ["android", "bypass", "frp", "authorization-required"]
+  }
+}

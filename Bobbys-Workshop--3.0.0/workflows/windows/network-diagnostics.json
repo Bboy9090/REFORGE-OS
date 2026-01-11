@@ -1,0 +1,73 @@
+{
+  "id": "windows-network-diagnostics",
+  "name": "Windows Network Diagnostics",
+  "description": "Network connectivity and configuration diagnostics for Windows devices",
+  "platform": "windows",
+  "category": "diagnostics",
+  "risk_level": "low",
+  "requires_authorization": false,
+  "estimated_duration": 60,
+  "rollback_supported": false,
+  "steps": [
+    {
+      "id": "check-ip-config",
+      "name": "Check IP Configuration",
+      "type": "command",
+      "action": "ipconfig /all",
+      "success_criteria": "ip config retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-dns",
+      "name": "Check DNS Configuration",
+      "type": "command",
+      "action": "nslookup google.com",
+      "success_criteria": "dns query successful",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-connectivity",
+      "name": "Check Internet Connectivity",
+      "type": "command",
+      "action": "ping -n 4 8.8.8.8",
+      "success_criteria": "ping successful",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-routes",
+      "name": "Check Routing Table",
+      "type": "command",
+      "action": "route print",
+      "success_criteria": "routing table retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-firewall",
+      "name": "Check Firewall Status",
+      "type": "command",
+      "action": "netsh advfirewall show allprofiles",
+      "success_criteria": "firewall status retrieved",
+      "on_failure": "continue"
+    },
+    {
+      "id": "check-ports",
+      "name": "Check Open Ports",
+      "type": "command",
+      "action": "netstat -ano",
+      "success_criteria": "port list retrieved",
+      "on_failure": "continue"
+    }
+  ],
+  "output": {
+    "format": "json",
+    "fields": [
+      "ip_address",
+      "subnet_mask",
+      "default_gateway",
+      "dns_servers",
+      "internet_connectivity",
+      "firewall_status",
+      "open_ports"
+    ]
+  }
+}

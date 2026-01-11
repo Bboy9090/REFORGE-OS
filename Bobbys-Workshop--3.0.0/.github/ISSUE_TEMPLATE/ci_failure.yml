@@ -1,0 +1,246 @@
+name: 🔴 CI/Build Failure
+description: Report a failing CI pipeline or build issue
+title: "[CI] "
+labels: ["ci", "build", "needs-investigation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## CI/Build Failure Report
+        
+        This template helps AI agents (especially Automation Engineer and CI Surgeon)
+        diagnose and fix CI/build failures quickly.
+
+  - type: dropdown
+    id: failure-type
+    attributes:
+      label: Failure Type
+      description: What's failing?
+      options:
+        - Build (compilation/bundling)
+        - Tests (unit/integration/e2e)
+        - Linting (ESLint/Prettier)
+        - Type checking (TypeScript)
+        - Security scan (secrets/vulnerabilities)
+        - Deployment
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: workflow-run
+    attributes:
+      label: Failed Workflow Run URL
+      description: Link to failed GitHub Actions run
+      placeholder: "https://github.com/Bboy9090/Bobbys-Workshop-/actions/runs/12345"
+    validations:
+      required: true
+
+  - type: input
+    id: pr-or-commit
+    attributes:
+      label: Pull Request or Commit
+      description: PR number or commit SHA where failure occurred
+      placeholder: "#123 or abc1234"
+
+  - type: textarea
+    id: error-message
+    attributes:
+      label: Error Message
+      description: Copy the relevant error from CI logs
+      placeholder: |
+        Paste error here:
+        ```
+        Error: Cannot find module 'some-package'
+        ```
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: full-logs
+    attributes:
+      label: Full Logs (if relevant)
+      description: Additional context from logs
+      placeholder: |
+        Paste relevant log sections:
+        ```
+        [Build output...]
+        ```
+      render: shell
+
+  - type: dropdown
+    id: consistency
+    attributes:
+      label: Failure Consistency
+      description: Does this fail every time?
+      options:
+        - Always fails (deterministic)
+        - Fails sometimes (flaky/intermittent)
+        - First time seeing this
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Failure Scope
+      description: Where does this fail?
+      options:
+        - All branches
+        - Main branch only
+        - PR branches only
+        - Specific OS (specify below)
+        - Specific Node version (specify below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope-details
+    attributes:
+      label: Scope Details
+      description: Additional details about where it fails
+      placeholder: |
+        - Fails on: Windows only
+        - Works on: macOS, Linux
+        - Node version: 20.x
+
+  - type: dropdown
+    id: local-behavior
+    attributes:
+      label: Does it work locally?
+      description: Can you reproduce locally?
+      options:
+        - Yes, works locally (CI-specific issue)
+        - No, fails locally too (not CI-specific)
+        - Not tested locally yet
+    validations:
+      required: true
+
+  - type: textarea
+    id: local-commands
+    attributes:
+      label: Local Reproduction Commands
+      description: Commands to reproduce locally
+      placeholder: |
+        ```bash
+        npm ci
+        npm run build
+        npm test
+        ```
+      render: shell
+
+  - type: textarea
+    id: recent-changes
+    attributes:
+      label: Recent Changes
+      description: What changed before this started failing?
+      placeholder: |
+        - Added new dependency: react-query
+        - Updated Node version in workflow
+        - Modified webpack config
+        - Merged PR #120
+
+  - type: checkboxes
+    id: investigation
+    attributes:
+      label: Investigation Checklist
+      description: Troubleshooting already done
+      options:
+        - label: Checked if dependencies are installed correctly
+        - label: Verified workflow YAML syntax is valid
+        - label: Compared with last successful run
+        - label: Tested locally with same Node version
+        - label: Checked for environment variable issues
+        - label: Reviewed recent commits for breaking changes
+
+  - type: textarea
+    id: agent-hints
+    attributes:
+      label: Agent Investigation Hints
+      description: Guidance for AI agents
+      placeholder: |
+        **Likely Causes:**
+        - New dependency not compatible with Node 18
+        - Test timeout too short for slow CI runners
+        - Missing environment variable in workflow
+        
+        **Files to Check:**
+        - .github/workflows/ci.yml
+        - package.json
+        - vitest.config.ts
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Temporary Workaround (if any)
+      description: How are you working around this?
+      placeholder: |
+        - Temporarily disabled test
+        - Using older dependency version
+        - Running workflow manually
+
+  - type: dropdown
+    id: blocking
+    attributes:
+      label: Is this blocking development?
+      description: Severity/urgency
+      options:
+        - Critical (all PRs blocked)
+        - High (some workflows blocked)
+        - Medium (workaround exists)
+        - Low (minor inconvenience)
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-issues
+    attributes:
+      label: Related Issues/PRs
+      description: Links to related problems
+      placeholder: |
+        - Similar to #45 (fixed last month)
+        - Introduced by PR #98
+        - Discussed in #67
+
+  - type: checkboxes
+    id: workflow-files
+    attributes:
+      label: Affected Workflows
+      description: Which workflows are failing?
+      options:
+        - label: .github/workflows/ci.yml
+        - label: .github/workflows/ci-guardrails.yml
+        - label: .github/workflows/build.yml
+        - label: .github/workflows/test.yml
+        - label: .github/workflows/lint.yml
+        - label: .github/workflows/security.yml
+        - label: .github/workflows/ci-cd.yml
+        - label: Other (specify in notes)
+
+  - type: textarea
+    id: proposed-fix
+    attributes:
+      label: Proposed Fix (Optional)
+      description: Your idea for fixing this
+      placeholder: |
+        - Update Node version to 20.x in workflow
+        - Increase test timeout from 5s to 30s
+        - Add missing environment variable to workflow
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission Checklist
+      description: Ensure complete report
+      options:
+        - label: I've included the workflow run URL
+          required: true
+        - label: I've copied the error message
+          required: true
+        - label: I've checked if it reproduces locally
+          required: true
+        - label: I've searched for similar issues
+          required: true
