@@ -9,6 +9,7 @@ members = [
     "services/authority-routing",
     "services/auth",
     "services/metrics",
+    "services/capability-awareness",
 ]
 
 [workspace.package]

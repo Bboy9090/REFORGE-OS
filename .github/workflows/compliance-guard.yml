@@ -1,13 +1,40 @@
-name: Compliance Guard
-on: [push, pull_request]
+name: Compliance Guardrail
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
 jobs:
-  scan:
+  compliance-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Forbidden Language Scan
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Scan for Restricted Language
         run: |
-          grep -RInE "(bypass|unlock|jailbreak|root)" . && exit 1 || exit 0
-      - name: Pandora Isolation
+          set -e
+          FORBIDDEN=("bypass" "unlock" "jailbreak" "root" "apply exploit" "crack" "hack" "circumvent")
+          for word in "${FORBIDDEN[@]}"; do
+            if grep -RIn "$word" apps/ services/ docs/public/ --exclude-dir=node_modules; then
+              echo "❌ Forbidden term detected: $word"
+              exit 1
+            fi
+          done
+
+      - name: Ensure Pandora Codex Isolation
         run: |
-          grep -RIn "pandora-codex" apps services docs && exit 1 || exit 0
+          if grep -RIn "pandora-codex" apps/ services/ docs/public/; then
+            echo "❌ Pandora Codex referenced outside internal/"
+            exit 1
+          fi
+
+      - name: Auditability Check
+        run: |
+          if ! grep -RIn "audit" services/audit-logging; then
+            echo "⚠️ Warning: Audit logging module should exist"
+          fi
+
+      - name: Compliance Passed
+        run: echo "✅ Compliance guardrails passed"

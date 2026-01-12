@@ -26,5 +26,24 @@ export default defineConfig(async () => ({
     minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
     // produce sourcemaps for debug builds
     sourcemap: !!process.env.TAURI_DEBUG,
+    rollupOptions: {
+      external: [
+        "@tauri-apps/api/core",
+        "@tauri-apps/api/tauri",
+        "@tauri-apps/api/window",
+        "@tauri-apps/api/fs",
+        "@tauri-apps/api/path",
+        "@tauri-apps/api/shell",
+        "@tauri-apps/api/dialog",
+        "@tauri-apps/api/notification",
+        "@tauri-apps/api/clipboard",
+        "@tauri-apps/api/http",
+        "@tauri-apps/api/event",
+        "@tauri-apps/api/globalShortcut",
+        "@tauri-apps/api/app",
+        "@tauri-apps/api/os",
+        "@tauri-apps/api/process",
+      ],
+    },
   },
 }));

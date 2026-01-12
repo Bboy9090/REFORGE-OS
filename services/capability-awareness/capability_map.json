@@ -7,8 +7,7 @@
       "legal": "medium"
     },
     "ui_tone": "strict",
-    "requires_interpretive_review": true,
-    "warning_level": "elevated"
+    "requires_interpretive_review": true
   },
   "kernel_research": {
     "description": "Academic or experimental OS-level modification research",
@@ -18,8 +17,7 @@
       "legal": "medium"
     },
     "ui_tone": "cautionary",
-    "requires_interpretive_review": true,
-    "warning_level": "medium"
+    "requires_interpretive_review": true
   },
   "account_bypass_vectors": {
     "description": "Third-party attempts to alter account state",
@@ -29,19 +27,16 @@
       "legal": "high"
     },
     "ui_tone": "prohibitive",
-    "requires_interpretive_review": true,
-    "warning_level": "critical",
-    "classification_override": "prohibited"
+    "requires_interpretive_review": true
   },
-  "userland_research": {
-    "description": "Userland or sandbox-level customization research",
+  "userland_customization": {
+    "description": "Non-kernel customization and configuration overlays",
     "risk": {
       "account": "low",
       "data": "medium",
       "legal": "low"
     },
     "ui_tone": "informational",
-    "requires_interpretive_review": false,
-    "warning_level": "low"
+    "requires_interpretive_review": false
   }
 }

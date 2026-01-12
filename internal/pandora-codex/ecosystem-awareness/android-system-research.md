@@ -1,52 +1,43 @@
-# Android System Modification Research (Internal Reference)
+# Android System Research (Internal Reference)
 
-This document catalogs notable third-party research projects that have historically examined Android security layers.
+This document catalogs notable research into Android system-level protections and modification approaches.
 
 ## Scope
-- System-level modifications
-- Root access research
-- Kernel and bootloader experimentation
+- Kernel-level research
+- System modification research
+- Root-level experimentation
 
 ## Use
 - Risk modeling
+- Capability ceiling assessment
 - Language shaping
-- Interpretive review context
 
 ## Prohibitions
 - No procedural steps
-- No version mapping
-- No effectiveness claims
+- No tool recommendations
+- No version compatibility guides
 - No links or binaries
 
-## Historical Projects
+## Research Categories
 
-### Systemless Root Research
-Projects that implemented systemless root approaches:
-- Magisk
-- KernelSU
-- APatch
+### System-Level Research
+Academic and experimental projects examining Android kernel and system layers.
 
-### Traditional Root Research
-Historical projects:
-- KingRoot
-- KingoRoot
-- Framaroot
-
-### OEM-Specific Research
-Manufacturer-specific modification research:
-- Odin (Samsung)
-- SP Flash Tool (MediaTek)
-- MiFlash Tool (Xiaomi)
+### Modification Research
+Research into system modification in controlled environments.
 
 ## Platform Position
 
-All projects listed above represent historical security research.
+Bobby's Workshop acknowledges this research for risk assessment only.
 
-Bobby's Workshop does not deploy, integrate, or recommend any of these projects.
+The platform:
+- Classifies risk profiles
+- Adjusts warning language
+- Routes to appropriate authorities
+- Documents compliance context
 
-Their existence is acknowledged only for:
-- Risk assessment
-- Language shaping
-- Interpretive review context
-
-No procedural guidance or executable steps are provided.
+The platform does not:
+- Execute modifications
+- Provide tools or instructions
+- Automate any processes
+- Enable circumvention

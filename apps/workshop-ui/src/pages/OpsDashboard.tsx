@@ -19,15 +19,7 @@ export default function OpsDashboard() {
       setMetrics(JSON.parse(result));
     } catch (error) {
       console.error("Metrics load failed:", error);
-      // Mock data for now
-      setMetrics({
-        activeUnits: 42,
-        auditCoverage: 98.5,
-        escalations: 3,
-        complianceScore: 99.2,
-        activeUsers: 156,
-        processedDevices: 2847,
-      });
+      setMetrics(null);
     } finally {
       setLoading(false);
     }

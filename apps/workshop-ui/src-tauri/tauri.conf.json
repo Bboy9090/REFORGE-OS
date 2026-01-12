@@ -6,12 +6,29 @@
   "tauri": {
     "bundle": {
       "active": true,
-      "targets": "msi",
+      "targets": "all",
       "identifier": "com.bootforge.reforge",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": null
+        "timestampUrl": null,
+        "wix": {
+          "language": "en-US"
+        }
+      },
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": "10.13",
+        "exceptionDomain": "",
+        "signingIdentity": null,
+        "entitlements": null
       }
     },
     "security": {
@@ -23,7 +40,9 @@
         "resizable": true,
         "title": "REFORGE OS - Professional Repair Platform",
         "width": 1200,
-        "height": 800
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600
       }
     ]
   }

@@ -6,9 +6,19 @@ import LegalClassification from "./pages/LegalClassification";
 import CustodianVaultGate from "./pages/CustodianVaultGate";
 import CertificationDashboard from "./pages/CertificationDashboard";
 import OpsDashboard from "./pages/OpsDashboard";
+import IntakeTab from "./pages/IntakeTab";
+import JobsTab from "./pages/JobsTab";
+import ConsoleTab from "./pages/ConsoleTab";
+import DevModeTab from "./pages/DevModeTab";
+import DrivesTab from "./pages/DrivesTab";
+import ImagingTab from "./pages/ImagingTab";
+import DiagnosticsTab from "./pages/DiagnosticsTab";
+import RecoveryTab from "./pages/RecoveryTab";
+import AuditLogTab from "./pages/AuditLogTab";
+import EvidenceBundleTab from "./pages/EvidenceBundleTab";
 import "./App.css";
 
-type TabType = "dashboard" | "analysis" | "compliance" | "legal" | "certification" | "operations" | "vault";
+type TabType = "dashboard" | "analysis" | "compliance" | "legal" | "certification" | "operations" | "vault" | "intake" | "jobs" | "console" | "devmode" | "drives" | "imaging" | "diagnostics" | "recovery" | "audit" | "bundles";
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>("dashboard");
@@ -104,6 +114,96 @@ function App() {
             >
               Operations
             </button>
+            <button
+              onClick={() => setActiveTab("intake")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "intake"
+                  ? "border-purple-500 text-purple-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Intake
+            </button>
+            <button
+              onClick={() => setActiveTab("jobs")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "jobs"
+                  ? "border-cyan-500 text-cyan-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Jobs
+            </button>
+            <button
+              onClick={() => setActiveTab("devmode")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "devmode"
+                  ? "border-orange-500 text-orange-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Dev Mode
+            </button>
+            <button
+              onClick={() => setActiveTab("drives")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "drives"
+                  ? "border-yellow-500 text-yellow-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Drives
+            </button>
+            <button
+              onClick={() => setActiveTab("imaging")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "imaging"
+                  ? "border-indigo-500 text-indigo-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Imaging
+            </button>
+            <button
+              onClick={() => setActiveTab("diagnostics")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "diagnostics"
+                  ? "border-pink-500 text-pink-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Diagnostics
+            </button>
+            <button
+              onClick={() => setActiveTab("recovery")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "recovery"
+                  ? "border-green-500 text-green-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Recovery
+            </button>
+            <button
+              onClick={() => setActiveTab("audit")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "audit"
+                  ? "border-amber-500 text-amber-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Audit Log
+            </button>
+            <button
+              onClick={() => setActiveTab("console")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "console"
+                  ? "border-gray-500 text-gray-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Console
+            </button>
           </div>
         </div>
       </nav>
@@ -116,6 +216,16 @@ function App() {
         {activeTab === "certification" && <CertificationDashboard />}
         {activeTab === "vault" && <CustodianVaultGate deviceId={deviceId || undefined} />}
         {activeTab === "operations" && <OpsDashboard />}
+        {activeTab === "intake" && <IntakeTab />}
+        {activeTab === "jobs" && <JobsTab />}
+        {activeTab === "devmode" && <DevModeTab />}
+        {activeTab === "drives" && <DrivesTab />}
+        {activeTab === "imaging" && <ImagingTab />}
+        {activeTab === "diagnostics" && <DiagnosticsTab />}
+        {activeTab === "recovery" && <RecoveryTab />}
+        {activeTab === "audit" && <AuditLogTab />}
+        {activeTab === "bundles" && <EvidenceBundleTab />}
+        {activeTab === "console" && <ConsoleTab />}
       </main>
 
       <footer className="bg-gray-800 border-t border-gray-700 mt-12 py-4">

@@ -3,44 +3,28 @@
 Certain third-party software has attempted to alter account or activation state.
 
 ## Platform Position
+
 - Such activity carries critical account risk
 - Often violates service terms
 - May create legal exposure
 
 ## Platform Use
+
 - Elevate warnings
 - Require external authorization
 - Route to OEM or legal channels
 
-## Known Vectors
+## Risk Indicators
 
-### Activation Bypass Attempts
-- iRemoval Pro
-- Checkm8.info
-- Sliver
-- Historical activation research
+When device state analysis suggests account-level modifications may have been attempted:
 
-### Account State Modification
-- Third-party account reset tools
-- Activation lock circumvention attempts
+- Classification: Prohibited or Conditionally Permitted (with strict authorization)
+- Routing: OEM support or legal channels only
+- Language: Prohibitive tone
+- Documentation: Comprehensive risk disclosure
 
-## Risk Classification
+## Internal Only
 
-### Critical Risk
-- Account lock modification
-- Activation state alteration
-- iCloud/FMI circumvention
+This knowledge shapes platform judgment and routing logic.
 
-### High Risk
-- MDM removal without authorization
-- Account recovery without credentials
-
-## Platform Response
-
-When these vectors are detected:
-1. Elevate to "prohibited" classification
-2. Require external authorization
-3. Route to OEM support or legal channels
-4. Document in audit log
-
-No guidance or procedural steps are provided.
+It does not enable, recommend, or facilitate such activity.

@@ -1,0 +1,136 @@
+{
+  "solutions": [
+    {
+      "id": "67f70e75-0e9c-4718-a94a-7188df94e120",
+      "title": "MacBook Won't Boot - Recovery Mode",
+      "description": "MacBook is not booting normally. Guide to access Recovery Mode and reinstall macOS.",
+      "device_type": "macbook",
+      "category": "boot",
+      "solution_steps": [
+        "Shut down the MacBook completely",
+        "Press and hold Command (⌘) + R while turning on",
+        "Release keys when Apple logo appears",
+        "Select 'Reinstall macOS' from Recovery Mode",
+        "Follow on-screen instructions",
+        "Ensure internet connection for download"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "30-60 minutes",
+      "tools_needed": [
+        "Internet connection"
+      ],
+      "prerequisites": [
+        "Backup data if possible"
+      ],
+      "warnings": [
+        "Will erase data if not backed up"
+      ],
+      "tags": [
+        "boot",
+        "recovery",
+        "macos",
+        "reinstall"
+      ],
+      "created_at": "2026-01-11T22:28:48.039285+00:00",
+      "updated_at": "2026-01-11T22:28:48.039301+00:00"
+    },
+    {
+      "id": "5c74c570-033d-4681-9d1c-a58559a1f0c2",
+      "title": "Windows PC Boot Loop",
+      "description": "Windows PC is stuck in a boot loop, continuously restarting.",
+      "device_type": "computer_windows",
+      "category": "boot",
+      "solution_steps": [
+        "Boot from Windows Recovery Media",
+        "Select 'Troubleshoot'",
+        "Choose 'Advanced options'",
+        "Select 'Startup Repair'",
+        "Follow repair process",
+        "If unsuccessful, try 'System Restore'"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "20-40 minutes",
+      "tools_needed": [
+        "Windows Recovery Media/USB"
+      ],
+      "prerequisites": [],
+      "warnings": [
+        "System Restore may affect recent changes"
+      ],
+      "tags": [
+        "boot",
+        "windows",
+        "recovery",
+        "repair"
+      ],
+      "created_at": "2026-01-11T22:28:48.039339+00:00",
+      "updated_at": "2026-01-11T22:28:48.039342+00:00"
+    },
+    {
+      "id": "bb029a8a-fd5e-4eef-a81c-7a76d7cd330a",
+      "title": "Android Phone Boot Loop",
+      "description": "Android device is stuck in boot loop, continuously restarting.",
+      "device_type": "android_phone",
+      "category": "boot",
+      "solution_steps": [
+        "Boot into Recovery Mode (varies by device)",
+        "Wipe cache partition",
+        "If issue persists, perform factory reset",
+        "Ensure device is charged (50%+)",
+        "Use OEM recovery tools if available"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "15-30 minutes",
+      "tools_needed": [
+        "Recovery mode access"
+      ],
+      "prerequisites": [
+        "Backup data if possible"
+      ],
+      "warnings": [
+        "Factory reset will erase all data"
+      ],
+      "tags": [
+        "boot",
+        "android",
+        "recovery",
+        "reset"
+      ],
+      "created_at": "2026-01-11T22:28:48.039353+00:00",
+      "updated_at": "2026-01-11T22:28:48.039355+00:00"
+    },
+    {
+      "id": "56ae5bb4-5fc3-4773-90c0-2dfc2c931eb9",
+      "title": "iPhone Won't Turn On",
+      "description": "iPhone is completely unresponsive, won't turn on or charge.",
+      "device_type": "ios_iphone",
+      "category": "hardware",
+      "solution_steps": [
+        "Check charging cable and adapter",
+        "Try different power source",
+        "Force restart (varies by model)",
+        "Connect to computer with iTunes/Finder",
+        "If recognized, try restore",
+        "If not recognized, check for hardware damage"
+      ],
+      "difficulty": "easy",
+      "estimated_time": "10-30 minutes",
+      "tools_needed": [
+        "Charging cable",
+        "Computer with iTunes/Finder"
+      ],
+      "prerequisites": [],
+      "warnings": [
+        "Restore will erase data"
+      ],
+      "tags": [
+        "power",
+        "iphone",
+        "hardware",
+        "charging"
+      ],
+      "created_at": "2026-01-11T22:28:48.039364+00:00",
+      "updated_at": "2026-01-11T22:28:48.039366+00:00"
+    }
+  ]
+}

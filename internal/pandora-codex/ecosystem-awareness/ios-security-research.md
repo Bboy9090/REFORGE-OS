@@ -4,7 +4,7 @@ This document catalogs notable third-party research projects that have historica
 
 ## Scope
 - Hardware-level protections
-- Kernel and userland experimentation
+- Kernel and userland experimentation  
 - Customization research
 
 ## Use
@@ -18,41 +18,31 @@ This document catalogs notable third-party research projects that have historica
 - No effectiveness claims
 - No links or binaries
 
-## Historical Projects
+## Historical Research Projects
 
-### Hardware-Based Research
-Projects that targeted bootrom or hardware-level protections:
-- Checkra1n / Palera1n lineage
-- Historical hardware exploit research
+### Hardware-Level Research
+Research projects that have examined boot-level or hardware-anchored protections in controlled academic or research environments.
 
-### Kernel-Level Research
-Projects that targeted kernel or system-level modifications:
-- Dopamine
-- Fugu15 / Fugu14
-- Historical kernel exploit research
+**Note**: These are historical references only. No execution guidance is provided.
 
-### Userland Research
-Projects that targeted userland or sandbox-level modifications:
-- Misaka26
-- MacDirtyCow / KFD variants
-- Userland customization research
+### Kernel & System Research
+Academic or experimental projects that have explored OS-level modification in research contexts.
 
-### Legacy Projects
-Historical projects for reference:
-- Unc0ver
-- Taurine
-- Odyssey
-- Chimera
+### Userland Customization
+Research into non-kernel customization and configuration overlays.
 
 ## Platform Position
 
-All projects listed above represent historical security research.
+Bobby's Workshop acknowledges this research landscape for risk assessment and legal context only.
 
-Bobby's Workshop does not deploy, integrate, or recommend any of these projects.
+The platform does not:
+- Deploy these tools
+- Provide instructions
+- Link to binaries
+- Recommend usage
 
-Their existence is acknowledged only for:
-- Risk assessment
-- Language shaping
-- Interpretive review context
-
-No procedural guidance or executable steps are provided.
+This awareness informs:
+- Risk scoring
+- Warning language
+- Routing decisions
+- Compliance documentation

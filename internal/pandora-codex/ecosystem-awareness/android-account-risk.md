@@ -1,53 +1,31 @@
-# Android Account & FRP Risk (Internal)
+# Android Account & Activation Risk (Internal)
 
-Certain third-party software has attempted to alter account or FRP state.
+Third-party attempts to alter account state, FRP locks, or activation status.
 
 ## Platform Position
-- Such activity carries critical account risk
-- Often violates service terms
-- May create legal exposure
+
+- Critical account risk
+- Violates service terms
+- Legal exposure likely
 
 ## Platform Use
-- Elevate warnings
-- Require external authorization
-- Route to OEM or legal channels
 
-## Known Vectors
+- Elevate warnings to prohibitive level
+- Require external authorization (mandatory)
+- Route to OEM or legal channels only
+- Comprehensive documentation required
 
-### FRP Bypass Attempts
-- UnlockTool
-- SamFW Tool
-- Chimera Tool
-- Octoplus Box
-- Z3X Samsung Tool Pro
-- Miracle Box
-- Hydra Tool
-- EFT Pro Dongle
-- FRP Hijacker by Hagard
-- Technocare
+## Risk Indicators
 
-### Account State Modification
-- Google account removal without credentials
-- Samsung account bypass attempts
-- Carrier lock circumvention
+When analysis suggests account-level modifications:
 
-## Risk Classification
+- Classification: Prohibited (default) or Conditionally Permitted (strict authorization)
+- Routing: OEM support, carrier authorization, or legal channels
+- Language: Prohibitive tone
+- Documentation: Full risk disclosure with audit trail
 
-### Critical Risk
-- FRP lock modification
-- Account state alteration
-- Carrier lock circumvention
+## Internal Only
 
-### High Risk
-- MDM removal without authorization
-- Account recovery without credentials
+This awareness shapes platform judgment.
 
-## Platform Response
-
-When these vectors are detected:
-1. Elevate to "prohibited" classification
-2. Require external authorization
-3. Route to OEM support or legal channels
-4. Document in audit log
-
-No guidance or procedural steps are provided.
+It does not enable, facilitate, or recommend such activity.

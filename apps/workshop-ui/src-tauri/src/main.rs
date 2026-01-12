@@ -55,114 +55,50 @@ fn run_python(script: &str, args: &[&str]) -> Result<String, String> {
 }
 
 #[command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
-#[command]
 async fn analyze_device(device_info: String, actor: String) -> Result<String, String> {
-    // For now, return mock data - can integrate with Python backend later
-    let mock_report = r#"{
-        "device": {
-            "model": "iPhone 13 Pro",
-            "platform": "iOS",
-            "security_state": "Restricted",
-            "classification": "Userland-Only"
-        },
-        "ownership": {
-            "verified": true,
-            "confidence": 85
-        },
-        "legal": {
-            "status": "Conditional",
-            "jurisdiction": "US",
-            "risk_level": "Medium"
-        },
-        "routing": {
-            "path": "OEM Support",
-            "reason": "Device requires OEM authorization for repair"
-        },
-        "audit_integrity_verified": true
-    }"#;
-
-    Ok(mock_report.to_string())
+    // Escape the device_info for shell
+    let device_info_escaped = device_info.replace('"', "\\\"");
+    let actor_escaped = actor.replace('"', "\\\"");
+    run_python("reforge_api.py", &["analyze_device", &device_info_escaped, &actor_escaped])
 }
 
 #[command]
 async fn get_ops_metrics() -> Result<String, String> {
-    // Mock metrics - can integrate with Python backend later
-    let metrics = r#"{
-        "activeUnits": 42,
-        "auditCoverage": 98.5,
-        "escalations": 3,
-        "complianceScore": 99.2,
-        "activeUsers": 156,
-        "processedDevices": 2847
-    }"#;
-
-    Ok(metrics.to_string())
+    run_python("reforge_api.py", &["get_ops_metrics"])
 }
 
 #[command]
 async fn get_compliance_summary(device_id: Option<String>) -> Result<String, String> {
-    // Mock compliance summary
-    let summary = r#"{
-        "device_id": "device-123",
-        "compliance_score": 95,
-        "audit_events": 142,
-        "verified_hashes": 142,
-        "jurisdiction": "US",
-        "status": "Compliant"
-    }"#;
-
-    Ok(summary.to_string())
+    match device_id {
+        Some(id) => run_python("reforge_api.py", &["get_compliance_summary", &id]),
+        None => run_python("reforge_api.py", &["get_compliance_summary"])
+    }
 }
 
 #[command]
 async fn export_compliance_report(device_id: String) -> Result<String, String> {
-    // Mock export - can integrate with reports module later
-    Ok(format!("Report exported for device: {}", device_id))
+    run_python("reforge_api.py", &["export_compliance_report", &device_id])
 }
 
 #[command]
 async fn get_certifications() -> Result<String, String> {
-    // Mock certifications
-    let certs = r#"{
-        "certifications": [
-            {"id": "cert-1", "name": "Level I Technician", "status": "Active"},
-            {"id": "cert-2", "name": "Level II Specialist", "status": "Active"}
-        ]
-    }"#;
-
-    Ok(certs.to_string())
+    run_python("reforge_api.py", &["get_certifications"])
 }
 
 #[command]
 async fn get_legal_classification(device_id: Option<String>) -> Result<String, String> {
-    // Mock legal classification
-    let classification = r#"{
-        "device_id": "device-123",
-        "jurisdiction": "US",
-        "status": "Conditional",
-        "risk_level": "Medium",
-        "requires_authorization": true,
-        "authority": "OEM Support"
-    }"#;
-
-    Ok(classification.to_string())
+    match device_id {
+        Some(id) => run_python("reforge_api.py", &["get_legal_classification", &id]),
+        None => run_python("reforge_api.py", &["get_legal_classification"])
+    }
 }
 
 #[command]
 async fn get_interpretive_context(device_id: Option<String>) -> Result<String, String> {
-    // Mock interpretive context (Pandora Codex)
-    let context = r#"{
-        "device_id": "device-123",
-        "context": "Internal classification context",
-        "risk_factors": ["High security state", "Restricted platform"],
-        "recommendations": ["OEM authorization required", "Legal review recommended"]
-    }"#;
-
-    Ok(context.to_string())
+    match device_id {
+        Some(id) => run_python("reforge_api.py", &["get_interpretive_context", &id]),
+        None => run_python("reforge_api.py", &["get_interpretive_context"])
+    }
 }
 
 // BootForge commands
@@ -184,7 +120,7 @@ async fn list_os_recipes() -> Result<String, String> {
 
 #[command]
 async fn deploy_os(recipe_key: String, target_dev: String) -> Result<String, String> {
-    run_python("phoenix_api_cli.py", &["deploy", &recipe_key, &target_dev])
+    run_python("phoenix_api_cli.py", &["deploy", &recipe_key, &target_dev, "--verify"])
 }
 
 // Bobby Dev Mode commands
@@ -201,20 +137,129 @@ async fn devmode_run_module(profile: String, module: String) -> Result<String, S
 // History/CRM commands
 #[command]
 async fn list_cases() -> Result<String, String> {
-    // Mock for now - can integrate with Python history module
-    Ok(r#"["case-1", "case-2", "case-3"]"#.to_string())
+    run_python("history_api_cli.py", &["list_cases"])
 }
 
 #[command]
 async fn load_case(ticket_id: String) -> Result<String, String> {
-    // Mock for now - can integrate with Python history module
-    Ok(format!(r#"{{"ticket_id": "{}", "type": "diagnostic", "timestamp": "2024-01-01T00:00:00Z"}}"#, ticket_id))
+    run_python("history_api_cli.py", &["load_case", &ticket_id])
+}
+
+#[command]
+async fn list_master_tickets() -> Result<String, String> {
+    run_python("history_api_cli.py", &["list_master_tickets"])
+}
+
+#[command]
+async fn create_master_ticket(label: String, description: String) -> Result<String, String> {
+    run_python("history_api_cli.py", &["create_master_ticket", &label, &description])
+}
+
+#[command]
+async fn attach_case_to_master(master_id: String, case_id: String) -> Result<String, String> {
+    run_python("history_api_cli.py", &["attach_case", &master_id, &case_id])
+}
+
+// CRM commands
+#[command]
+async fn list_customers() -> Result<String, String> {
+    run_python("crm_api_cli.py", &["list_customers"])
+}
+
+#[command]
+async fn add_customer(name: String, phone: String, email: String) -> Result<String, String> {
+    run_python("crm_api_cli.py", &["add_customer", &name, &phone, &email])
+}
+
+#[command]
+async fn list_devices(customer_id: Option<String>) -> Result<String, String> {
+    match customer_id {
+        Some(id) => run_python("crm_api_cli.py", &["list_devices", &id]),
+        None => run_python("crm_api_cli.py", &["list_devices"])
+    }
+}
+
+#[command]
+async fn add_device(customer_id: String, brand: String, model: String, serial: String) -> Result<String, String> {
+    run_python("crm_api_cli.py", &["add_device", &customer_id, &brand, &model, &serial])
+}
+
+// Case Management commands (repair shop intake)
+#[command]
+async fn create_repair_case(customer_name: String, customer_email: String, customer_phone: String, notes: String) -> Result<String, String> {
+    run_python("cases_api_cli.py", &["create", &customer_name, &customer_email, &customer_phone, &notes])
+}
+
+#[command]
+async fn list_repair_cases(status: Option<String>) -> Result<String, String> {
+    match status {
+        Some(s) => run_python("cases_api_cli.py", &["list", &s]),
+        None => run_python("cases_api_cli.py", &["list"])
+    }
+}
+
+#[command]
+async fn get_repair_case(case_id: String) -> Result<String, String> {
+    run_python("cases_api_cli.py", &["get", &case_id])
+}
+
+#[command]
+async fn add_device_to_repair_case(case_id: String, platform: String, model: Option<String>, serial: Option<String>, imei: Option<String>) -> Result<String, String> {
+    // Build args vector - Python CLI handles optional parameters by checking sys.argv length
+    let mut args: Vec<String> = vec!["add-device".to_string(), case_id, platform];
+    if let Some(m) = model {
+        args.push(m);
+        if let Some(s) = serial {
+            args.push(s);
+            if let Some(i) = imei {
+                args.push(i);
+            }
+        }
+    }
+    // Convert to string slices for the function call
+    let args_refs: Vec<&str> = args.iter().map(|s| s.as_str()).collect();
+    run_python("cases_api_cli.py", &args_refs)
+}
+
+// Reports commands
+#[command]
+async fn export_case_pdf(ticket_id: String, case_data: String) -> Result<String, String> {
+    run_python("reports_api_cli.py", &["export_pdf", &ticket_id, &case_data])
+}
+
+// Bobby Dev Mode - list modules
+#[command]
+async fn devmode_list_modules() -> Result<String, String> {
+    run_python("bobby_dev_mode/api_cli.py", &["list-modules"])
+}
+
+// BootForge - write image
+#[command]
+async fn write_image(image_path: String, target_dev: String, verify: bool) -> Result<String, String> {
+    if verify {
+        run_python("bootforge_cli.py", &["write", &image_path, &target_dev, "--verify", "--yes", "--json"])
+    } else {
+        run_python("bootforge_cli.py", &["write", &image_path, &target_dev, "--no-verify", "--yes", "--json"])
+    }
+}
+
+// Phoenix Key - get recipe and recommend
+#[command]
+async fn get_recipe(key: String) -> Result<String, String> {
+    run_python("phoenix_api_cli.py", &["get", &key])
+}
+
+#[command]
+async fn recommend_recipe(device_id: Option<String>) -> Result<String, String> {
+    match device_id {
+        Some(id) => run_python("phoenix_api_cli.py", &["recommend", "--device", &id]),
+        None => run_python("phoenix_api_cli.py", &["recommend"])
+    }
 }
 
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            greet,
             analyze_device,
             get_ops_metrics,
             get_compliance_summary,
@@ -224,12 +269,28 @@ fn main() {
             get_interpretive_context,
             list_drives,
             get_drive_smart,
+            write_image,
             list_os_recipes,
+            get_recipe,
             deploy_os,
+            recommend_recipe,
             devmode_list_profiles,
+            devmode_list_modules,
             devmode_run_module,
             list_cases,
             load_case,
+            list_master_tickets,
+            create_master_ticket,
+            attach_case_to_master,
+            list_customers,
+            add_customer,
+            list_devices,
+            add_device,
+            create_repair_case,
+            list_repair_cases,
+            get_repair_case,
+            add_device_to_repair_case,
+            export_case_pdf,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

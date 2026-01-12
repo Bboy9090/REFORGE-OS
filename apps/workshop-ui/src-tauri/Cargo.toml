@@ -1,12 +1,15 @@
 [package]
 name = "workshop-ui"
 version = "3.0.0"
-description = "REFORGE OS - Workshop UI"
+description = "REFORGE OS - Professional Repair Platform"
 authors = ["BootForge Contributors"]
 license = ""
 repository = ""
 edition = "2021"
 rust-version = "1.60"
+
+# Binary name is handled by Tauri (tauri.conf.json productName)
+# No explicit [[bin]] needed - Cargo will use package name
 
 [workspace]
 
