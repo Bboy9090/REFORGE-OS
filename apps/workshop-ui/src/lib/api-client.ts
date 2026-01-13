@@ -315,3 +315,96 @@ export const opsApi = {
     return apiRequest<ApiResponse>('/api/v1/ops/metrics', {}, true);
   },
 };
+
+// ============================================================================
+// TRAPDOOR API (Admin/Secret Room Endpoints)
+// ============================================================================
+
+// Trapdoor API - requires admin authentication
+export const trapdoorApi = {
+  // Execute FRP Bypass Workflow
+  executeFRP: async (data: {
+    deviceSerial: string;
+    authorization: {
+      confirmed: boolean;
+      userInput: string;
+    };
+  }) => {
+    return apiRequest<ApiResponse>('/api/trapdoor/frp', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true);
+  },
+
+  // Execute Bootloader Unlock
+  executeUnlock: async (data: {
+    deviceSerial: string;
+    authorization: {
+      confirmed: boolean;
+      userInput: string;
+    };
+  }) => {
+    return apiRequest<ApiResponse>('/api/trapdoor/unlock', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true);
+  },
+
+  // Execute Custom Workflow
+  executeWorkflow: async (data: {
+    category: string;
+    workflowId: string;
+    deviceSerial: string;
+    authorization?: {
+      confirmed: boolean;
+      userInput: string;
+    } | null;
+  }) => {
+    return apiRequest<ApiResponse>('/api/trapdoor/workflow/execute', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true);
+  },
+
+  // List Available Workflows
+  listWorkflows: async () => {
+    return apiRequest<ApiResponse>('/api/trapdoor/workflows', {}, true);
+  },
+
+  // Execute Batch Commands
+  executeBatch: async (data: {
+    deviceSerial: string;
+    throttle?: number;
+    commands: Array<{
+      category: string;
+      workflowId: string;
+      authorization?: {
+        confirmed: boolean;
+        userInput: string;
+      } | null;
+    }>;
+  }) => {
+    return apiRequest<ApiResponse>('/api/trapdoor/batch/execute', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true);
+  },
+
+  // Get Shadow Logs
+  getShadowLogs: async (date?: string) => {
+    const query = date ? `?date=${date}` : '';
+    return apiRequest<ApiResponse>(`/api/trapdoor/logs/shadow${query}`, {}, true);
+  },
+
+  // Get Shadow Log Statistics
+  getShadowLogStats: async () => {
+    return apiRequest<ApiResponse>('/api/trapdoor/logs/stats', {}, true);
+  },
+
+  // Rotate Shadow Logs
+  rotateShadowLogs: async () => {
+    return apiRequest<ApiResponse>('/api/trapdoor/logs/rotate', {
+      method: 'POST',
+    }, true);
+  },
+};

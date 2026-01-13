@@ -52,3 +52,28 @@ export interface AuthorityRoute {
   documentationRequired: string[];
   createdAt: string;
 }
+
+export interface ApiError {
+  error: string;
+  message?: string;
+  detail?: string;
+  code?: string;
+  timestamp?: string;
+}
+
+export interface AuditEvent {
+  id: string;
+  timestamp: string;
+  eventType: string;
+  deviceId?: string;
+  userId?: string;
+  description: string;
+  metadata?: Record<string, any>;
+}
+
+export interface AuditEventsResponse {
+  events: AuditEvent[];
+  total: number;
+  limit: number;
+  offset: number;
+}
