@@ -191,7 +191,8 @@ export default function CertificationDashboard() {
             </div>
           ))}
         </div>
-      )}
+        )}
+      </div>
 
       <div className="mt-6 pt-6 border-t border-gray-700">
         <p className="text-sm text-gray-400">
