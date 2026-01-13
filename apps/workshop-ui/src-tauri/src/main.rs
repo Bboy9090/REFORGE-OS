@@ -270,13 +270,21 @@ fn main() {
                 .ok_or("Failed to get resource directory")?;
             
             // Launch Python backend
-            let backend = PythonBackend::new();
-            let port = backend.launch(&resource_dir)
-                .map_err(|e| format!("Failed to launch Python backend: {}", e))?;
-            
-            // Store backend and port in app state
-            app.manage(Arc::new(backend));
-            app.manage(port);
+            let backend = Arc::new(PythonBackend::new());
+            match backend.launch(&resource_dir) {
+                Ok(port) => {
+                    println!("✅ Python backend launched on port {}", port);
+                    app.manage(backend);
+                    app.manage(port);
+                }
+                Err(e) => {
+                    eprintln!("⚠️ Failed to launch Python backend: {}", e);
+                    eprintln!("⚠️ Continuing without backend (dev mode)");
+                    // Still manage backend (will be None)
+                    app.manage(backend);
+                    app.manage(0u16); // Port 0 indicates backend not available
+                }
+            }
             
             Ok(())
         })

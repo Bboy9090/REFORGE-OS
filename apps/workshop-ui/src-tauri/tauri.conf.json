@@ -6,7 +6,7 @@
   "tauri": {
     "bundle": {
       "active": true,
-      "targets": "all",
+      "targets": ["nsis", "dmg", "app"],
       "identifier": "com.bootforge.reforge",
       "icon": [
         "icons/32x32.png",
@@ -15,12 +15,23 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
+      "resources": [
+        "python/**/*"
+      ],
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": null,
         "wix": {
           "language": "en-US"
+        },
+        "nsis": {
+          "installMode": "perMachine",
+          "allowDowngrades": true,
+          "createDesktopShortcut": true,
+          "createStartMenuShortcut": true,
+          "shortcutName": "REFORGE OS",
+          "menuGroup": "REFORGE OS"
         }
       },
       "macOS": {
@@ -28,7 +39,10 @@
         "minimumSystemVersion": "10.13",
         "exceptionDomain": "",
         "signingIdentity": null,
-        "entitlements": null
+        "entitlements": null,
+        "dmg": {
+          "sign": false
+        }
       }
     },
     "security": {

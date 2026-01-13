@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "tauri dev",
     "build": "vite build && tauri build",
+    "build:prod": "powershell -ExecutionPolicy Bypass -File ./build-production.ps1",
+    "build:windows": "powershell -ExecutionPolicy Bypass -File ./build-production.ps1 -Platform windows",
+    "build:macos": "bash ./build-production.ps1 -Platform macos",
     "vite:dev": "vite",
     "vite:build": "vite build",
     "tauri": "tauri",

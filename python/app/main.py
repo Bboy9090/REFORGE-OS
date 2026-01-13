@@ -152,7 +152,10 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         for arg in sys.argv[1:]:
             if arg.startswith("--port"):
-                port = int(arg.split("=")[1])
+                if "=" in arg:
+                    port = int(arg.split("=")[1])
+                elif len(sys.argv) > sys.argv.index(arg) + 1:
+                    port = int(sys.argv[sys.argv.index(arg) + 1])
     
     port = int(os.getenv("PORT", port))
     policy_mode = os.getenv("POLICY_MODE", "public")
@@ -160,5 +163,11 @@ if __name__ == "__main__":
     # Initialize policy
     policy.set_mode(policy_mode)
     
-    print(f"[Python Worker] Starting on port {port} (policy_mode={policy_mode})")
-    uvicorn.run(app, host="127.0.0.1", port=port, log_level="info")
+    print(f"[Python Worker] Starting on port {port} (policy_mode={policy_mode})", flush=True)
+    print(f"[Python Worker] Health endpoint: http://127.0.0.1:{port}/health", flush=True)
+    
+    try:
+        uvicorn.run(app, host="127.0.0.1", port=port, log_level="info", access_log=False)
+    except Exception as e:
+        print(f"[Python Worker] Error: {e}", flush=True, file=sys.stderr)
+        sys.exit(1)

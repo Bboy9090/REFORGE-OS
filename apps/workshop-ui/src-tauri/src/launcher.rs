@@ -38,23 +38,41 @@ impl PythonBackend {
         };
 
         // Resolve Python app script
+        // In bundle: app_dir/python/app/main.py
+        // In dev: ../../python/app/main.py (relative to src-tauri)
         let script_path = app_dir.join("python").join("app").join("main.py");
         
         // If script doesn't exist in bundle, try relative path (dev mode)
         let script = if script_path.exists() {
             script_path
         } else {
-            // Dev mode: assume we're in project root
-            PathBuf::from("python/app/main.py")
+            // Dev mode: go up from src-tauri/resources to project root
+            let mut dev_script = app_dir.clone();
+            dev_script.pop(); // resources
+            dev_script.pop(); // src-tauri
+            dev_script.pop(); // workshop-ui
+            dev_script.pop(); // apps
+            dev_script.push("python");
+            dev_script.push("app");
+            dev_script.push("main.py");
+            dev_script
         };
+        
+        if !script.exists() {
+            return Err(format!("Python script not found: {:?}", script).into());
+        }
 
+        // Set working directory to script's parent
+        let working_dir = script.parent()
+            .ok_or("Failed to get script directory")?;
+        
         // Spawn Python process
         let mut cmd = Command::new(&python_path);
-        cmd.arg(&script)
-           .arg("--policy-mode")
-           .arg("public")
+        cmd.current_dir(working_dir)
+           .arg(&script)
            .arg("--port")
-           .arg("0") // Auto-assign port
+           .arg("8001") // Fixed port for ForgeWorks API
+           .env("POLICY_MODE", "public")
            .stdout(Stdio::piped())
            .stderr(Stdio::piped());
 
@@ -66,22 +84,33 @@ impl PythonBackend {
 
         let mut child = cmd.spawn()?;
 
-        // Read port from stdout (Python prints port number)
-        let stdout = child.stdout.take().ok_or("Failed to capture stdout")?;
-        let reader = BufReader::new(stdout);
+        // Use fixed port 8001 (as specified in command)
+        let port = 8001u16;
         
-        // Read first line (should be port number)
-        let mut port = None;
-        for line in reader.lines() {
-            if let Ok(line) = line {
-                if let Ok(p) = line.trim().parse::<u16>() {
-                    port = Some(p);
+        // Give Python a moment to start
+        std::thread::sleep(Duration::from_millis(1000));
+        
+        // Verify backend is running by checking health endpoint
+        let health_url = format!("http://127.0.0.1:{}/health", port);
+        let mut attempts = 0;
+        let max_attempts = 20; // 10 seconds total
+        
+        while attempts < max_attempts {
+            if let Ok(response) = reqwest::blocking::get(&health_url) {
+                if response.status().is_success() {
+                    println!("✅ Python backend health check passed on port {}", port);
                     break;
                 }
             }
+            attempts += 1;
+            if attempts < max_attempts {
+                std::thread::sleep(Duration::from_millis(500));
+            }
         }
-
-        let port = port.ok_or("Failed to read port from Python worker")?;
+        
+        if attempts >= max_attempts {
+            return Err("Python backend failed to start or health check failed after 10 seconds".into());
+        }
 
         // Store process and port
         *self.process.lock().unwrap() = Some(child);

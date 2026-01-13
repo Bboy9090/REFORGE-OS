@@ -1,5 +1,4 @@
-# REFORGE OS Python Worker - Minimal Dependencies
-# No dev tools, no pip, no shell access
-
-# Core dependencies only
-# (Add specific packages as needed, but keep minimal)
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+python-multipart==0.0.6
