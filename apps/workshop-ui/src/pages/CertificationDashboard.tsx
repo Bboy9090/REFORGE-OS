@@ -118,8 +118,8 @@ export default function CertificationDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Certification Dashboard</h2>
-        <p className="text-gray-400">
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Certification Dashboard</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>
           Workshop-Certified Technician™ program - Hardware-verified training and skill progression
         </p>
       </div>
@@ -129,35 +129,43 @@ export default function CertificationDashboard() {
       )}
 
       {currentStatus && (
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">Current Status</h3>
+        <div className="rounded-lg p-6" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Current Status</h3>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-sm text-gray-400">Current Level:</span>
-              <span className="text-sm font-semibold">{currentStatus.level || "Not Certified"}</span>
+              <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Current Level:</span>
+              <span className="text-sm font-semibold" style={{ color: 'var(--ink-primary)' }}>{currentStatus.level || "Not Certified"}</span>
             </div>
             {currentStatus.requirements_met !== undefined && (
               <div className="flex justify-between">
-                <span className="text-sm text-gray-400">Requirements Met:</span>
-                <span className={`text-sm font-semibold ${
-                  currentStatus.requirements_met ? "text-green-400" : "text-amber-400"
-                }`}>
+                <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Requirements Met:</span>
+                <span className="text-sm font-semibold" style={{
+                  color: currentStatus.requirements_met ? 'var(--state-success)' : 'var(--state-warning)'
+                }}>
                   {currentStatus.requirements_met ? "Yes" : "In Progress"}
                 </span>
               </div>
             )}
             {currentStatus.next_level && (
               <div className="flex justify-between">
-                <span className="text-sm text-gray-400">Next Level:</span>
-                <span className="text-sm font-semibold">{currentStatus.next_level}</span>
+                <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Next Level:</span>
+                <span className="text-sm font-semibold" style={{ color: 'var(--ink-primary)' }}>{currentStatus.next_level}</span>
               </div>
             )}
           </div>
         </div>
       )}
 
-      <div className="bg-gray-800 rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Certification Levels</h2>
+      <div className="rounded-lg p-6" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Certification Levels</h2>
 
         {loading ? (
           <div className="text-center py-8">
@@ -166,17 +174,17 @@ export default function CertificationDashboard() {
         ) : (
         <div className="space-y-6">
           {certifications.map((cert, idx) => (
-            <div key={idx} className="bg-gray-700 rounded-lg p-4">
+            <div key={idx} className="rounded-lg p-4" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-white">{cert.level}</h3>
+                <h3 className="font-semibold" style={{ color: 'var(--ink-primary)' }}>{cert.level}</h3>
                 <span className={`px-3 py-1 rounded text-xs font-medium ${statusBadge[cert.status]}`}>
                   {cert.status.replace("_", " ").toUpperCase()}
                 </span>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">Requirements</label>
-                <ul className="list-disc list-inside text-sm text-gray-300 space-y-1">
+                <label className="text-sm font-medium" style={{ color: 'var(--ink-muted)' }}>Requirements</label>
+                <ul className="list-disc list-inside text-sm space-y-1" style={{ color: 'var(--ink-secondary)' }}>
                   {cert.requirements.map((req, reqIdx) => (
                     <li key={reqIdx}>{req}</li>
                   ))}
@@ -184,7 +192,20 @@ export default function CertificationDashboard() {
               </div>
 
               {cert.status !== "complete" && (
-                <button className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded font-medium text-sm text-white">
+                <button 
+                  className="mt-4 px-4 py-2 rounded font-medium text-sm transition-all duration-300"
+                  style={{
+                    backgroundColor: 'var(--accent-gold)',
+                    color: 'var(--ink-inverse)',
+                    boxShadow: 'var(--glow-gold)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                  }}
+                >
                   View Requirements
                 </button>
               )}
@@ -194,8 +215,8 @@ export default function CertificationDashboard() {
         )}
       </div>
 
-      <div className="mt-6 pt-6 border-t border-gray-700">
-        <p className="text-sm text-gray-400">
+      <div className="mt-6 pt-6" style={{ borderTop: '1px solid var(--border-primary)' }}>
+        <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
           Certification demonstrates competency in compliance-first device analysis and lawful recovery routing.
         </p>
       </div>

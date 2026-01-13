@@ -91,7 +91,7 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
   return (
     <div className="space-y-6 fade-in">
       <div>
-        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-spray-cyan)' }}>Compliance Summary</h2>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Compliance Summary</h2>
         <p style={{ color: 'var(--ink-muted)' }}>
           This assessment documents analysis and jurisdictional considerations only.
           No modification, circumvention, or account interference was performed or advised.

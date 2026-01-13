@@ -227,11 +227,14 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
       )}
 
       {!device && !loading && (
-        <div className="bg-gray-800 rounded-lg p-12 text-center">
-          <p className="text-gray-400">
+        <div className="rounded-lg p-12 text-center" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <p style={{ color: 'var(--ink-muted)' }}>
             Enter device metadata above to begin analysis
           </p>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm mt-2" style={{ color: 'var(--ink-muted)' }}>
             Analysis is read-only. No device changes are made.
           </p>
         </div>
