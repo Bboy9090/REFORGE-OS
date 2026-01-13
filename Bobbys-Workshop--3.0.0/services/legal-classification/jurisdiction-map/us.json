@@ -1,0 +1,23 @@
+{
+  "name": "United States",
+  "code": "US",
+  "default": "conditional",
+  "right_to_repair": "varies_by_state",
+  "notes": [
+    "Right-to-repair varies by state",
+    "External authorization may be required for high-risk operations",
+    "DMCA Section 1201 exemptions apply for security research",
+    "CFAA considerations for unauthorized access"
+  ],
+  "authorization_requirements": {
+    "prohibited": ["court_order", "oem_authorization"],
+    "requires_authorization": ["ownership_proof", "oem_authorization"],
+    "conditionally_permitted": ["ownership_proof"]
+  },
+  "risk_guidelines": {
+    "VeryHigh": "Requires court order or OEM authorization",
+    "High": "Requires ownership proof and OEM authorization",
+    "Medium": "Requires ownership proof",
+    "Low": "Standard analysis permitted"
+  }
+}

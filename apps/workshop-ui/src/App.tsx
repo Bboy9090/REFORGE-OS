@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import BackendHealthGate from "./components/BackendHealthGate";
 import DeviceOverview from "./pages/DeviceOverview";
-import ComplianceSummary from "./pages/ComplianceSummary";
+import ComplianceSummary from "./pages/ComplianceSummaryNew";
 import LegalClassification from "./pages/LegalClassification";
 import CustodianVaultGate from "./pages/CustodianVaultGate";
 import CertificationDashboard from "./pages/CertificationDashboard";
@@ -16,41 +17,67 @@ import DiagnosticsTab from "./pages/DiagnosticsTab";
 import RecoveryTab from "./pages/RecoveryTab";
 import AuditLogTab from "./pages/AuditLogTab";
 import EvidenceBundleTab from "./pages/EvidenceBundleTab";
+import OwnershipAttestation from "./pages/OwnershipAttestation";
+import InterpretiveReview from "./pages/InterpretiveReview";
+import ReportHistory from "./pages/ReportHistory";
+import Settings from "./pages/Settings";
+import UserProfile from "./pages/UserProfile";
+import CertificationExam from "./pages/CertificationExam";
+import HelpViewer from "./pages/HelpViewer";
+import NotificationsCenter from "./pages/NotificationsCenter";
+import DeviceComparison from "./pages/DeviceComparison";
+import BatchAnalysis from "./pages/BatchAnalysis";
 import "./App.css";
+import "./styles/reforge-professional-theme.css";
 
-type TabType = "dashboard" | "analysis" | "compliance" | "legal" | "certification" | "operations" | "vault" | "intake" | "jobs" | "console" | "devmode" | "drives" | "imaging" | "diagnostics" | "recovery" | "audit" | "bundles";
+type TabType = "dashboard" | "analysis" | "compliance" | "legal" | "certification" | "operations" | "vault" | "intake" | "jobs" | "console" | "devmode" | "drives" | "imaging" | "diagnostics" | "recovery" | "audit" | "bundles" | "ownership" | "interpretive" | "reports" | "settings" | "profile" | "exam" | "help" | "notifications" | "compare" | "batch";
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>("dashboard");
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <header className="bg-gray-800 p-4 border-b border-gray-700">
+    <BackendHealthGate>
+      <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-primary)', color: 'var(--ink-primary)' }}>
+      <header className="p-4 border-b" style={{ backgroundColor: 'var(--surface-secondary)', borderColor: 'var(--border-primary)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img src="/assets/icons/app-icon.svg" alt="REFORGE OS" className="w-10 h-10" />
             <div>
-              <h1 className="text-2xl font-bold">REFORGE OS</h1>
-              <p className="text-sm text-gray-400">Analysis • Classification • Lawful Routing</p>
+              <h1 className="text-2xl font-bold" style={{ color: 'var(--accent-gold)' }}>REFORGE OS</h1>
+              <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>Analysis • Classification • Lawful Routing</p>
             </div>
           </div>
-          <div className="text-sm text-gray-400">
+          <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
             Professional Repair Platform
           </div>
         </div>
       </header>
 
-      <nav className="bg-gray-800 border-b border-gray-700">
+      <nav className="border-b" style={{ backgroundColor: 'var(--surface-secondary)', borderColor: 'var(--border-primary)' }}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex space-x-8">
             <button
               onClick={() => setActiveTab("dashboard")}
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "dashboard"
-                  ? "border-blue-500 text-blue-400"
-                  : "border-transparent text-gray-400 hover:text-gray-300"
+                  ? "border-transparent"
+                  : "border-transparent"
               }`}
+              style={{
+                borderBottomColor: activeTab === "dashboard" ? 'var(--accent-gold)' : 'transparent',
+                color: activeTab === "dashboard" ? 'var(--accent-gold)' : 'var(--ink-muted)'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== "dashboard") {
+                  e.currentTarget.style.color = 'var(--ink-primary)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== "dashboard") {
+                  e.currentTarget.style.color = 'var(--ink-muted)';
+                }
+              }}
             >
               Dashboard
             </button>
@@ -96,11 +123,21 @@ function App() {
             </button>
             <button
               onClick={() => setActiveTab("vault")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === "vault"
-                  ? "border-amber-500 text-amber-400"
-                  : "border-transparent text-gray-400 hover:text-gray-300"
-              }`}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors`}
+              style={{
+                borderBottomColor: activeTab === "vault" ? 'var(--accent-bronze)' : 'transparent',
+                color: activeTab === "vault" ? 'var(--accent-bronze)' : 'var(--ink-muted)'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== "vault") {
+                  e.currentTarget.style.color = 'var(--ink-primary)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== "vault") {
+                  e.currentTarget.style.color = 'var(--ink-muted)';
+                }
+              }}
             >
               Custodian Vault
             </button>
@@ -204,6 +241,56 @@ function App() {
             >
               Console
             </button>
+            <button
+              onClick={() => setActiveTab("ownership")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "ownership"
+                  ? "border-blue-500 text-blue-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Ownership
+            </button>
+            <button
+              onClick={() => setActiveTab("reports")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "reports"
+                  ? "border-blue-500 text-blue-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Reports
+            </button>
+            <button
+              onClick={() => setActiveTab("settings")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "settings"
+                  ? "border-gray-500 text-gray-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Settings
+            </button>
+            <button
+              onClick={() => setActiveTab("profile")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "profile"
+                  ? "border-gray-500 text-gray-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Profile
+            </button>
+            <button
+              onClick={() => setActiveTab("help")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === "help"
+                  ? "border-gray-500 text-gray-400"
+                  : "border-transparent text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Help
+            </button>
           </div>
         </div>
       </nav>
@@ -226,15 +313,26 @@ function App() {
         {activeTab === "audit" && <AuditLogTab />}
         {activeTab === "bundles" && <EvidenceBundleTab />}
         {activeTab === "console" && <ConsoleTab />}
+        {activeTab === "ownership" && <OwnershipAttestation deviceId={deviceId || undefined} />}
+        {activeTab === "interpretive" && <InterpretiveReview deviceId={deviceId || undefined} ownershipConfidence={85} />}
+        {activeTab === "reports" && <ReportHistory />}
+        {activeTab === "settings" && <Settings />}
+        {activeTab === "profile" && <UserProfile />}
+        {activeTab === "exam" && <CertificationExam />}
+        {activeTab === "help" && <HelpViewer />}
+        {activeTab === "notifications" && <NotificationsCenter />}
+        {activeTab === "compare" && <DeviceComparison />}
+        {activeTab === "batch" && <BatchAnalysis />}
       </main>
 
-      <footer className="bg-gray-800 border-t border-gray-700 mt-12 py-4">
-        <div className="max-w-7xl mx-auto px-4 text-center text-sm text-gray-400">
+      <footer className="mt-12 py-4 border-t" style={{ backgroundColor: 'var(--surface-secondary)', borderColor: 'var(--border-primary)' }}>
+        <div className="max-w-7xl mx-auto px-4 text-center text-sm" style={{ color: 'var(--ink-muted)' }}>
           <p>This platform provides analysis and documentation only.</p>
           <p className="mt-1">No modification, circumvention, or account interference is performed or advised.</p>
         </div>
       </footer>
-    </div>
+      </div>
+    </BackendHealthGate>
   );
 }
 

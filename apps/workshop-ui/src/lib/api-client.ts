@@ -4,7 +4,10 @@
  * Connects React frontend to FastAPI service running on port 8001
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
+// ForgeWorks Core API (port 8001)
+const FORGEWORKS_API_URL = import.meta.env.VITE_FORGEWORKS_API_URL || 'http://localhost:8001';
+// Legacy API (port 8000 for cases, diagnostics, etc.)
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export interface ApiResponse<T = any> {
   ok: boolean;
@@ -14,9 +17,11 @@ export interface ApiResponse<T = any> {
 
 async function apiRequest<T = any>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  useForgeWorks: boolean = false
 ): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const baseUrl = useForgeWorks ? FORGEWORKS_API_URL : API_BASE_URL;
+  const url = `${baseUrl}${endpoint}`;
   
   const response = await fetch(url, {
     ...options,
@@ -185,11 +190,19 @@ export const auditApi = {
     action?: string;
   }) => {
     const query = params ? '?' + new URLSearchParams(params as any).toString() : '';
-    return apiRequest<ApiResponse>(`/api/v1/audit/events${query}`);
+    return apiRequest<ApiResponse>(`/api/v1/audit/events${query}`, {}, true);
   },
 
   getCaseEvents: async (caseId: string) => {
-    return apiRequest<ApiResponse>(`/api/v1/audit/cases/${caseId}/events`);
+    return apiRequest<ApiResponse>(`/api/v1/audit/cases/${caseId}/events`, {}, true);
+  },
+
+  export: async (deviceId: string) => {
+    return apiRequest<ApiResponse>(
+      `/api/v1/audit/export?device_id=${encodeURIComponent(deviceId)}`,
+      {},
+      true
+    );
   },
 };
 
@@ -197,5 +210,108 @@ export const auditApi = {
 export const healthApi = {
   check: async () => {
     return apiRequest<ApiResponse>('/health');
+  },
+};
+
+// ============================================================================
+// FORGEWORKS CORE API (Compliance-First Device Analysis)
+// ============================================================================
+
+// Device Analysis
+export const deviceAnalysisApi = {
+  analyze: async (data: {
+    device_metadata: string;
+    platform?: string;
+    connection_state?: string;
+  }) => {
+    return apiRequest<ApiResponse>('/api/v1/device/analyze', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+};
+
+// Ownership Verification
+export const ownershipApi = {
+  verify: async (data: {
+    user_id: string;
+    device_id: string;
+    attestation_type: string;
+    documentation_references?: string[];
+  }) => {
+    return apiRequest<ApiResponse>('/api/v1/ownership/verify', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true); // Use ForgeWorks API
+  },
+};
+
+// Legal Classification
+export const legalApi = {
+  classify: async (data: {
+    device_id: string;
+    ownership_confidence: number;
+    jurisdiction: string;
+  }) => {
+    return apiRequest<ApiResponse>('/api/v1/legal/classify', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true); // Use ForgeWorks API
+  },
+};
+
+// Compliance Summary
+export const complianceApi = {
+  getSummary: async (data: {
+    device_id: string;
+    include_audit?: boolean;
+  }) => {
+    return apiRequest<ApiResponse>('/api/v1/compliance/summary', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }, true); // Use ForgeWorks API
+  },
+};
+
+// Interpretive Review (Custodian Vault)
+export const interpretiveApi = {
+  review: async (data: {
+    device_id: string;
+    scenario: string;
+    ownership_confidence: number;
+  }, ownershipConfidence: number) => {
+    return apiRequest<ApiResponse>('/api/v1/interpretive/review', {
+      method: 'POST',
+      headers: {
+        'X-Ownership-Confidence': ownershipConfidence.toString(),
+      },
+      body: JSON.stringify(data),
+    }, true); // Use ForgeWorks API
+  },
+};
+
+// Authority Routing
+export const routingApi = {
+  getAuthority: async (device_id: string, classification_status: string) => {
+    return apiRequest<ApiResponse>(
+      `/api/v1/route/authority?device_id=${encodeURIComponent(device_id)}&classification_status=${encodeURIComponent(classification_status)}`,
+      {},
+      true // Use ForgeWorks API
+    );
+  },
+};
+
+// Certification
+export const certificationApi = {
+  getStatus: async (user_id?: string) => {
+    const params = user_id ? `?user_id=${encodeURIComponent(user_id)}` : '';
+    return apiRequest<ApiResponse>(`/api/v1/certification/status${params}`, {}, true);
+  },
+};
+
+// Operations Metrics
+export const opsApi = {
+  getMetrics: async () => {
+    return apiRequest<ApiResponse>('/api/v1/ops/metrics', {}, true);
   },
 };

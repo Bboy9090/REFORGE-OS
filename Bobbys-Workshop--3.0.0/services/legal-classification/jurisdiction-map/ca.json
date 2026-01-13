@@ -1,0 +1,23 @@
+{
+  "name": "Canada",
+  "code": "CA",
+  "default": "conditional",
+  "right_to_repair": "emerging",
+  "notes": [
+    "Right-to-repair legislation emerging at provincial level",
+    "PIPEDA compliance required for personal information",
+    "Consumer protection varies by province",
+    "Federal and provincial laws may apply"
+  ],
+  "authorization_requirements": {
+    "prohibited": ["court_order", "privacy_commissioner"],
+    "requires_authorization": ["ownership_proof", "pipeda_compliance"],
+    "conditionally_permitted": ["ownership_proof"]
+  },
+  "risk_guidelines": {
+    "VeryHigh": "Requires court order and Privacy Commissioner approval",
+    "High": "Requires ownership proof and PIPEDA compliance",
+    "Medium": "Requires ownership proof",
+    "Low": "Standard analysis permitted with PIPEDA compliance"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "European Union",
+  "code": "EU",
+  "default": "conditional",
+  "right_to_repair": "regulated",
+  "notes": [
+    "Right-to-repair regulations apply",
+    "GDPR compliance required for personal data",
+    "CE marking and compliance required",
+    "Member state variations may apply"
+  ],
+  "authorization_requirements": {
+    "prohibited": ["court_order", "data_protection_authority"],
+    "requires_authorization": ["ownership_proof", "data_protection_compliance"],
+    "conditionally_permitted": ["ownership_proof", "gdpr_compliance"]
+  },
+  "risk_guidelines": {
+    "VeryHigh": "Requires court order and data protection authority approval",
+    "High": "Requires ownership proof and GDPR compliance",
+    "Medium": "Requires ownership proof",
+    "Low": "Standard analysis permitted with GDPR compliance"
+  }
+}

@@ -5,7 +5,11 @@
 
 use std::process::{Command, Stdio};
 use std::io::{BufRead, BufReader};
+use std::sync::Arc;
 use tauri::command;
+
+mod launcher;
+use launcher::PythonBackend;
 
 // Helper to run Python scripts
 fn run_python(script: &str, args: &[&str]) -> Result<String, String> {
@@ -259,6 +263,28 @@ async fn recommend_recipe(device_id: Option<String>) -> Result<String, String> {
 
 fn main() {
     tauri::Builder::default()
+        .setup(|app| {
+            // Get resource directory (where bundled Python lives)
+            let resource_dir = app.path_resolver()
+                .resource_dir()
+                .ok_or("Failed to get resource directory")?;
+            
+            // Launch Python backend
+            let backend = PythonBackend::new();
+            let port = backend.launch(&resource_dir)
+                .map_err(|e| format!("Failed to launch Python backend: {}", e))?;
+            
+            // Store backend and port in app state
+            app.manage(Arc::new(backend));
+            app.manage(port);
+            
+            Ok(())
+        })
+        .on_window_event(|_app, event| {
+            if let tauri::WindowEvent::CloseRequested { .. } = event {
+                // Backend will be cleaned up via Drop
+            }
+        })
         .invoke_handler(tauri::generate_handler![
             analyze_device,
             get_ops_metrics,

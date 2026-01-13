@@ -1,0 +1,23 @@
+{
+  "name": "Global / Unknown",
+  "code": "Global",
+  "default": "requires_authorization",
+  "right_to_repair": "unknown",
+  "notes": [
+    "Use when jurisdiction cannot be determined",
+    "Most restrictive requirements apply",
+    "Local legal counsel should be consulted",
+    "External authorization typically required"
+  ],
+  "authorization_requirements": {
+    "prohibited": ["court_order", "local_legal_counsel"],
+    "requires_authorization": ["ownership_proof", "local_legal_counsel"],
+    "conditionally_permitted": ["ownership_proof", "local_legal_counsel"]
+  },
+  "risk_guidelines": {
+    "VeryHigh": "Requires court order and local legal counsel",
+    "High": "Requires ownership proof and local legal counsel consultation",
+    "Medium": "Requires ownership proof and local legal counsel consultation",
+    "Low": "Requires ownership proof and local legal counsel consultation"
+  }
+}

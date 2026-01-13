@@ -1,27 +1,29 @@
-<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bobby's Workshop Mark - Neon Cyan + Tape Yellow -->
   <defs>
-    <linearGradient id="gearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    <linearGradient id="workshopGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2DD4FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD400;stop-opacity:0.9" />
     </linearGradient>
+    <filter id="workshopGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <!-- Gear icon -->
-  <circle cx="64" cy="64" r="32" 
-          fill="url(#gearGrad)" 
-          stroke="#D4AF37" 
-          stroke-width="2"/>
-  <!-- Gear teeth -->
-  <g stroke="#D4AF37" stroke-width="3" fill="none">
-    <path d="M64 32 L64 28 M64 100 L64 96 M32 64 L28 64 M100 64 L96 64"/>
-    <path d="M48 48 L44 44 M80 80 L84 84 M48 80 L44 84 M80 48 L84 44"/>
-  </g>
-  <!-- Wrench symbol -->
-  <path d="M52 52 L48 60 L44 64 L48 68 L56 72 L64 68 L68 64 L64 60 Z" 
-        stroke="#D4AF37" 
-        stroke-width="2" 
-        fill="none"/>
-  <path d="M44 64 L40 68 L36 64" 
-        stroke="#D4AF37" 
-        stroke-width="2" 
-        fill="none"/>
+  
+  <!-- Wrench/Tool Symbol -->
+  <path d="M 32 12 L 40 20 L 36 24 L 44 32 L 40 36 L 32 28 L 28 32 L 20 24 L 24 20 Z" 
+        fill="url(#workshopGradient)" 
+        filter="url(#workshopGlow)"/>
+  
+  <!-- Workshop "W" Letter -->
+  <path d="M 20 40 L 24 52 L 28 40 L 32 52 L 36 40 L 40 52 L 44 40" 
+        stroke="url(#workshopGradient)" 
+        stroke-width="2.5" 
+        stroke-linecap="round" 
+        fill="none"
+        filter="url(#workshopGlow)"/>
 </svg>

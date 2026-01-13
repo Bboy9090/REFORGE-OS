@@ -1,0 +1,23 @@
+{
+  "name": "Australia",
+  "code": "AU",
+  "default": "conditional",
+  "right_to_repair": "regulated",
+  "notes": [
+    "Right-to-repair regulations apply",
+    "Privacy Act 1988 (Cth) compliance required",
+    "ACCC consumer protection laws",
+    "State and federal laws may both apply"
+  ],
+  "authorization_requirements": {
+    "prohibited": ["court_order", "oaic_authorization"],
+    "requires_authorization": ["ownership_proof", "privacy_act_compliance"],
+    "conditionally_permitted": ["ownership_proof"]
+  },
+  "risk_guidelines": {
+    "VeryHigh": "Requires court order and OAIC authorization",
+    "High": "Requires ownership proof and Privacy Act compliance",
+    "Medium": "Requires ownership proof",
+    "Low": "Standard analysis permitted with Privacy Act compliance"
+  }
+}

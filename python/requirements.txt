@@ -1,0 +1,5 @@
+# REFORGE OS Python Worker - Minimal Dependencies
+# No dev tools, no pip, no shell access
+
+# Core dependencies only
+# (Add specific packages as needed, but keep minimal)

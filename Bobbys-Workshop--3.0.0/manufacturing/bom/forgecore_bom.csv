@@ -1,0 +1,14 @@
+Component,Manufacturer,Part Number,Quantity,Unit Cost,Total,Notes
+MCU,STMicroelectronics,STM32G431KBU6,1,8.50,8.50,Industrial grade
+Secure Element,Microchip,ATECC608B-MAHDA-T,1,2.80,2.80,Hardware identity
+USB-C PD Controller,Texas Instruments,TPS65987D,1,6.20,6.20,PD monitoring only
+USB Hub IC,Microchip,USB5744B-I/2GX,1,4.50,4.50,Stable certified
+Flash Memory,Winbond,W25Q128JVSIQ,1,1.20,1.20,Firmware storage
+Crystal Oscillator,Abracon,ABL-8.000MHZ-B4Y,1,0.45,0.45,Clock stability
+USB-C Connector,Molex,47346-0001,2,1.10,2.20,USB-IF certified
+USB-A Connector,Molex,47346-0002,1,0.85,0.85,USB-IF certified
+Passive Components,Various,Standard,-,8.00,8.00,Resistors capacitors
+PCB,4-layer FR-4,Custom,1,3.50,3.50,JLCPCB/PCBWay
+Housing,CNC Aluminum,Custom,1,6.50,6.50,Dongguan
+Assembly & QA,EMS,Per-unit,1,10.00,10.00,ISO-9001 required
+TOTAL,,,,,54.70,COGS Target

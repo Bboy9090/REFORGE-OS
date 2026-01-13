@@ -1,43 +1,115 @@
-# Android System Research (Internal Reference)
+# Android System Research (Internal)
 
-This document catalogs notable research into Android system-level protections and modification approaches.
+**Status:** INTERNAL ONLY — Never shipped, never exposed
 
-## Scope
-- Kernel-level research
-- System modification research
-- Root-level experimentation
+**Purpose:** Risk modeling for system-level modification research
 
-## Use
-- Risk modeling
-- Capability ceiling assessment
-- Language shaping
+**Prohibition:** No procedural steps, no tool integration, no execution paths
 
-## Prohibitions
-- No procedural steps
-- No tool recommendations
-- No version compatibility guides
-- No links or binaries
+---
 
-## Research Categories
+## Systemless Root Research
 
-### System-Level Research
-Academic and experimental projects examining Android kernel and system layers.
+### Magisk
+- **Nature:** Systemless root framework (industry standard)
+- **Platform Use:** Flags "system modification research" category
+- **Risk Profile:** Medium account risk, high data risk, medium legal risk
+- **Language Shaping:** "Systemless modification research framework"
 
-### Modification Research
-Research into system modification in controlled environments.
+### KernelSU
+- **Nature:** Modern kernel-level root alternative
+- **Platform Use:** High-security device risk classification
+- **Risk Profile:** Medium account risk, high data risk, medium legal risk
+- **Language Shaping:** "Kernel-level modification research"
 
-## Platform Position
+### APatch
+- **Nature:** Hybrid kernel/system modification research
+- **Platform Use:** Newest Android versions (14/15/16) risk awareness
+- **Risk Profile:** Medium-high account risk, high data risk
+- **Language Shaping:** "Hybrid modification research framework"
 
-Bobby's Workshop acknowledges this research for risk assessment only.
+---
 
-The platform:
-- Classifies risk profiles
-- Adjusts warning language
-- Routes to appropriate authorities
-- Documents compliance context
+## OEM-Specific Research
 
-The platform does not:
-- Execute modifications
-- Provide tools or instructions
-- Automate any processes
-- Enable circumvention
+### Odin / SamFW
+- **Nature:** Samsung official flashing / research tools
+- **Platform Use:** Samsung device capability classification
+- **Risk Profile:** Low account risk (official), high data risk
+- **Language Shaping:** "OEM flashing research tools"
+
+### MTK Client
+- **Nature:** MediaTek bootloader research
+- **Platform Use:** MediaTek device (Xiaomi, Oppo, Vivo) risk classification
+- **Risk Profile:** Medium account risk, high data risk
+- **Language Shaping:** "MediaTek bootloader research"
+
+### Qualcomm QFIL
+- **Nature:** Qualcomm EDL mode research
+- **Platform Use:** Snapdragon device risk classification
+- **Risk Profile:** Medium account risk, high data risk
+- **Language Shaping:** "Qualcomm EDL research"
+
+### SP Flash Tool / MiFlash Tool
+- **Nature:** MediaTek / Xiaomi official flashing tools
+- **Platform Use:** OEM-specific device capability awareness
+- **Risk Profile:** Low account risk (official), high data risk
+- **Language Shaping:** "OEM flashing research tools"
+
+---
+
+## Legacy Root Research
+
+### KingRoot / KingoRoot / Framaroot
+- **Nature:** Older one-click root research tools
+- **Platform Use:** Legacy device risk awareness
+- **Risk Profile:** High account risk, high data risk
+- **Language Shaping:** "Legacy root research tools"
+
+---
+
+## Platform Integration
+
+### Capability Classification
+Research category → Device capability ceiling:
+- Systemless → "Userland modification research"
+- Kernel-level → "System modification research"
+- Bootloader → "Hardware-level research"
+
+### Risk Scoring
+Research type → Risk profile:
+- Systemless → Medium risk
+- Kernel → High risk
+- Bootloader → Critical risk
+
+### Language Shaping
+Research category → UI tone:
+- Systemless → "Cautionary"
+- Kernel → "Strict"
+- Bootloader → "Prohibitive"
+
+---
+
+## What This Never Does
+
+- ❌ Provides tool installation steps
+- ❌ Links to tool repositories
+- ❌ Explains tool operation
+- ❌ Maps device compatibility
+- ❌ Endorses any tool
+
+---
+
+## Internal Use Only
+
+This document informs:
+- Device capability ceiling assessment
+- Risk profile calculation
+- Warning language selection
+- Interpretive review triggers
+
+It never surfaces as:
+- User instructions
+- Tool recommendations
+- Public documentation
+- API responses

@@ -1,42 +1,62 @@
 {
   "hardware_research": {
     "description": "Historical study of boot-level protections",
+    "examples": ["checkm8-derived", "bootrom vulnerability studies"],
     "risk": {
       "account": "high",
       "data": "high",
       "legal": "medium"
     },
     "ui_tone": "strict",
-    "requires_interpretive_review": true
+    "requires_interpretive_review": true,
+    "authority_routing": "oem_or_court"
   },
   "kernel_research": {
     "description": "Academic or experimental OS-level modification research",
+    "examples": ["kernel exploit studies", "system modification research"],
     "risk": {
       "account": "medium",
       "data": "high",
       "legal": "medium"
     },
     "ui_tone": "cautionary",
-    "requires_interpretive_review": true
-  },
-  "account_bypass_vectors": {
-    "description": "Third-party attempts to alter account state",
-    "risk": {
-      "account": "critical",
-      "data": "high",
-      "legal": "high"
-    },
-    "ui_tone": "prohibitive",
-    "requires_interpretive_review": true
+    "requires_interpretive_review": true,
+    "authority_routing": "oem_or_carrier"
   },
   "userland_customization": {
-    "description": "Non-kernel customization and configuration overlays",
+    "description": "Non-kernel tweaks, configuration overlays",
+    "examples": ["userland customization research", "configuration overlays"],
     "risk": {
       "account": "low",
       "data": "medium",
       "legal": "low"
     },
     "ui_tone": "informational",
-    "requires_interpretive_review": false
+    "requires_interpretive_review": false,
+    "authority_routing": "none"
+  },
+  "account_bypass_vectors": {
+    "description": "Third-party attempts to alter account state",
+    "examples": ["activation bypass research", "account modification attempts"],
+    "risk": {
+      "account": "critical",
+      "data": "high",
+      "legal": "high"
+    },
+    "ui_tone": "prohibitive",
+    "requires_interpretive_review": true,
+    "authority_routing": "oem_or_court"
+  },
+  "oem_flashing_tools": {
+    "description": "Official or research-oriented OS flashing tools",
+    "examples": ["official flashing tools", "OEM research tools"],
+    "risk": {
+      "account": "low",
+      "data": "high",
+      "legal": "low"
+    },
+    "ui_tone": "informational",
+    "requires_interpretive_review": false,
+    "authority_routing": "oem"
   }
 }

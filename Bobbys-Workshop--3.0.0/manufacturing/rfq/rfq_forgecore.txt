@@ -1,0 +1,31 @@
+Subject: RFQ Request – USB Diagnostic Hardware (ForgeCore EVT/DVT)
+
+Hello [Factory Name],
+
+We are requesting a quotation for a USB-based diagnostic hardware device for EVT/DVT production.
+
+Key Requirements:
+- 4-layer FR-4 PCB
+- STM32 MCU (G4 or H5 series)
+- Secure element (ATECC608B or equivalent)
+- USB-C PD controller (monitoring only)
+- No device-modifying functionality
+- Firmware signing + serial provisioning
+
+Quantity:
+- EVT: 50 units
+- DVT: 250 units
+
+Certifications:
+- USB-IF compatible
+- FCC / CE ready design
+
+Please provide:
+- Unit cost (EVT/DVT)
+- Lead time
+- QA process
+- Previous similar projects
+
+Best regards,
+[Your Name]
+Bobby's Workshop / ForgeWorks

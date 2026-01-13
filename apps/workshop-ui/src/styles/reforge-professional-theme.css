@@ -1,0 +1,424 @@
+/* REFORGE OS - Professional Theme */
+/* Dark Blue-Grey + Metallic Gold/Bronze */
+/* Professional, Secure, Industrial Aesthetic */
+
+:root {
+  /* ============================================
+     SURFACES (Professional Workspace)
+     ============================================ */
+  
+  /* Dark Blue-Grey Base */
+  --surface-primary: #1A1F2E;
+  --surface-secondary: #252B3D;
+  --surface-tertiary: #2D3447;
+  --surface-elevated: #353C52;
+  --surface-overlay: rgba(26, 31, 46, 0.95);
+  
+  /* ============================================
+     INK (Text & Content)
+     ============================================ */
+  
+  --ink-primary: #E8EAED;
+  --ink-secondary: #B8BDC6;
+  --ink-muted: #8B949E;
+  --ink-inverse: #0F1114;
+  --ink-gold: #D4AF37;
+  --ink-bronze: #CD7F32;
+  
+  /* ============================================
+     ACCENTS (Metallic Gold/Bronze)
+     ============================================ */
+  
+  /* Metallic Gold - Primary Accent */
+  --accent-gold: #D4AF37;
+  --accent-gold-light: #E5C158;
+  --accent-gold-dark: #B8941F;
+  --glow-gold: 0 0 16px rgba(212, 175, 55, 0.4);
+  --glow-gold-strong: 0 0 24px rgba(212, 175, 55, 0.6);
+  
+  /* Metallic Bronze - Secondary Accent */
+  --accent-bronze: #CD7F32;
+  --accent-bronze-light: #E09A4F;
+  --accent-bronze-dark: #A8651F;
+  --glow-bronze: 0 0 16px rgba(205, 127, 50, 0.4);
+  
+  /* Steel Blue - Tertiary Accent */
+  --accent-steel: #5B7FA8;
+  --accent-steel-light: #7A9BC4;
+  --accent-steel-dark: #3D5A7A;
+  
+  /* ============================================
+     STATES (System Status)
+     ============================================ */
+  
+  --state-success: #4CAF50;
+  --state-warning: #FF9800;
+  --state-error: #F44336;
+  --state-info: #2196F3;
+  --state-locked: #8B949E;
+  --state-ready: #4CAF50;
+  
+  /* ============================================
+     BORDERS & DIVIDERS
+     ============================================ */
+  
+  --border-primary: rgba(139, 148, 158, 0.2);
+  --border-gold: rgba(212, 175, 55, 0.3);
+  --border-bronze: rgba(205, 127, 50, 0.3);
+  --border-steel: rgba(91, 127, 168, 0.3);
+  --divider: rgba(139, 148, 158, 0.15);
+  
+  /* ============================================
+     SHADOWS & DEPTH
+     ============================================ */
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-gold: 0 4px 16px rgba(212, 175, 55, 0.2);
+  --shadow-inset: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  /* ============================================
+     MOTION (Professional Animations)
+     ============================================ */
+  
+  --motion-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-fade: 200ms ease-in-out;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+body {
+  background-color: var(--surface-primary);
+  color: var(--ink-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Surface Backgrounds */
+.bg-surface-primary { background-color: var(--surface-primary); }
+.bg-surface-secondary { background-color: var(--surface-secondary); }
+.bg-surface-tertiary { background-color: var(--surface-tertiary); }
+.bg-surface-elevated { background-color: var(--surface-elevated); }
+
+/* Text Colors */
+.text-ink-primary { color: var(--ink-primary); }
+.text-ink-secondary { color: var(--ink-secondary); }
+.text-ink-muted { color: var(--ink-muted); }
+.text-gold { color: var(--accent-gold); }
+.text-bronze { color: var(--accent-bronze); }
+.text-steel { color: var(--accent-steel); }
+
+/* Borders */
+.border-gold { border-color: var(--border-gold); }
+.border-bronze { border-color: var(--border-bronze); }
+.border-steel { border-color: var(--border-steel); }
+
+/* Glow Effects */
+.glow-gold {
+  box-shadow: var(--glow-gold);
+}
+
+.glow-gold-strong {
+  box-shadow: var(--glow-gold-strong);
+}
+
+.glow-bronze {
+  box-shadow: var(--glow-bronze);
+}
+
+/* Professional Cards */
+.card-professional {
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: all var(--motion-normal);
+}
+
+.card-professional:hover {
+  border-color: var(--border-gold);
+  box-shadow: var(--shadow-gold);
+}
+
+.card-elevated {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg), var(--glow-gold);
+}
+
+/* Professional Buttons */
+.btn-gold {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+  color: var(--ink-inverse);
+  border: 1px solid var(--accent-gold);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all var(--motion-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%);
+  box-shadow: var(--glow-gold), var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-gold:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-gold:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-bronze {
+  background: linear-gradient(135deg, var(--accent-bronze) 0%, var(--accent-bronze-dark) 100%);
+  color: var(--ink-primary);
+  border: 1px solid var(--accent-bronze);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all var(--motion-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-bronze:hover {
+  background: linear-gradient(135deg, var(--accent-bronze-light) 0%, var(--accent-bronze) 100%);
+  box-shadow: var(--glow-bronze), var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-outline-gold {
+  background: transparent;
+  color: var(--accent-gold);
+  border: 2px solid var(--accent-gold);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all var(--motion-normal);
+}
+
+.btn-outline-gold:hover {
+  background: var(--accent-gold);
+  color: var(--ink-inverse);
+  box-shadow: var(--glow-gold);
+}
+
+/* Professional Inputs */
+.input-professional {
+  background-color: var(--surface-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--ink-primary);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: all var(--motion-normal);
+}
+
+.input-professional:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1), var(--glow-gold);
+}
+
+.input-professional::placeholder {
+  color: var(--ink-muted);
+}
+
+/* Professional Badges */
+.badge-gold {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+  color: var(--ink-inverse);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
+}
+
+.badge-bronze {
+  background: linear-gradient(135deg, var(--accent-bronze) 0%, var(--accent-bronze-dark) 100%);
+  color: var(--ink-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Professional Dividers */
+.divider {
+  height: 1px;
+  background: var(--divider);
+  border: none;
+  margin: 1.5rem 0;
+}
+
+.divider-gold {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 50%, transparent 100%);
+  border: none;
+  margin: 1.5rem 0;
+}
+
+/* ============================================
+   ANIMATIONS (Professional, Subtle)
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn var(--motion-fade) ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp var(--motion-normal) ease-out;
+}
+
+/* Professional Loading States */
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface-secondary) 0%,
+    var(--surface-tertiary) 50%,
+    var(--surface-secondary) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ink-primary);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: var(--accent-gold);
+  text-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--accent-gold);
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: var(--ink-primary);
+}
+
+/* Professional Links */
+a {
+  color: var(--accent-gold);
+  text-decoration: none;
+  transition: all var(--motion-fast);
+}
+
+a:hover {
+  color: var(--accent-gold-light);
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+}
+
+/* ============================================
+   SCROLLBAR (Professional Styling)
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-tertiary);
+  border-radius: 5px;
+  border: 2px solid var(--surface-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
+}
+
+/* ============================================
+   SELECTION (Professional Highlighting)
+   ============================================ */
+
+::selection {
+  background: var(--accent-gold);
+  color: var(--ink-inverse);
+}
+
+::-moz-selection {
+  background: var(--accent-gold);
+  color: var(--ink-inverse);
+}

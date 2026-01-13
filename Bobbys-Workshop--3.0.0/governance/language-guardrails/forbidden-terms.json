@@ -1,0 +1,65 @@
+{
+  "forbidden_terms": [
+    "jailbreak",
+    "root",
+    "bypass",
+    "unlock",
+    "exploit",
+    "crack",
+    "hack",
+    "break",
+    "circumvent",
+    "override",
+    "remove lock",
+    "remove protection",
+    "disable security",
+    "execute",
+    "run tool",
+    "download tool",
+    "install tool",
+    "use tool",
+    "apply exploit",
+    "works on",
+    "compatible with",
+    "supports bypass",
+    "unlocks",
+    "removes",
+    "disables"
+  ],
+  "context_forbidden": {
+    "instructions": [
+      "how to",
+      "steps to",
+      "follow these",
+      "do this",
+      "execute",
+      "run",
+      "install"
+    ],
+    "tool_references": [
+      "download from",
+      "get tool",
+      "install tool",
+      "use [tool name]",
+      "run [tool name]"
+    ],
+    "bypass_language": [
+      "bypass the",
+      "skip the",
+      "ignore the",
+      "remove the lock",
+      "unlock without"
+    ]
+  },
+  "replacement_map": {
+    "jailbreak": "hardware-level modification",
+    "root": "system-level modification",
+    "bypass": "route to authority",
+    "unlock": "authorization pathway",
+    "exploit": "security research (with authorization)",
+    "execute": "analyze",
+    "run tool": "classify scenario",
+    "works on": "analysis indicates",
+    "supports": "classification flags"
+  }
+}

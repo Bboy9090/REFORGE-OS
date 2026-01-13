@@ -1,0 +1,42 @@
+{
+  "allowed_language": {
+    "analysis": [
+      "device analysis indicates",
+      "classification suggests",
+      "risk assessment shows",
+      "legal status classified as"
+    ],
+    "routing": [
+      "route to authority",
+      "external authorization required",
+      "OEM pathway identified",
+      "carrier unlock eligibility",
+      "court order process"
+    ],
+    "verification": [
+      "ownership verification required",
+      "authorization gate",
+      "compliance check",
+      "documentation review"
+    ],
+    "reporting": [
+      "device status report",
+      "compliance documentation",
+      "audit trail",
+      "legal classification report"
+    ]
+  },
+  "required_context": {
+    "device_state": "Device analysis indicates [abstract classification]",
+    "legal_status": "Legal classification: [status] based on [jurisdiction]",
+    "routing": "External authority routing required: [authority type]",
+    "authorization": "Authorization required from: [authority]",
+    "risk": "Risk level classification: [level] based on [factors]"
+  },
+  "compliance_language": {
+    "disclaimer": "Analysis and classification only. No execution of modifications.",
+    "authority": "External authority routing. Platform does not execute actions.",
+    "audit": "All actions logged and auditable for compliance.",
+    "ownership": "Ownership verification required before proceeding."
+  }
+}

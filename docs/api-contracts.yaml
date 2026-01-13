@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  title: ForgeWorks API
+  version: 1.0.0
+  description: |
+    Compliance-first analysis API. All endpoints are read-only, analysis-only.
+    No execution, bypass, or circumvention endpoints exist.
+
+paths:
+  /device/analyze:
+    post:
+      summary: Analyze device metadata
+      description: Classifies device capability ceiling and security state
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                platform:
+                  type: string
+                deviceClass:
+                  type: string
+      responses:
+        '200':
+          description: Analysis result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProfile'
+
+  /ownership/verify:
+    post:
+      summary: Verify ownership (confidence score)
+      description: Scores ownership attestations, returns confidence 0-100
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deviceId:
+                  type: string
+                attestations:
+                  type: array
+      responses:
+        '200':
+          description: Ownership verification result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnershipAttestation'
+
+  /legal/classify:
+    post:
+      summary: Jurisdiction-aware legal classification
+      description: Classifies legal posture (permitted/conditional/prohibited)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deviceId:
+                  type: string
+                jurisdiction:
+                  type: string
+      responses:
+        '200':
+          description: Legal classification result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalClassification'
+
+  /language/shape:
+    post:
+      summary: Shape language output based on risk profile
+      description: Generates elegant, regulator-safe UI copy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Language output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LanguageOutput'
+
+  /route/authority:
+    post:
+      summary: Route to external authority
+      description: Maps outcomes to OEM/carrier/court pathways
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deviceId:
+                  type: string
+                classification:
+                  type: string
+      responses:
+        '200':
+          description: Authority routing result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthorityRoute'
+
+  /report/compliance:
+    post:
+      summary: Generate compliance report
+      description: Creates full compliance report with audit reference
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deviceId:
+                  type: string
+      responses:
+        '200':
+          description: Compliance report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceReport'
+
+  /audit/export:
+    get:
+      summary: Export audit log
+      description: Returns immutable audit trail for device
+      parameters:
+        - name: deviceId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Audit log export
+          content:
+            application/json:
+              schema:
+                type: object
+
+components:
+  schemas:
+    DeviceProfile:
+      type: object
+      properties:
+        model:
+          type: string
+        platform:
+          type: string
+        deviceClass:
+          type: string
+        securityState:
+          type: string
+        capabilityClass:
+          type: string
+
+    OwnershipAttestation:
+      type: object
+      properties:
+        id:
+          type: string
+        deviceId:
+          type: string
+        attestorType:
+          type: string
+          enum: [user, enterprise, executor]
+        confidence:
+          type: integer
+          minimum: 0
+          maximum: 100
+        createdAt:
+          type: string
+
+    LegalClassification:
+      type: object
+      properties:
+        id:
+          type: string
+        deviceId:
+          type: string
+        jurisdiction:
+          type: string
+        classification:
+          type: string
+          enum: [permitted, conditional, prohibited]
+        rationale:
+          type: string
+        createdAt:
+          type: string
+
+    LanguageOutput:
+      type: object
+      properties:
+        tone:
+          type: string
+        warning_level:
+          type: string
+        recommended_path:
+          type: string
+        user_facing_copy:
+          type: string
+        compliance_disclaimer:
+          type: string
+
+    AuthorityRoute:
+      type: object
+      properties:
+        id:
+          type: string
+        deviceId:
+          type: string
+        authorityType:
+          type: string
+          enum: [oem, carrier, court]
+        reference:
+          type: string
+        contactPath:
+          type: string
+        documentationRequired:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+
+    ComplianceReport:
+      type: object
+      properties:
+        device:
+          $ref: '#/components/schemas/DeviceProfile'
+        ownership:
+          $ref: '#/components/schemas/OwnershipAttestation'
+        legal:
+          $ref: '#/components/schemas/LegalClassification'
+        language:
+          $ref: '#/components/schemas/LanguageOutput'
+        auditReference:
+          type: string
+        generatedAt:
+          type: string

@@ -1,18 +1,26 @@
-<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield Analysis Icon - Neon Cyan -->
   <defs>
-    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2DD4FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0EA5E9;stop-opacity:0.8" />
     </linearGradient>
+    <filter id="shieldGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <path d="M64 8 L48 16 L48 48 C48 64 64 80 64 96 C64 80 80 64 80 48 L80 16 Z" 
-        fill="url(#shieldGrad)" 
-        stroke="#D4AF37" 
-        stroke-width="2"/>
-  <!-- Analysis grid -->
-  <g opacity="0.3" stroke="#D4AF37" stroke-width="1">
-    <line x1="56" y1="32" x2="72" y2="32"/>
-    <line x1="56" y1="40" x2="72" y2="40"/>
-    <line x1="64" y1="24" x2="64" y2="48"/>
-  </g>
+  
+  <!-- Shield Shape -->
+  <path d="M 32 8 L 48 14 L 48 32 Q 48 42 42 48 Q 36 54 32 56 Q 28 54 22 48 Q 16 42 16 32 L 16 14 Z" 
+        fill="url(#shieldGradient)" 
+        filter="url(#shieldGlow)"/>
+  
+  <!-- Analysis Lines (Scanning effect) -->
+  <line x1="20" y1="24" x2="44" y2="24" stroke="#E8EAED" stroke-width="1.5" opacity="0.7"/>
+  <line x1="20" y1="32" x2="44" y2="32" stroke="#E8EAED" stroke-width="1.5" opacity="0.7"/>
+  <line x1="20" y1="40" x2="44" y2="40" stroke="#E8EAED" stroke-width="1.5" opacity="0.7"/>
 </svg>

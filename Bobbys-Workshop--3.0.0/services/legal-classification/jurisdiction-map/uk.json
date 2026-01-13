@@ -1,0 +1,23 @@
+{
+  "name": "United Kingdom",
+  "code": "UK",
+  "default": "conditional",
+  "right_to_repair": "regulated",
+  "notes": [
+    "Post-Brexit regulations may differ from EU",
+    "ICO (Information Commissioner's Office) compliance for data protection",
+    "UK GDPR applies",
+    "Consumer protection laws apply"
+  ],
+  "authorization_requirements": {
+    "prohibited": ["court_order", "ico_authorization"],
+    "requires_authorization": ["ownership_proof", "ico_compliance"],
+    "conditionally_permitted": ["ownership_proof", "uk_gdpr_compliance"]
+  },
+  "risk_guidelines": {
+    "VeryHigh": "Requires court order and ICO authorization",
+    "High": "Requires ownership proof and UK GDPR compliance",
+    "Medium": "Requires ownership proof",
+    "Low": "Standard analysis permitted with UK GDPR compliance"
+  }
+}

@@ -1,0 +1,136 @@
+name: Compliance Guard
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+jobs:
+  language-guardrails:
+    name: Language Guardrails Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check for forbidden terms
+        run: |
+          echo "Checking for forbidden language..."
+          FORBIDDEN_TERMS=("jailbreak" "root" "bypass" "unlock" "exploit" "crack" "hack")
+          
+          FOUND_VIOLATION=0
+          for term in "${FORBIDDEN_TERMS[@]}"; do
+            if grep -r -i "$term" --include="*.md" --include="*.rs" --include="*.ts" --include="*.tsx" \
+               --exclude-dir=internal/pandora-codex \
+               --exclude-dir=node_modules \
+               --exclude-dir=target .; then
+              echo "❌ FORBIDDEN TERM FOUND: $term"
+              echo "Review files for compliance-safe language"
+              FOUND_VIOLATION=1
+            fi
+          done
+          
+          if [ $FOUND_VIOLATION -eq 1 ]; then
+            exit 1
+          fi
+          echo "✅ No forbidden terms found"
+      
+      - name: Check Pandora Codex isolation
+        run: |
+          echo "Verifying Pandora Codex isolation..."
+          # Check that internal/pandora-codex is not referenced in public code
+          if grep -r "pandora-codex" --include="*.ts" --include="*.tsx" \
+             --exclude-dir=internal \
+             --exclude-dir=node_modules .; then
+            echo "❌ Pandora Codex referenced in public code"
+            exit 1
+          fi
+          echo "✅ Pandora Codex properly isolated"
+  
+  audit-requirements:
+    name: Audit Requirements Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Verify audit logging in services
+        run: |
+          echo "Checking audit logging requirements..."
+          
+          SERVICES=(
+            "services/device-analysis"
+            "services/ownership-verification"
+            "services/legal-classification"
+            "services/authority-routing"
+          )
+          
+          for service in "${SERVICES[@]}"; do
+            if [ ! -f "$service/service.rs" ]; then
+              echo "❌ Service file not found: $service/service.rs"
+              exit 1
+            fi
+            
+            if ! grep -q "audit" "$service/service.rs"; then
+              echo "❌ Audit logging not found in: $service"
+              exit 1
+            fi
+          done
+          
+          echo "✅ All services include audit logging"
+  
+  forbidden-actions:
+    name: Forbidden Actions Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check for execution patterns
+        run: |
+          echo "Checking for forbidden execution patterns..."
+          
+          FORBIDDEN_PATTERNS=(
+            "execute.*jailbreak"
+            "execute.*root"
+            "execute.*bypass"
+            "run.*tool"
+            "install.*tool"
+          )
+          
+          FOUND_VIOLATION=0
+          for pattern in "${FORBIDDEN_PATTERNS[@]}"; do
+            if grep -r -i -E "$pattern" --include="*.rs" --include="*.ts" \
+               --exclude-dir=internal/pandora-codex \
+               --exclude-dir=node_modules \
+               --exclude-dir=target .; then
+              echo "❌ FORBIDDEN EXECUTION PATTERN: $pattern"
+              FOUND_VIOLATION=1
+            fi
+          done
+          
+          if [ $FOUND_VIOLATION -eq 1 ]; then
+            echo "❌ Forbidden execution patterns found"
+            exit 1
+          fi
+          echo "✅ No forbidden execution patterns found"
+  
+  compliance-summary:
+    name: Compliance Summary
+    runs-on: ubuntu-latest
+    needs: [language-guardrails, audit-requirements, forbidden-actions]
+    if: always()
+    steps:
+      - name: Compliance Status
+        run: |
+          echo "=== Compliance Check Summary ==="
+          echo "✅ Language Guardrails: ${{ needs.language-guardrails.result }}"
+          echo "✅ Audit Requirements: ${{ needs.audit-requirements.result }}"
+          echo "✅ Forbidden Actions: ${{ needs.forbidden-actions.result }}"
+          
+          if [ "${{ needs.language-guardrails.result }}" != "success" ] || \
+             [ "${{ needs.audit-requirements.result }}" != "success" ] || \
+             [ "${{ needs.forbidden-actions.result }}" != "success" ]; then
+            echo "❌ Compliance check failed"
+            exit 1
+          fi
+          
+          echo "✅ All compliance checks passed"

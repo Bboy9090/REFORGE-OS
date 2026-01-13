@@ -1,37 +1,64 @@
-# Legal Taxonomy
+# Legal Taxonomy (Public-Facing)
 
-## Classification Terms
+**Purpose:** Regulator-safe vocabulary for describing device capabilities and legal contexts
 
-### Permitted
-Recovery is clearly allowed under applicable law and service terms.
+**Rule:** Classification only, never execution
 
-### Conditionally Permitted
-Recovery may be allowed but requires external authorization from:
-- Device manufacturer
-- Service carrier
-- Legal executor
-- Court order
+---
 
-### Prohibited
-Recovery is not supported through this platform.
-Contact support for routing guidance.
+## Capability Classes (Abstracted)
 
-## Platform Position
+### Hardware-Anchored Research
+- **Characteristics:** BootROM or immutable components
+- **Risk:** Low volatility, high legal scrutiny
+- **Status Language:** "Historically observed on limited legacy hardware"
 
-Bobby's Workshop provides analysis and documentation only.
+### Kernel/System Research
+- **Characteristics:** OS-level control via vulnerabilities
+- **Risk:** High volatility, jurisdiction-dependent
+- **Status Language:** "Research activity varies by OS version and region"
 
-No modification, circumvention, or account interference is performed or advised.
+### Userland Customization
+- **Characteristics:** Non-kernel tweaks, configuration overlays
+- **Risk:** Lower, but still policy-constrained
+- **Status Language:** "Customization without privileged control"
 
-All classifications are jurisdiction-aware and based on:
-- Ownership verification
-- Applicable law
-- Service terms
-- Historical precedent
+### Virtualized Research Environments
+- **Characteristics:** Emulation/simulation
+- **Risk:** Low
+- **Status Language:** "Non-production, research-only contexts"
 
-## External Authorization
+---
 
-When classification indicates "Conditionally Permitted":
+## Device-Centric Status Vocabulary
 
-- Required documentation may include OEM approval, carrier authorization, notarized affidavits, executor documents, or court orders.
-- The platform routes to appropriate external authorities.
-- The platform does not execute recovery actions.
+### Security State
+- **Restricted:** Device has active protection layers
+- **Managed:** Device under MDM or enterprise control
+- **Unrestricted:** Device has minimal protection (contextual)
+
+### Ownership Confidence
+- **Verified:** High confidence in ownership
+- **Pending:** Documentation under review
+- **Insufficient:** Additional documentation required
+
+### Legal Classification
+- **Permitted:** Recovery allowed under current jurisdiction
+- **Conditionally Permitted:** Recovery requires external authorization
+- **Prohibited:** Recovery not permitted under current jurisdiction
+
+### Actionability
+- **External Authorization Required:** Must obtain OEM/carrier/court approval
+- **Documentation Required:** Additional proof needed
+- **Not Actionable:** No lawful pathway available
+
+---
+
+## Never Use
+- "Supported"
+- "Works on"
+- "Bypass"
+- "Unlock"
+- "Jailbreak"
+- "Root"
+- "Apply exploit"

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { solutionsApi } from "../lib/api-client";
+import { interpretiveApi, solutionsApi } from "../lib/api-client";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorAlert from "../components/ErrorAlert";
 
@@ -52,6 +52,8 @@ export default function CustodianVaultGate({
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
+  const [interpretiveReview, setInterpretiveReview] = useState<any>(null);
+  const [showInterpretiveReview, setShowInterpretiveReview] = useState(false);
 
   useEffect(() => {
     if (acknowledged) {
@@ -64,6 +66,7 @@ export default function CustodianVaultGate({
     setError("");
 
     try {
+      // Load repair solutions database
       const response = await solutionsApi.list({
         device_type: selectedDeviceType || undefined,
         category: selectedCategory || undefined,
@@ -79,6 +82,39 @@ export default function CustodianVaultGate({
     } catch (err: any) {
       setError(err.message || "Failed to load solutions");
       setSolutions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Interpretive Review (for high-risk scenarios)
+  const loadInterpretiveReview = async (deviceId: string, scenario: string) => {
+    if (ownershipConfidence < 85) {
+      setError("Ownership confidence must be ≥ 85% for interpretive review");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await interpretiveApi.review(
+        {
+          device_id: deviceId,
+          scenario: scenario,
+          ownership_confidence: ownershipConfidence,
+        },
+        ownershipConfidence
+      );
+
+      if (response.ok) {
+        setInterpretiveReview(response);
+        setShowInterpretiveReview(true);
+      } else {
+        setError(response.error || "Interpretive review unavailable");
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to load interpretive review");
     } finally {
       setLoading(false);
     }
@@ -113,13 +149,98 @@ export default function CustodianVaultGate({
         </p>
       </div>
 
-      <div className="card bg-blue-900/20 border-blue-700/50">
-        <h3 className="font-semibold text-blue-200 mb-2">Custodial Closet Access</h3>
-        <p className="text-sm text-blue-100">
-          This environment provides repair solutions and procedures for all device types.
-          All access is logged for compliance. Solutions are for legitimate repair purposes only.
+      <div className="card" style={{ 
+        backgroundColor: 'var(--surface-secondary)', 
+        borderColor: 'var(--border-gold)',
+        borderWidth: '1px',
+        borderStyle: 'solid'
+      }}>
+        <h3 className="font-semibold mb-2" style={{ color: 'var(--accent-gold)' }}>
+          Custodial Closet — Interpretive Review Mode
+        </h3>
+        <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
+          This environment provides contextual analysis for complex scenarios.
+          Historical context provided for assessment only. No procedural guidance is displayed.
+          All access is logged for compliance.
         </p>
       </div>
+
+      {deviceId && ownershipConfidence >= 85 && (
+        <div className="card" style={{ 
+          backgroundColor: 'var(--surface-secondary)', 
+          borderColor: 'var(--border-bronze)',
+          borderWidth: '1px',
+          borderStyle: 'solid'
+        }}>
+          <h3 className="font-semibold mb-3" style={{ color: 'var(--accent-bronze)' }}>
+            Interpretive Review
+          </h3>
+          <button
+            onClick={() => deviceId && loadInterpretiveReview(deviceId, "device_analysis")}
+            disabled={loading}
+            className="px-4 py-2 rounded-lg font-medium transition-all duration-300 disabled:opacity-50"
+            style={{
+              backgroundColor: 'var(--accent-bronze)',
+              color: 'var(--ink-primary)',
+              boxShadow: 'var(--glow-bronze)',
+            }}
+          >
+            {loading ? "Loading..." : "Request Interpretive Review"}
+          </button>
+        </div>
+      )}
+
+      {showInterpretiveReview && interpretiveReview && (
+        <div className="card" style={{ 
+          backgroundColor: 'var(--surface-workbench-steel)', 
+          borderColor: 'rgba(45, 212, 255, 0.5)',
+          borderWidth: '2px',
+          borderStyle: 'solid'
+        }}>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold" style={{ color: 'var(--accent-spray-cyan)' }}>
+              Interpretive Review Results
+            </h3>
+            <button
+              onClick={() => setShowInterpretiveReview(false)}
+              className="text-sm"
+              style={{ color: 'var(--ink-muted)' }}
+            >
+              Close
+            </button>
+          </div>
+          
+          {interpretiveReview.risk_framing && (
+            <div className="mb-4">
+              <h4 className="font-semibold mb-2" style={{ color: 'var(--ink-primary)' }}>Risk Framing</h4>
+              <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
+                {interpretiveReview.risk_framing}
+              </p>
+            </div>
+          )}
+
+          {interpretiveReview.authority_paths && interpretiveReview.authority_paths.length > 0 && (
+            <div className="mb-4">
+              <h4 className="font-semibold mb-2" style={{ color: 'var(--ink-primary)' }}>External Authorization Pathways</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm" style={{ color: 'var(--ink-muted)' }}>
+                {interpretiveReview.authority_paths.map((path: string, idx: number) => (
+                  <li key={idx}>{path}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="mt-4 p-3 rounded" style={{ 
+            backgroundColor: 'rgba(205, 127, 50, 0.1)',
+            borderLeft: '3px solid var(--accent-bronze)'
+          }}>
+            <p className="text-xs" style={{ color: 'var(--ink-muted)' }}>
+              ⚠️ This review provides contextual analysis only. No procedural guidance is displayed.
+              External authorization may be required before proceeding.
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="space-y-3">
         <label className="flex items-start space-x-3 cursor-pointer">

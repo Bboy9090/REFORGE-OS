@@ -1,0 +1,12 @@
+[workspace]
+members = [
+    "device-analysis",
+    "ownership-verification",
+    "legal-classification",
+    "audit-logging",
+    "authority-routing",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REFORGE OS - Loading</title>
+  <link rel="stylesheet" href="splash-theme.css">
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .splash {
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    .splash h1 {
+      animation: slideUp 0.6s ease-out 0.2s both;
+    }
+    
+    .splash .subtitle {
+      animation: slideUp 0.6s ease-out 0.4s both;
+    }
+    
+    .splash .loader {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    .loader-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin: 0 4px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    .loader-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .loader-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  </style>
+</head>
+<body>
+  <div class="splash">
+    <div style="margin-bottom: 2rem;">
+      <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="splashCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2DD4FF;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0EA5E9;stop-opacity:1" />
+          </linearGradient>
+          <filter id="splashGlow">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <circle cx="64" cy="64" r="60" fill="#0F1114" stroke="#161A1F" stroke-width="2"/>
+        <path d="M 64 20 L 90 30 L 90 55 Q 90 75 80 85 Q 70 95 64 100 Q 58 95 48 85 Q 38 75 38 55 L 38 30 Z" 
+              fill="url(#splashCyan)" 
+              opacity="0.9"
+              filter="url(#splashGlow)"/>
+        <circle cx="64" cy="64" r="25" fill="none" stroke="#FF3DBB" stroke-width="2" opacity="0.6"/>
+        <circle cx="64" cy="64" r="8" fill="#2DD4FF" opacity="0.8" filter="url(#splashGlow)"/>
+      </svg>
+    </div>
+    
+    <h1>REFORGE OS</h1>
+    <p class="subtitle">Analysis • Classification • Lawful Routing</p>
+    
+    <div class="loader" style="margin-top: 2rem;">
+      <span class="loader-dot"></span>
+      <span class="loader-dot"></span>
+      <span class="loader-dot"></span>
+    </div>
+    
+    <p class="tagline">Initializing compliance-first platform...</p>
+  </div>
+</body>
+</html>
