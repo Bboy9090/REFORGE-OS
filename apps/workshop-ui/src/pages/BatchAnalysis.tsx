@@ -62,10 +62,10 @@ export default function BatchAnalysis() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'complete': return 'text-green-600';
-      case 'analyzing': return 'text-blue-600';
-      case 'error': return 'text-red-600';
-      default: return 'text-gray-600';
+      case 'complete': return 'var(--state-success)';
+      case 'analyzing': return 'var(--accent-steel)';
+      case 'error': return 'var(--state-error)';
+      default: return 'var(--ink-muted)';
     }
   };
 
@@ -84,19 +84,28 @@ export default function BatchAnalysis() {
   return (
     <section className="batch-analysis">
       <div className="container max-w-7xl mx-auto py-8">
-        <h2 className="text-3xl font-bold mb-2">Batch Analysis</h2>
-        <p className="text-gray-600 mb-8">Analyze multiple devices simultaneously</p>
+        <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Batch Analysis</h2>
+        <p className="mb-8" style={{ color: 'var(--ink-secondary)' }}>Analyze multiple devices simultaneously</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Device Input */}
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="font-semibold mb-4">Add Devices</h3>
+          <div className="rounded-lg shadow-sm border p-6" style={{ 
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--border-primary)'
+          }}>
+            <h3 className="font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Add Devices</h3>
             <div className="space-y-4">
               <div className="flex space-x-2">
                 <input
                   type="text"
                   placeholder="Device model (e.g., iPhone 12, Samsung Galaxy S21)"
-                  className="flex-1 px-4 py-2 border rounded-lg"
+                  className="flex-1 px-4 py-2 rounded-lg"
+                  style={{
+                    backgroundColor: 'var(--surface-tertiary)',
+                    borderColor: 'var(--border-primary)',
+                    color: 'var(--ink-primary)',
+                    border: '1px solid var(--border-primary)'
+                  }}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       addDevice(e.currentTarget.value);
@@ -112,7 +121,18 @@ export default function BatchAnalysis() {
                       input.value = '';
                     }
                   }}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="px-4 py-2 rounded-lg transition-all duration-300"
+                  style={{
+                    backgroundColor: 'var(--accent-gold)',
+                    color: 'var(--ink-inverse)',
+                    boxShadow: 'var(--glow-gold)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                  }}
                 >
                   Add
                 </button>
@@ -120,17 +140,25 @@ export default function BatchAnalysis() {
 
               {devices.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">Devices in Queue ({devices.length})</p>
+                  <p className="text-sm font-medium" style={{ color: 'var(--ink-secondary)' }}>Devices in Queue ({devices.length})</p>
                   <div className="max-h-48 overflow-y-auto space-y-1">
                     {devices.map((device, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                        className="flex items-center justify-between p-2 rounded"
+                        style={{ backgroundColor: 'var(--surface-tertiary)' }}
                       >
-                        <span className="text-sm">{device}</span>
+                        <span className="text-sm" style={{ color: 'var(--ink-primary)' }}>{device}</span>
                         <button
                           onClick={() => removeDevice(index)}
-                          className="text-red-600 hover:text-red-800"
+                          className="transition-colors"
+                          style={{ color: 'var(--state-error)' }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.opacity = '0.8';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.opacity = '1';
+                          }}
                         >
                           ✕
                         </button>
@@ -140,7 +168,22 @@ export default function BatchAnalysis() {
                   <button
                     onClick={startBatchAnalysis}
                     disabled={isProcessing}
-                    className="w-full bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-700 disabled:bg-gray-400"
+                    className="w-full py-2 px-4 rounded-lg font-medium transition-all duration-300"
+                    style={{
+                      backgroundColor: isProcessing ? 'var(--surface-tertiary)' : 'var(--state-success)',
+                      color: isProcessing ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+                      cursor: isProcessing ? 'not-allowed' : 'pointer'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isProcessing) {
+                        e.currentTarget.style.opacity = '0.9';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isProcessing) {
+                        e.currentTarget.style.opacity = '1';
+                      }
+                    }}
                   >
                     Start Batch Analysis
                   </button>
@@ -150,58 +193,82 @@ export default function BatchAnalysis() {
           </div>
 
           {/* Job Status */}
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="font-semibold mb-4">Analysis Queue</h3>
+          <div className="rounded-lg shadow-sm border p-6" style={{ 
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--border-primary)'
+          }}>
+            <h3 className="font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Analysis Queue</h3>
             {jobs.length === 0 ? (
-              <p className="text-gray-500 text-sm">No jobs in queue</p>
+              <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>No jobs in queue</p>
             ) : (
               <div className="space-y-3">
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Progress</span>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm font-medium" style={{ color: 'var(--ink-secondary)' }}>Progress</span>
+                    <span className="text-sm" style={{ color: 'var(--ink-secondary)' }}>
                       {completedJobs} / {totalJobs} complete
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full rounded-full h-2" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
                     <div
-                      className="bg-blue-600 h-2 rounded-full transition-all"
-                      style={{ width: `${(completedJobs / totalJobs) * 100}%` }}
+                      className="h-2 rounded-full transition-all"
+                      style={{ 
+                        width: `${(completedJobs / totalJobs) * 100}%`,
+                        backgroundColor: 'var(--accent-steel)'
+                      }}
                     ></div>
                   </div>
                 </div>
 
                 <div className="space-y-2 max-h-96 overflow-y-auto">
                   {jobs.map((job) => (
-                    <div key={job.id} className="border rounded-lg p-3">
+                    <div key={job.id} className="border rounded-lg p-3" style={{ 
+                      backgroundColor: 'var(--surface-tertiary)',
+                      borderColor: 'var(--border-primary)'
+                    }}>
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-2">
-                          <span className={getStatusColor(job.status)}>
+                          <span style={{ color: getStatusColor(job.status) }}>
                             {getStatusIcon(job.status)}
                           </span>
-                          <span className="font-medium text-sm">{job.deviceModel}</span>
+                          <span className="font-medium text-sm" style={{ color: 'var(--ink-primary)' }}>{job.deviceModel}</span>
                         </div>
-                        <span className={`text-xs font-medium ${getStatusColor(job.status)}`}>
+                        <span className="text-xs font-medium" style={{ color: getStatusColor(job.status) }}>
                           {job.status}
                         </span>
                       </div>
                       {job.status === 'analyzing' && (
-                        <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                        <div className="w-full rounded-full h-1.5 mt-2" style={{ backgroundColor: 'var(--surface-secondary)' }}>
                           <div
-                            className="bg-blue-600 h-1.5 rounded-full transition-all"
-                            style={{ width: `${job.progress}%` }}
+                            className="h-1.5 rounded-full transition-all"
+                            style={{ 
+                              width: `${job.progress}%`,
+                              backgroundColor: 'var(--accent-steel)'
+                            }}
                           ></div>
                         </div>
                       )}
                       {job.error && (
-                        <p className="text-xs text-red-600 mt-1">{job.error}</p>
+                        <p className="text-xs mt-1" style={{ color: 'var(--state-error)' }}>{job.error}</p>
                       )}
                     </div>
                   ))}
                 </div>
 
                 {completedJobs === totalJobs && totalJobs > 0 && (
-                  <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 mt-4">
+                  <button className="w-full py-2 px-4 rounded-lg font-medium transition-all duration-300 mt-4"
+                    style={{
+                      backgroundColor: 'var(--accent-gold)',
+                      color: 'var(--ink-inverse)',
+                      boxShadow: 'var(--glow-gold)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                    }}
+                  >
                     Generate Batch Report
                   </button>
                 )}

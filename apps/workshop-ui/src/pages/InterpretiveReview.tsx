@@ -73,14 +73,28 @@ export default function InterpretiveReview({
     }
   };
 
+  const getToneBorderColor = (tone: string) => {
+    switch (tone) {
+      case 'prohibitive': return 'var(--state-error)';
+      case 'strict': return 'var(--state-warning)';
+      case 'cautionary': return 'var(--accent-steel)';
+      default: return 'var(--border-primary)';
+    }
+  };
+
   if (ownershipConfidence < 85) {
     return (
       <div className="interpretive-review-gate">
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <h3 className="font-semibold text-yellow-800 mb-2">
+        <div className="rounded-lg p-6" style={{ 
+          backgroundColor: 'var(--state-warning)',
+          borderColor: 'var(--state-warning)',
+          border: '1px solid var(--state-warning)',
+          opacity: 0.1
+        }}>
+          <h3 className="font-semibold mb-2" style={{ color: 'var(--state-warning)' }}>
             Ownership Confidence Insufficient
           </h3>
-          <p className="text-yellow-700">
+          <p style={{ color: 'var(--ink-secondary)' }}>
             Interpretive Review Mode requires ownership confidence of 85% or higher. 
             Current confidence: {ownershipConfidence}%. External authorization may be required.
           </p>
@@ -92,16 +106,24 @@ export default function InterpretiveReview({
   if (loading) {
     return (
       <div className="text-center py-8">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-        <p className="mt-4 text-gray-600">Loading interpretive context...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ 
+          borderColor: 'var(--accent-gold)',
+          borderTopColor: 'transparent'
+        }}></div>
+        <p className="mt-4" style={{ color: 'var(--ink-muted)' }}>Loading interpretive context...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
-        {error}
+      <div className="border px-4 py-3 rounded" style={{ 
+        backgroundColor: 'var(--state-error)',
+        borderColor: 'var(--state-error)',
+        color: 'var(--ink-primary)',
+        opacity: 0.1
+      }}>
+        <div style={{ color: 'var(--state-error)' }}>{error}</div>
       </div>
     );
   }
@@ -110,16 +132,20 @@ export default function InterpretiveReview({
     <section className="interpretive-review">
       <div className="container max-w-4xl mx-auto py-8">
         <div className="mb-6">
-          <h2 className="text-3xl font-bold mb-2">Custodian Vault — Interpretive Review Mode</h2>
-          <p className="text-gray-600">
+          <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Custodian Vault — Interpretive Review Mode</h2>
+          <p style={{ color: 'var(--ink-secondary)' }}>
             Analysis only. No actions executed. Logged for compliance.
           </p>
         </div>
 
         {/* Acknowledgment Gate */}
         {!acknowledged && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-            <h3 className="font-semibold mb-4">Review Acknowledgment Required</h3>
+          <div className="rounded-lg p-6 mb-6" style={{ 
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--accent-steel)',
+            border: '1px solid var(--border-primary)'
+          }}>
+            <h3 className="font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Review Acknowledgment Required</h3>
             <div className="space-y-3">
               <label className="flex items-start space-x-3">
                 <input
@@ -127,8 +153,9 @@ export default function InterpretiveReview({
                   checked={acknowledged}
                   onChange={(e) => setAcknowledged(e.target.checked)}
                   className="mt-1"
+                  style={{ accentColor: 'var(--accent-gold)' }}
                 />
-                <span className="text-sm">
+                <span className="text-sm" style={{ color: 'var(--ink-secondary)' }}>
                   I acknowledge that Interpretive Review Mode provides historical context 
                   and risk assessment only. No procedural guidance, tool references, or 
                   execution steps are displayed. All activity is logged for compliance.
@@ -137,7 +164,23 @@ export default function InterpretiveReview({
               <button
                 onClick={handleAcknowledgment}
                 disabled={!acknowledged}
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full py-2 px-4 rounded-lg font-medium transition-all duration-300"
+                style={{
+                  backgroundColor: acknowledged ? 'var(--accent-gold)' : 'var(--surface-tertiary)',
+                  color: acknowledged ? 'var(--ink-inverse)' : 'var(--ink-muted)',
+                  boxShadow: acknowledged ? 'var(--glow-gold)' : 'none',
+                  cursor: acknowledged ? 'pointer' : 'not-allowed'
+                }}
+                onMouseEnter={(e) => {
+                  if (acknowledged) {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (acknowledged) {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                  }
+                }}
               >
                 Proceed to Interpretive Review
               </button>
@@ -148,41 +191,52 @@ export default function InterpretiveReview({
         {acknowledged && languageOutput && (
           <div className="space-y-6">
             {/* Risk Context */}
-            <div className={`border rounded-lg p-6 ${
-              languageOutput.tone === 'prohibitive' ? 'border-red-200 bg-red-50' :
-              languageOutput.tone === 'strict' ? 'border-yellow-200 bg-yellow-50' :
-              languageOutput.tone === 'cautionary' ? 'border-blue-200 bg-blue-50' :
-              'border-gray-200 bg-gray-50'
-            }`}>
-              <h3 className="font-semibold mb-3">Observed Risk Context</h3>
-              <p className="text-sm leading-relaxed">{languageOutput.user_facing_copy}</p>
+            <div className="border rounded-lg p-6" style={{
+              backgroundColor: 'var(--surface-secondary)',
+              borderColor: getToneBorderColor(languageOutput.tone),
+              border: `1px solid ${getToneBorderColor(languageOutput.tone)}`
+            }}>
+              <h3 className="font-semibold mb-3" style={{ color: 'var(--ink-primary)' }}>Observed Risk Context</h3>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-secondary)' }}>{languageOutput.user_facing_copy}</p>
               <div className="mt-4 flex items-center space-x-4">
-                <span className="text-xs font-medium">Warning Level:</span>
-                <span className="text-xs px-2 py-1 bg-white rounded">
+                <span className="text-xs font-medium" style={{ color: 'var(--ink-secondary)' }}>Warning Level:</span>
+                <span className="text-xs px-2 py-1 rounded" style={{
+                  backgroundColor: 'var(--surface-tertiary)',
+                  color: 'var(--ink-secondary)'
+                }}>
                   {languageOutput.warning_level}
                 </span>
-                <span className="text-xs font-medium">Tone:</span>
-                <span className="text-xs px-2 py-1 bg-white rounded">
+                <span className="text-xs font-medium" style={{ color: 'var(--ink-secondary)' }}>Tone:</span>
+                <span className="text-xs px-2 py-1 rounded" style={{
+                  backgroundColor: 'var(--surface-tertiary)',
+                  color: 'var(--ink-secondary)'
+                }}>
                   {languageOutput.tone}
                 </span>
               </div>
             </div>
 
             {/* Historical Context (Abstract Only) */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-              <h3 className="font-semibold mb-3">Historical Context (Assessment Only)</h3>
-              <p className="text-sm text-gray-700 mb-4">
+            <div className="rounded-lg p-6" style={{ 
+              backgroundColor: 'var(--surface-secondary)',
+              borderColor: 'var(--border-primary)',
+              border: '1px solid var(--border-primary)'
+            }}>
+              <h3 className="font-semibold mb-3" style={{ color: 'var(--ink-primary)' }}>Historical Context (Assessment Only)</h3>
+              <p className="text-sm mb-4" style={{ color: 'var(--ink-secondary)' }}>
                 Devices in this class have historically been subject to independent security 
                 research. This context is provided for risk assessment purposes only.
               </p>
-              <div className="bg-white rounded p-4">
-                <p className="text-xs text-gray-600 italic">
+              <div className="rounded p-4" style={{ 
+                backgroundColor: 'var(--surface-tertiary)'
+              }}>
+                <p className="text-xs italic" style={{ color: 'var(--ink-muted)' }}>
                   "This device class has been subject to system-level modification research. 
                   Unauthorized modification may result in data loss, account restrictions, 
                   or service term violations. External authorization may be required."
                 </p>
               </div>
-              <p className="text-xs text-gray-500 mt-4">
+              <p className="text-xs mt-4" style={{ color: 'var(--ink-muted)' }}>
                 <strong>Note:</strong> Historical context provided for assessment only. 
                 No procedural guidance is displayed.
               </p>
@@ -190,32 +244,39 @@ export default function InterpretiveReview({
 
             {/* Authority Routing */}
             {authorityRoutes.length > 0 && (
-              <div className="border rounded-lg p-6">
-                <h3 className="font-semibold mb-4">Required Authority Pathways</h3>
+              <div className="border rounded-lg p-6" style={{ 
+                backgroundColor: 'var(--surface-secondary)',
+                borderColor: 'var(--border-primary)',
+                border: '1px solid var(--border-primary)'
+              }}>
+                <h3 className="font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Required Authority Pathways</h3>
                 <div className="space-y-4">
                   {authorityRoutes.map((route) => (
-                    <div key={route.id} className="bg-white border rounded p-4">
+                    <div key={route.id} className="border rounded p-4" style={{ 
+                      backgroundColor: 'var(--surface-tertiary)',
+                      borderColor: 'var(--border-primary)'
+                    }}>
                       <div className="flex items-center space-x-2 mb-2">
                         <span className="text-lg">
                           {route.authorityType === 'oem' ? '🏭' :
                            route.authorityType === 'carrier' ? '📡' :
                            '⚖️'}
                         </span>
-                        <span className="font-medium">
+                        <span className="font-medium" style={{ color: 'var(--ink-primary)' }}>
                           {route.authorityType === 'oem' ? 'Device Manufacturer' :
                            route.authorityType === 'carrier' ? 'Wireless Carrier' :
                            'Legal Authority'}
                         </span>
                       </div>
                       {route.contactPath && (
-                        <p className="text-sm text-gray-600 mb-2">
+                        <p className="text-sm mb-2" style={{ color: 'var(--ink-secondary)' }}>
                           Contact: {route.contactPath}
                         </p>
                       )}
                       {route.documentationRequired && route.documentationRequired.length > 0 && (
                         <div>
-                          <p className="text-xs font-medium mb-1">Documentation Required:</p>
-                          <ul className="text-xs text-gray-600 list-disc list-inside">
+                          <p className="text-xs font-medium mb-1" style={{ color: 'var(--ink-secondary)' }}>Documentation Required:</p>
+                          <ul className="text-xs list-disc list-inside" style={{ color: 'var(--ink-secondary)' }}>
                             {route.documentationRequired.map((doc, idx) => (
                               <li key={idx}>{doc}</li>
                             ))}
@@ -229,8 +290,12 @@ export default function InterpretiveReview({
             )}
 
             {/* Compliance Disclaimer */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <p className="text-xs text-gray-700">
+            <div className="rounded-lg p-4" style={{ 
+              backgroundColor: 'var(--surface-secondary)',
+              borderColor: 'var(--border-primary)',
+              border: '1px solid var(--border-primary)'
+            }}>
+              <p className="text-xs" style={{ color: 'var(--ink-secondary)' }}>
                 <strong>Compliance Statement:</strong> {languageOutput.compliance_disclaimer}
               </p>
             </div>

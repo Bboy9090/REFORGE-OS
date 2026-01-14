@@ -114,9 +114,9 @@ export default function OwnershipAttestationPage({
   };
 
   const getConfidenceColor = (conf: number): string => {
-    if (conf >= 85) return 'text-green-500';
-    if (conf >= 70) return 'text-yellow-500';
-    return 'text-red-500';
+    if (conf >= 85) return 'var(--state-success)';
+    if (conf >= 70) return 'var(--state-warning)';
+    return 'var(--state-error)';
   };
 
   const getConfidenceLabel = (conf: number): string => {
@@ -128,27 +128,38 @@ export default function OwnershipAttestationPage({
   return (
     <section className="ownership-attestation">
       <div className="container max-w-4xl mx-auto py-8">
-        <h2 className="text-3xl font-bold mb-2">Ownership Confidence Assessment</h2>
-        <p className="text-gray-600 mb-8">
+        <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Ownership Confidence Assessment</h2>
+        <p className="mb-8" style={{ color: 'var(--ink-secondary)' }}>
           Upload documentation to verify device ownership. Additional documentation may be required.
         </p>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded mb-6">
-            {error}
+          <div className="border px-4 py-3 rounded mb-6" style={{ 
+            backgroundColor: 'var(--state-error)',
+            borderColor: 'var(--state-error)',
+            color: 'var(--ink-primary)',
+            opacity: 0.1
+          }}>
+            <div style={{ color: 'var(--state-error)' }}>{error}</div>
           </div>
         )}
 
         <div className="space-y-6">
           {/* Attestation Type Selection */}
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>
               Attestation Type
             </label>
             <select
               value={attestationType}
               onChange={(e) => setAttestationType(e.target.value as AttestationType)}
-              className="w-full px-4 py-2 border rounded-lg"
+              className="w-full px-4 py-2 rounded-lg"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
               disabled={uploading || verifying}
             >
               {Object.keys({
@@ -168,10 +179,12 @@ export default function OwnershipAttestationPage({
 
           {/* File Upload */}
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>
               Documentation
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <div className="border-2 border-dashed rounded-lg p-6 text-center" style={{ 
+              borderColor: 'var(--border-primary)'
+            }}>
               <input
                 type="file"
                 multiple
@@ -185,15 +198,15 @@ export default function OwnershipAttestationPage({
                 htmlFor="file-upload"
                 className="cursor-pointer"
               >
-                <div className="text-gray-600 mb-2">
-                  <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="mb-2" style={{ color: 'var(--ink-secondary)' }}>
+                  <svg className="mx-auto h-12 w-12" style={{ color: 'var(--ink-muted)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
                 </div>
-                <p className="text-sm">
+                <p className="text-sm" style={{ color: 'var(--ink-secondary)' }}>
                   Click to upload or drag and drop
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>
                   PDF, JPG, PNG, DOC, DOCX (Max 10MB per file)
                 </p>
               </label>
@@ -203,20 +216,29 @@ export default function OwnershipAttestationPage({
             {files.length > 0 && (
               <div className="mt-4 space-y-2">
                 {files.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between bg-gray-50 p-3 rounded">
+                  <div key={index} className="flex items-center justify-between p-3 rounded" style={{ 
+                    backgroundColor: 'var(--surface-tertiary)'
+                  }}>
                     <div className="flex items-center space-x-3">
-                      <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-5 w-5" style={{ color: 'var(--ink-muted)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      <span className="text-sm">{file.name}</span>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-sm" style={{ color: 'var(--ink-primary)' }}>{file.name}</span>
+                      <span className="text-xs" style={{ color: 'var(--ink-muted)' }}>
                         ({(file.size / 1024 / 1024).toFixed(2)} MB)
                       </span>
                     </div>
                     <button
                       onClick={() => removeFile(index)}
-                      className="text-red-600 hover:text-red-800"
+                      className="transition-colors"
+                      style={{ color: 'var(--state-error)' }}
                       disabled={uploading || verifying}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.opacity = '0.8';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.opacity = '1';
+                      }}
                     >
                       Remove
                     </button>
@@ -231,7 +253,23 @@ export default function OwnershipAttestationPage({
             <button
               onClick={handleUpload}
               disabled={uploading || verifying || files.length === 0 || !deviceId}
-              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="w-full py-3 px-6 rounded-lg font-medium transition-all duration-300"
+              style={{
+                backgroundColor: (uploading || verifying || files.length === 0 || !deviceId) ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
+                color: (uploading || verifying || files.length === 0 || !deviceId) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+                boxShadow: (uploading || verifying || files.length === 0 || !deviceId) ? 'none' : 'var(--glow-gold)',
+                cursor: (uploading || verifying || files.length === 0 || !deviceId) ? 'not-allowed' : 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                if (!uploading && !verifying && files.length > 0 && deviceId) {
+                  e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!uploading && !verifying && files.length > 0 && deviceId) {
+                  e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                }
+              }}
             >
               {uploading && 'Uploading...'}
               {verifying && 'Verifying...'}
@@ -241,15 +279,19 @@ export default function OwnershipAttestationPage({
 
           {/* Confidence Score Display */}
           {confidence !== null && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h3 className="font-semibold mb-2">Verification Result</h3>
+            <div className="rounded-lg p-6" style={{ 
+              backgroundColor: 'var(--surface-secondary)',
+              borderColor: 'var(--accent-steel)',
+              border: '1px solid var(--border-primary)'
+            }}>
+              <h3 className="font-semibold mb-2" style={{ color: 'var(--ink-primary)' }}>Verification Result</h3>
               <div className="flex items-center space-x-4">
-                <div className={`text-3xl font-bold ${getConfidenceColor(confidence)}`}>
+                <div className="text-3xl font-bold" style={{ color: getConfidenceColor(confidence) }}>
                   {confidence}%
                 </div>
                 <div>
-                  <p className="font-medium">{getConfidenceLabel(confidence)}</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="font-medium" style={{ color: 'var(--ink-primary)' }}>{getConfidenceLabel(confidence)}</p>
+                  <p className="text-sm" style={{ color: 'var(--ink-secondary)' }}>
                     {confidence >= 85
                       ? 'Ownership confidence threshold met. Proceeding may be permitted.'
                       : confidence >= 70
@@ -262,8 +304,12 @@ export default function OwnershipAttestationPage({
           )}
 
           {/* Information Box */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <p className="text-sm text-gray-700">
+          <div className="rounded-lg p-4" style={{ 
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--border-primary)',
+            border: '1px solid var(--border-primary)'
+          }}>
+            <p className="text-sm" style={{ color: 'var(--ink-secondary)' }}>
               <strong>Note:</strong> All uploaded documents are securely stored and used only for 
               ownership verification. Documents are hashed and referenced in audit logs. 
               No document content is stored in plain text.
