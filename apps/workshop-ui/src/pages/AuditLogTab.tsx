@@ -90,35 +90,45 @@ export default function AuditLogTab() {
     switch (level.toLowerCase()) {
       case "error":
       case "critical":
-        return "text-red-400";
+        return 'var(--state-error)';
       case "warn":
       case "warning":
-        return "text-yellow-400";
+        return 'var(--state-warning)';
       case "info":
-        return "text-blue-400";
+        return 'var(--accent-steel)';
       default:
-        return "text-gray-400";
+        return 'var(--ink-muted)';
     }
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Audit Log</h2>
-        <p className="text-gray-400">View immutable audit trail of all system actions</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Audit Log</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>View immutable audit trail of all system actions</p>
       </div>
 
       {/* Filters */}
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
-        <h3 className="text-lg font-semibold">Filters</h3>
+      <div className="rounded-lg p-6 space-y-4" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>Filters</h3>
         
         <div className="grid grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Case ID</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Case ID</label>
             <select
               value={selectedCaseId}
               onChange={(e) => handleCaseFilter(e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm"
+              className="w-full rounded px-3 py-2 text-sm"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             >
               <option value="">All Cases</option>
               {cases.map((caseItem) => (
@@ -129,11 +139,17 @@ export default function AuditLogTab() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Level</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Level</label>
             <select
               value={filterLevel}
               onChange={(e) => setFilterLevel(e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm"
+              className="w-full rounded px-3 py-2 text-sm"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             >
               <option value="">All Levels</option>
               <option value="info">Info</option>
@@ -143,24 +159,36 @@ export default function AuditLogTab() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Action</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Action</label>
             <input
               type="text"
               value={filterAction}
               onChange={(e) => setFilterAction(e.target.value)}
               placeholder="Filter by action..."
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm"
+              className="w-full rounded px-3 py-2 text-sm"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Limit</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Limit</label>
             <input
               type="number"
               value={limit}
               onChange={(e) => setLimit(parseInt(e.target.value) || 100)}
               min="1"
               max="1000"
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm"
+              className="w-full rounded px-3 py-2 text-sm"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             />
           </div>
         </div>
@@ -168,20 +196,52 @@ export default function AuditLogTab() {
         <button
           onClick={loadEvents}
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 rounded text-sm"
+          className="px-4 py-2 rounded text-sm transition-all duration-300"
+          style={{
+            backgroundColor: loading ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
+            color: loading ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+            boxShadow: loading ? 'none' : 'var(--glow-gold)',
+            cursor: loading ? 'not-allowed' : 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+            }
+          }}
         >
           {loading ? "Loading..." : "Refresh Events"}
         </button>
       </div>
 
       {/* Events List */}
-      <div className="bg-gray-800 rounded-lg p-6">
+      <div className="rounded-lg p-6" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Audit Events ({events.length})</h3>
+          <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>Audit Events ({events.length})</h3>
           {selectedCaseId && (
             <button
               onClick={() => handleCaseFilter("")}
-              className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm"
+              className="px-3 py-1 rounded text-sm transition-colors"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-secondary)',
+                border: '1px solid var(--border-primary)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--surface-tertiary)';
+              }}
             >
               Clear Case Filter
             </button>
@@ -189,17 +249,22 @@ export default function AuditLogTab() {
         </div>
 
         {loading && (
-          <div className="text-center py-8 text-gray-400">Loading events...</div>
+          <div className="text-center py-8" style={{ color: 'var(--ink-muted)' }}>Loading events...</div>
         )}
 
         {error && (
-          <div className="p-3 bg-red-900/50 text-red-200 rounded mb-4">
-            {error}
+          <div className="p-3 rounded mb-4" style={{ 
+            backgroundColor: 'var(--state-error)',
+            borderColor: 'var(--state-error)',
+            border: '1px solid var(--state-error)',
+            opacity: 0.1
+          }}>
+            <div style={{ color: 'var(--state-error)' }}>{error}</div>
           </div>
         )}
 
         {!loading && events.length === 0 && (
-          <div className="text-center py-8 text-gray-400">
+          <div className="text-center py-8" style={{ color: 'var(--ink-muted)' }}>
             No audit events found
           </div>
         )}
@@ -209,24 +274,34 @@ export default function AuditLogTab() {
             {events.map((event) => (
               <div
                 key={event.event_id}
-                className="p-4 bg-gray-900 rounded border border-gray-700 hover:border-gray-600 transition-colors"
+                className="p-4 rounded border transition-colors"
+                style={{
+                  backgroundColor: 'var(--surface-primary)',
+                  borderColor: 'var(--border-primary)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--accent-steel)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-primary)';
+                }}
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-3">
-                    <span className={`font-medium ${getLevelColor(event.level)}`}>
+                    <span className="font-medium" style={{ color: getLevelColor(event.level) }}>
                       {event.level.toUpperCase()}
                     </span>
-                    <span className="text-sm text-gray-400">{event.action}</span>
-                    <span className="text-xs text-gray-500">{event.resource_type}</span>
+                    <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>{event.action}</span>
+                    <span className="text-xs" style={{ color: 'var(--ink-muted)' }}>{event.resource_type}</span>
                   </div>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs" style={{ color: 'var(--ink-muted)' }}>
                     {new Date(event.timestamp).toLocaleString()}
                   </span>
                 </div>
                 
-                <div className="text-sm text-gray-300 mb-2">{event.message}</div>
+                <div className="text-sm mb-2" style={{ color: 'var(--ink-secondary)' }}>{event.message}</div>
                 
-                <div className="flex items-center gap-4 text-xs text-gray-500">
+                <div className="flex items-center gap-4 text-xs" style={{ color: 'var(--ink-muted)' }}>
                   <span>Actor: {event.actor}</span>
                   {event.case_id && (
                     <span>Case: {event.case_id.substring(0, 8)}</span>
@@ -241,10 +316,20 @@ export default function AuditLogTab() {
 
                 {event.metadata && Object.keys(event.metadata).length > 0 && (
                   <details className="mt-2">
-                    <summary className="text-xs text-gray-400 cursor-pointer hover:text-gray-300">
+                    <summary className="text-xs cursor-pointer" style={{ color: 'var(--ink-muted)' }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = 'var(--ink-secondary)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = 'var(--ink-muted)';
+                      }}
+                    >
                       Metadata
                     </summary>
-                    <pre className="mt-2 text-xs bg-gray-950 p-2 rounded overflow-auto">
+                    <pre className="mt-2 text-xs p-2 rounded overflow-auto" style={{ 
+                      backgroundColor: 'var(--surface-tertiary)',
+                      color: 'var(--ink-secondary)'
+                    }}>
                       {JSON.stringify(event.metadata, null, 2)}
                     </pre>
                   </details>

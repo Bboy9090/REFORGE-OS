@@ -154,8 +154,8 @@ export default function IntakeTab() {
   return (
     <div className="space-y-6 fade-in">
       <div>
-        <h2 className="text-3xl font-bold mb-2">Device Intake</h2>
-        <p className="text-gray-400">Create a new repair case and add devices</p>
+        <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Device Intake</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>Create a new repair case and add devices</p>
       </div>
 
       {error && <ErrorAlert message={error} onDismiss={() => setError("")} />}
@@ -163,13 +163,13 @@ export default function IntakeTab() {
 
       {/* Case Creation Form */}
       <div className="card">
-        <h3 className="text-xl font-semibold mb-4">New Repair Case</h3>
+        <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>New Repair Case</h3>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Customer Name <span className="text-red-400">*</span>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>
+                Customer Name <span style={{ color: 'var(--state-error)' }}>*</span>
               </label>
               <input
                 type="text"
@@ -182,7 +182,7 @@ export default function IntakeTab() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Email</label>
               <input
                 type="email"
                 value={customerEmail}
@@ -193,7 +193,7 @@ export default function IntakeTab() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Phone</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Phone</label>
               <input
                 type="tel"
                 value={customerPhone}
@@ -205,7 +205,7 @@ export default function IntakeTab() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Notes</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Notes</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -216,9 +216,9 @@ export default function IntakeTab() {
           </div>
 
           {/* Device Detection */}
-          <div className="border-t border-gray-700 pt-4 mt-4">
+          <div className="pt-4 mt-4" style={{ borderTop: '1px solid var(--border-primary)' }}>
             <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold">Device Detection</h4>
+              <h4 className="font-semibold" style={{ color: 'var(--ink-primary)' }}>Device Detection</h4>
               <button
                 type="button"
                 onClick={detectDevices}
@@ -238,7 +238,7 @@ export default function IntakeTab() {
 
             {detectedDevices.length > 0 && !useManualDevice && (
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Select Detected Device</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Select Detected Device</label>
                 <select
                   value={selectedDevice}
                   onChange={(e) => setSelectedDevice(e.target.value)}
@@ -260,15 +260,16 @@ export default function IntakeTab() {
                   type="checkbox"
                   checked={useManualDevice}
                   onChange={(e) => setUseManualDevice(e.target.checked)}
+                  style={{ accentColor: 'var(--accent-gold)' }}
                 />
-                <span className="text-sm">Enter device manually</span>
+                <span className="text-sm" style={{ color: 'var(--ink-secondary)' }}>Enter device manually</span>
               </label>
             </div>
 
             {useManualDevice && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-900/50 rounded-lg">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-lg" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Platform</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Platform</label>
                   <select
                     value={manualPlatform}
                     onChange={(e) => setManualPlatform(e.target.value)}
@@ -282,7 +283,7 @@ export default function IntakeTab() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Model</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Model</label>
                   <input
                     type="text"
                     value={manualModel}
@@ -292,7 +293,7 @@ export default function IntakeTab() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Serial</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Serial</label>
                   <input
                     type="text"
                     value={manualSerial}
@@ -305,7 +306,7 @@ export default function IntakeTab() {
             )}
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-700">
+          <div className="flex justify-end gap-3 pt-4" style={{ borderTop: '1px solid var(--border-primary)' }}>
             <button
               type="button"
               onClick={() => {
@@ -342,21 +343,28 @@ export default function IntakeTab() {
 
       {/* Recent Cases */}
       <div className="card">
-        <h3 className="text-xl font-semibold mb-4">Recent Cases</h3>
+        <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Recent Cases</h3>
         {cases.length === 0 ? (
-          <p className="text-gray-400 text-center py-8">No cases yet</p>
+          <p className="text-center py-8" style={{ color: 'var(--ink-muted)' }}>No cases yet</p>
         ) : (
           <div className="space-y-2">
             {cases.slice(0, 10).map((caseItem) => (
               <div
                 key={caseItem.id}
-                className="p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900 transition-colors cursor-pointer"
+                className="p-3 rounded-lg transition-colors cursor-pointer"
+                style={{ backgroundColor: 'var(--surface-tertiary)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--surface-tertiary)';
+                }}
                 onClick={() => setSelectedCaseId(caseItem.id)}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium">{caseItem.customer_name}</div>
-                    <div className="text-sm text-gray-400">{caseItem.id.substring(0, 8)}...</div>
+                    <div className="font-medium" style={{ color: 'var(--ink-primary)' }}>{caseItem.customer_name}</div>
+                    <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>{caseItem.id.substring(0, 8)}...</div>
                   </div>
                   <span className={`badge ${
                     caseItem.status === "completed" ? "badge-success" :

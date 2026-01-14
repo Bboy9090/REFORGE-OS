@@ -88,19 +88,29 @@ export default function EvidenceBundleTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Evidence Bundle Generator</h2>
-        <p className="text-gray-400">Generate evidence bundles for OEM/carrier support requests</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Evidence Bundle Generator</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>Generate evidence bundles for OEM/carrier support requests</p>
       </div>
 
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
-        <h3 className="text-lg font-semibold">Generate Evidence Bundle</h3>
+      <div className="rounded-lg p-6 space-y-4" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>Generate Evidence Bundle</h3>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Select Case *</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Select Case *</label>
           <select
             value={selectedCaseId}
             onChange={(e) => setSelectedCaseId(e.target.value)}
-            className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+            className="w-full rounded px-3 py-2"
+            style={{
+              backgroundColor: 'var(--surface-tertiary)',
+              borderColor: 'var(--border-primary)',
+              color: 'var(--ink-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
           >
             <option value="">Select a case...</option>
             {cases.map((caseItem) => (
@@ -112,17 +122,23 @@ export default function EvidenceBundleTab() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Bundle Type *</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Bundle Type *</label>
           <select
             value={bundleType}
             onChange={(e) => setBundleType(e.target.value)}
-            className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+            className="w-full rounded px-3 py-2"
+            style={{
+              backgroundColor: 'var(--surface-tertiary)',
+              borderColor: 'var(--border-primary)',
+              color: 'var(--ink-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
           >
             <option value="apple_support">Apple Support Bundle</option>
             <option value="carrier">Carrier Support Bundle</option>
             <option value="generic">Generic Evidence Bundle</option>
           </select>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>
             {bundleType === "apple_support" && "For Apple Activation Lock support requests"}
             {bundleType === "carrier" && "For carrier unlock requests"}
             {bundleType === "generic" && "Generic evidence bundle for any purpose"}
@@ -132,40 +148,56 @@ export default function EvidenceBundleTab() {
         <button
           onClick={generateBundle}
           disabled={loading || !selectedCaseId}
-          className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 px-4 py-2 rounded font-medium"
+          className="w-full px-4 py-2 rounded font-medium transition-all duration-300"
+          style={{
+            backgroundColor: (loading || !selectedCaseId) ? 'var(--surface-tertiary)' : 'var(--accent-bronze)',
+            color: (loading || !selectedCaseId) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+            cursor: (loading || !selectedCaseId) ? 'not-allowed' : 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading && selectedCaseId) {
+              e.currentTarget.style.opacity = '0.9';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading && selectedCaseId) {
+              e.currentTarget.style.opacity = '1';
+            }
+          }}
         >
           {loading ? "Generating..." : "Generate Bundle"}
         </button>
 
         {message && (
-          <div className={`p-3 rounded ${
-            message.startsWith("Error")
-              ? "bg-red-900/50 text-red-200"
-              : "bg-blue-900/50 text-blue-200"
-          }`}>
-            {message}
+          <div className="p-3 rounded" style={{ 
+            backgroundColor: message.startsWith("Error") ? 'var(--state-error)' : 'var(--accent-steel)',
+            borderColor: message.startsWith("Error") ? 'var(--state-error)' : 'var(--accent-steel)',
+            border: '1px solid',
+            opacity: 0.1
+          }}>
+            <div style={{ color: message.startsWith("Error") ? 'var(--state-error)' : 'var(--accent-steel)' }}>{message}</div>
           </div>
         )}
 
         {generatedBundle && (
-          <div className="mt-4 p-4 bg-gray-900 rounded space-y-2">
-            <div className="font-medium">Bundle Generated</div>
-            <div className="text-sm text-gray-400">
+          <div className="mt-4 p-4 rounded space-y-2" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
+            <div className="font-medium" style={{ color: 'var(--ink-primary)' }}>Bundle Generated</div>
+            <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
               Bundle ID: {generatedBundle.bundle_id}
             </div>
-            <div className="text-sm text-gray-400">
+            <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
               Type: {generatedBundle.bundle_type}
             </div>
-            <div className="text-sm text-gray-400">
+            <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
               Case ID: {generatedBundle.case_id}
             </div>
             {generatedBundle.metadata?.zip_path && (
-              <div className="text-sm text-gray-400">
+              <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
                 ZIP Path: {generatedBundle.metadata.zip_path}
               </div>
             )}
             {generatedBundle.files && generatedBundle.files.length > 0 && (
-              <div className="text-sm text-gray-400">
+              <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
                 Files: {generatedBundle.files.length} files included
               </div>
             )}
@@ -173,19 +205,23 @@ export default function EvidenceBundleTab() {
         )}
       </div>
 
-      <div className="bg-gray-800 rounded-lg p-6">
-        <h3 className="text-lg font-semibold mb-4">About Evidence Bundles</h3>
-        <div className="space-y-3 text-sm text-gray-300">
+      <div className="rounded-lg p-6" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>About Evidence Bundles</h3>
+        <div className="space-y-3 text-sm" style={{ color: 'var(--ink-secondary)' }}>
           <div>
-            <strong className="text-white">Apple Support Bundle:</strong> Includes device information, proof of ownership documents, diagnostics reports, and case notes for Apple support requests.
+            <strong style={{ color: 'var(--ink-primary)' }}>Apple Support Bundle:</strong> Includes device information, proof of ownership documents, diagnostics reports, and case notes for Apple support requests.
           </div>
           <div>
-            <strong className="text-white">Carrier Support Bundle:</strong> Includes device information and proof of ownership for carrier unlock requests.
+            <strong style={{ color: 'var(--ink-primary)' }}>Carrier Support Bundle:</strong> Includes device information and proof of ownership for carrier unlock requests.
           </div>
           <div>
-            <strong className="text-white">Generic Evidence Bundle:</strong> General-purpose evidence bundle with device information and case documents.
+            <strong style={{ color: 'var(--ink-primary)' }}>Generic Evidence Bundle:</strong> General-purpose evidence bundle with device information and case documents.
           </div>
-          <div className="mt-4 text-xs text-gray-400">
+          <div className="mt-4 text-xs" style={{ color: 'var(--ink-muted)' }}>
             All bundles are packaged as ZIP files and include metadata for submission to OEM/carrier support.
           </div>
         </div>
