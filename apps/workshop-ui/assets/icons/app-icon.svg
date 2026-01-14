@@ -1,28 +1,17 @@
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
   <!-- REFORGE OS App Icon - REFORGE Professional Theme -->
-  <!-- Dark Blue-Grey + Metallic Gold/Bronze -->
+  <!-- Steel Blue (#5B7FA8) accents on Dark Blue-Grey Background -->
   
   <defs>
-    <!-- Gold Gradient (Primary Accent) -->
-    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#B8941F;stop-opacity:1" />
+    <linearGradient id="steelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7A9BC4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5B7FA8;stop-opacity:1" />
     </linearGradient>
-    <!-- Bronze Gradient (Secondary Accent) -->
-    <linearGradient id="bronzeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#CD7F32;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#A8651F;stop-opacity:1" />
+    <linearGradient id="steelDarkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5B7FA8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3D5A7A;stop-opacity:1" />
     </linearGradient>
-    <!-- Gold Glow Filter -->
-    <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <!-- Bronze Glow Filter -->
-    <filter id="bronzeGlow" x="-50%" y="-50%" width="200%" height="200%">
+    <filter id="glow">
       <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
       <feMerge>
         <feMergeNode in="coloredBlur"/>
@@ -34,17 +23,17 @@
   <!-- Background Circle (Dark Blue-Grey) -->
   <circle cx="64" cy="64" r="60" fill="#1A1F2E" stroke="#252B3D" stroke-width="2"/>
   
-  <!-- Shield/Analysis Symbol (Gold) -->
+  <!-- Shield/Analysis Symbol (Steel Blue) -->
   <path d="M 64 20 L 90 30 L 90 55 Q 90 75 80 85 Q 70 95 64 100 Q 58 95 48 85 Q 38 75 38 55 L 38 30 Z" 
-        fill="url(#goldGradient)" 
+        fill="url(#steelGradient)" 
         opacity="0.9"
-        filter="url(#goldGlow)"/>
+        filter="url(#glow)"/>
   
-  <!-- Inner Circuit/Grid Pattern (Bronze accents) -->
-  <circle cx="64" cy="64" r="25" fill="none" stroke="url(#bronzeGradient)" stroke-width="2" opacity="0.6"/>
-  <line x1="64" y1="39" x2="64" y2="89" stroke="url(#bronzeGradient)" stroke-width="1.5" opacity="0.5"/>
-  <line x1="39" y1="64" x2="89" y2="64" stroke="url(#bronzeGradient)" stroke-width="1.5" opacity="0.5"/>
+  <!-- Inner Circuit/Grid Pattern (Steel Blue accents) -->
+  <circle cx="64" cy="64" r="25" fill="none" stroke="url(#steelDarkGradient)" stroke-width="2" opacity="0.6"/>
+  <line x1="64" y1="39" x2="64" y2="89" stroke="url(#steelDarkGradient)" stroke-width="1.5" opacity="0.5"/>
+  <line x1="39" y1="64" x2="89" y2="64" stroke="url(#steelDarkGradient)" stroke-width="1.5" opacity="0.5"/>
   
-  <!-- Center Dot (Gold Glowing) -->
-  <circle cx="64" cy="64" r="8" fill="#D4AF37" opacity="0.8" filter="url(#goldGlow)"/>
+  <!-- Center Dot (Glowing Steel Blue) -->
+  <circle cx="64" cy="64" r="8" fill="#5B7FA8" opacity="0.8" filter="url(#glow)"/>
 </svg>
