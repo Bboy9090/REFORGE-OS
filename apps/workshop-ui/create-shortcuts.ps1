@@ -14,8 +14,8 @@ if (-not (Test-Path $programsPath)) {
 $WScriptShell = New-Object -ComObject WScript.Shell
 
 # Try to find the built executable first, otherwise use dev mode
-$ReleaseExe = Join-Path $workshopUiPath "src-tauri\target\release\REFORGE OS.exe"
-$DebugExe = Join-Path $workshopUiPath "src-tauri\target\debug\REFORGE OS.exe"
+$ReleaseExe = Join-Path $workshopUiPath "src-tauri\target\release\workshop-ui.exe"
+$DebugExe = Join-Path $workshopUiPath "src-tauri\target\debug\workshop-ui.exe"
 $AppExe = ""
 
 if (Test-Path $ReleaseExe) {
