@@ -1,11 +1,11 @@
 # Theme Consistency Progress Report
 
 **Date:** 2025-01-XX  
-**Status:** In Progress (Phase 6 Complete - 69%)
+**Status:** In Progress (Phase 8 Complete - 86%)
 
 ---
 
-## ✅ COMPLETED (20 Pages - 69%)
+## ✅ COMPLETED (25 Pages - 86%)
 
 ### Phase 1 (5 pages):
 1. ✅ **Settings.tsx** - All sections, buttons, inputs
@@ -39,19 +39,26 @@
 19. ✅ **DrivesTab.tsx** - Drive list, SMART data display, buttons
 20. ✅ **DiagnosticsTab.tsx** - Device detection, policy gates, results, buttons
 
+### Phase 7 (3 pages):
+21. ✅ **IntakeTab.tsx** - Case creation form, device detection, recent cases (preserved .card/.input/.btn classes)
+22. ✅ **EvidenceBundleTab.tsx** - Bundle generator, inputs, buttons, messages
+23. ✅ **AuditLogTab.tsx** - Filters, event list, level colors, buttons
+
+### Phase 8 (2 pages):
+24. ✅ **ImagingTab.tsx** - OS deployment interface, inputs, buttons, warnings
+25. ✅ **DevModeTab.tsx** - Dev mode interface, selects, buttons, output
+
 ---
 
-## 🔄 REMAINING (9 Pages - 31%)
+## 🔄 REMAINING (4 Pages - 14%)
 
-### Medium Priority:
-- **IntakeTab.tsx** - Case intake form
-- **EvidenceBundleTab.tsx** - Evidence bundle interface
-- **AuditLogTab.tsx** - Audit log viewer
-- **ImagingTab.tsx** - Imaging interface
-- **DevModeTab.tsx** - Developer mode
+### To Verify/Update:
+- **CustodianVaultGate.tsx** - May already use theme (verify - uses some theme variables but may need updates)
+- **DeviceOverview.tsx** - May need minor updates
+- **ComplianceSummaryNew.tsx** - May need minor updates
 
-### Lower Priority (may already have theme):
-- **CustodianVaultGate.tsx** - May already use theme (verify)
+### Other Pages (may not need updates):
+- Additional pages that may use custom classes or already be styled
 
 ---
 
@@ -75,6 +82,8 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 - `bg-blue-600` → `backgroundColor: 'var(--accent-gold)'`
 - `bg-purple-600` → `backgroundColor: 'var(--accent-bronze)'`
 - `bg-cyan-600` → `backgroundColor: 'var(--accent-steel)'`
+- `bg-indigo-600` → `backgroundColor: 'var(--accent-bronze)'`
+- `bg-orange-600` → `backgroundColor: 'var(--accent-bronze)'`
 - `hover:bg-blue-700` → `onMouseEnter` with `var(--accent-gold-light)`
 - Add `boxShadow: 'var(--glow-gold)'` for primary actions
 - Add `color: 'var(--ink-inverse)'`
@@ -88,14 +97,18 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 - Error: `var(--state-error)`
 - Info: `var(--accent-steel)`
 
+### Custom Classes:
+- Pages using `.card`, `.input`, `.btn`, `.badge` classes from `design-system.css` preserve those classes
+- Update direct color classes to inline styles with REFORGE theme variables
+
 ---
 
 ## 🎯 NEXT STEPS
 
-1. Continue with remaining 9 pages systematically
-2. Update 3-4 pages per batch
-3. Test after each batch
-4. Commit progress after each batch
+1. Verify remaining 4 pages for theme consistency
+2. Update any remaining direct color classes
+3. Test final build
+4. Commit final changes
 5. Verify all pages build successfully
 
 ---
@@ -103,7 +116,7 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 ## 📊 STATISTICS
 
 - **Total Pages:** 29
-- **Updated:** 20 (69%)
-- **Remaining:** 9 (31%)
+- **Updated:** 25 (86%)
+- **Remaining:** 4 (14%)
 - **Build Status:** ✅ All updated pages build successfully
 - **Helper Created:** ✅ `theme-update-helper.md` for reference
