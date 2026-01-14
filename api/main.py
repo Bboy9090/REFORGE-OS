@@ -26,6 +26,7 @@ from recovery.recovery_guidance import generate_recovery_guidance
 from audit.logger import create_audit_logger, AuditLevel
 from audit.viewer import query_audit_events
 from solutions import database as solutions_db
+from trapdoor_api import create_trapdoor_router
 
 
 app = FastAPI(
@@ -512,6 +513,10 @@ async def get_case_audit_events_endpoint(case_id: str, actor: str = Query("syste
         return {"ok": True, "events": events, "count": len(events)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# Register Trapdoor API routes
+create_trapdoor_router(app)
 
 
 if __name__ == "__main__":

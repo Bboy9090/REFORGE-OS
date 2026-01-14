@@ -1,7 +1,7 @@
 {
   "solutions": [
     {
-      "id": "67f70e75-0e9c-4718-a94a-7188df94e120",
+      "id": "5b2d5710-697d-48cb-a46f-7ffd8b015e4b",
       "title": "MacBook Won't Boot - Recovery Mode",
       "description": "MacBook is not booting normally. Guide to access Recovery Mode and reinstall macOS.",
       "device_type": "macbook",
@@ -31,11 +31,75 @@
         "macos",
         "reinstall"
       ],
-      "created_at": "2026-01-11T22:28:48.039285+00:00",
-      "updated_at": "2026-01-11T22:28:48.039301+00:00"
+      "created_at": "2026-01-14T02:34:00.264312+00:00",
+      "updated_at": "2026-01-14T02:34:00.264326+00:00"
     },
     {
-      "id": "5c74c570-033d-4681-9d1c-a58559a1f0c2",
+      "id": "34f39583-f1c1-488f-8c41-c3e97e678a93",
+      "title": "iMac Won't Start - Reset NVRAM/PRAM",
+      "description": "iMac is not starting or displaying incorrectly. Reset NVRAM/PRAM to restore default settings.",
+      "device_type": "imac",
+      "category": "boot",
+      "solution_steps": [
+        "Shut down the iMac",
+        "Press Option + Command + P + R while turning on",
+        "Hold for about 20 seconds",
+        "Release keys when Apple logo appears and disappears twice",
+        "Allow system to boot normally"
+      ],
+      "difficulty": "easy",
+      "estimated_time": "5-10 minutes",
+      "tools_needed": [],
+      "prerequisites": [],
+      "warnings": [
+        "This resets system settings like volume, display resolution"
+      ],
+      "tags": [
+        "boot",
+        "nvram",
+        "pram",
+        "reset",
+        "imac"
+      ],
+      "created_at": "2026-01-14T02:34:00.264341+00:00",
+      "updated_at": "2026-01-14T02:34:00.264345+00:00"
+    },
+    {
+      "id": "1ceb776c-3e53-441c-8750-84443368e542",
+      "title": "MacBook Battery Not Charging",
+      "description": "MacBook battery is not charging or holding a charge. Diagnostic and troubleshooting steps.",
+      "device_type": "macbook",
+      "category": "hardware",
+      "solution_steps": [
+        "Check charging cable and adapter for damage",
+        "Try different power outlet",
+        "Reset SMC (System Management Controller)",
+        "Check battery health in System Information",
+        "If battery health is poor, consider replacement",
+        "Check for software updates"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "20-30 minutes",
+      "tools_needed": [
+        "Charging cable",
+        "Adapter"
+      ],
+      "prerequisites": [],
+      "warnings": [
+        "Battery replacement may be required if health is below 80%"
+      ],
+      "tags": [
+        "battery",
+        "charging",
+        "hardware",
+        "smc",
+        "macbook"
+      ],
+      "created_at": "2026-01-14T02:34:00.264356+00:00",
+      "updated_at": "2026-01-14T02:34:00.264358+00:00"
+    },
+    {
+      "id": "abbc8a71-b0d8-4983-b26f-a94b6b2ce9a2",
       "title": "Windows PC Boot Loop",
       "description": "Windows PC is stuck in a boot loop, continuously restarting.",
       "device_type": "computer_windows",
@@ -63,11 +127,218 @@
         "recovery",
         "repair"
       ],
-      "created_at": "2026-01-11T22:28:48.039339+00:00",
-      "updated_at": "2026-01-11T22:28:48.039342+00:00"
+      "created_at": "2026-01-14T02:34:00.264368+00:00",
+      "updated_at": "2026-01-14T02:34:00.264371+00:00"
     },
     {
-      "id": "bb029a8a-fd5e-4eef-a81c-7a76d7cd330a",
+      "id": "c39cac58-3a29-49e4-9c4a-d2be3fe75085",
+      "title": "Windows Blue Screen of Death (BSOD)",
+      "description": "Windows PC experiencing frequent blue screen crashes. Diagnostic and recovery steps.",
+      "device_type": "computer_windows",
+      "category": "software",
+      "solution_steps": [
+        "Note the error code displayed on blue screen",
+        "Boot into Safe Mode",
+        "Run Windows Memory Diagnostic",
+        "Check Event Viewer for error details",
+        "Update or rollback recent drivers",
+        "Check disk for errors (chkdsk)",
+        "Restore system to previous restore point"
+      ],
+      "difficulty": "hard",
+      "estimated_time": "30-60 minutes",
+      "tools_needed": [
+        "Windows Recovery Media"
+      ],
+      "prerequisites": [
+        "Error code from BSOD"
+      ],
+      "warnings": [
+        "May require driver updates or hardware replacement"
+      ],
+      "tags": [
+        "bsod",
+        "crash",
+        "windows",
+        "diagnostic",
+        "drivers"
+      ],
+      "created_at": "2026-01-14T02:34:00.264412+00:00",
+      "updated_at": "2026-01-14T02:34:00.264419+00:00"
+    },
+    {
+      "id": "67ef3e0d-0091-4c6b-9b3e-8def3172564e",
+      "title": "Windows Slow Performance",
+      "description": "Windows PC is running slowly. Optimization and cleanup steps.",
+      "device_type": "computer_windows",
+      "category": "performance",
+      "solution_steps": [
+        "Run Disk Cleanup utility",
+        "Check Task Manager for resource-heavy processes",
+        "Disable startup programs",
+        "Run disk defragmentation",
+        "Check for malware/virus",
+        "Update Windows and drivers",
+        "Check available disk space (keep 15% free)",
+        "Consider SSD upgrade if using HDD"
+      ],
+      "difficulty": "easy",
+      "estimated_time": "20-40 minutes",
+      "tools_needed": [],
+      "prerequisites": [],
+      "warnings": [
+        "Backup data before defragmentation"
+      ],
+      "tags": [
+        "performance",
+        "optimization",
+        "windows",
+        "cleanup"
+      ],
+      "created_at": "2026-01-14T02:34:00.264432+00:00",
+      "updated_at": "2026-01-14T02:34:00.264435+00:00"
+    },
+    {
+      "id": "6f3142b0-c3ca-4e4c-b926-70a75875723f",
+      "title": "Windows Cannot Connect to Internet",
+      "description": "Windows PC cannot connect to internet or network. Network troubleshooting steps.",
+      "device_type": "computer_windows",
+      "category": "network",
+      "solution_steps": [
+        "Check physical cable connections",
+        "Restart modem/router",
+        "Run Network Troubleshooter",
+        "Reset network adapter",
+        "Release and renew IP address (ipconfig /release, ipconfig /renew)",
+        "Check firewall settings",
+        "Update network adapter drivers",
+        "Check DNS settings"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "15-30 minutes",
+      "tools_needed": [],
+      "prerequisites": [],
+      "warnings": [
+        "May require router/modem reset"
+      ],
+      "tags": [
+        "network",
+        "internet",
+        "connectivity",
+        "windows",
+        "troubleshooting"
+      ],
+      "created_at": "2026-01-14T02:34:00.264444+00:00",
+      "updated_at": "2026-01-14T02:34:00.264447+00:00"
+    },
+    {
+      "id": "964a7e55-3021-4f97-934d-e8e6a1c2ecc6",
+      "title": "Linux System Won't Boot - GRUB Recovery",
+      "description": "Linux system fails to boot, stuck at GRUB menu or bootloader error.",
+      "device_type": "computer_linux",
+      "category": "boot",
+      "solution_steps": [
+        "Boot from Linux Live USB/CD",
+        "Mount the root filesystem",
+        "Chroot into the installed system",
+        "Reinstall GRUB bootloader",
+        "Update GRUB configuration",
+        "Check fstab for errors",
+        "Reboot and test"
+      ],
+      "difficulty": "hard",
+      "estimated_time": "30-60 minutes",
+      "tools_needed": [
+        "Linux Live USB/CD"
+      ],
+      "prerequisites": [
+        "Linux system knowledge"
+      ],
+      "warnings": [
+        "Incorrect commands can make system unbootable"
+      ],
+      "tags": [
+        "boot",
+        "grub",
+        "linux",
+        "bootloader",
+        "recovery"
+      ],
+      "created_at": "2026-01-14T02:34:00.264456+00:00",
+      "updated_at": "2026-01-14T02:34:00.264459+00:00"
+    },
+    {
+      "id": "3c907580-6c37-4efe-9eda-b127248cabbd",
+      "title": "Linux Disk Full - Clean Up Space",
+      "description": "Linux system running out of disk space. Cleanup and optimization steps.",
+      "device_type": "computer_linux",
+      "category": "performance",
+      "solution_steps": [
+        "Check disk usage (df -h)",
+        "Find large files (du -sh /* | sort -h)",
+        "Clean package cache (apt clean / yum clean)",
+        "Remove old kernels",
+        "Clean log files (journalctl --vacuum-time)",
+        "Check for large log files in /var/log",
+        "Remove unused packages",
+        "Check for core dump files"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "15-30 minutes",
+      "tools_needed": [],
+      "prerequisites": [
+        "Root/sudo access"
+      ],
+      "warnings": [
+        "Be careful when deleting files, especially system logs"
+      ],
+      "tags": [
+        "disk",
+        "space",
+        "cleanup",
+        "linux",
+        "optimization"
+      ],
+      "created_at": "2026-01-14T02:34:00.264471+00:00",
+      "updated_at": "2026-01-14T02:34:00.264473+00:00"
+    },
+    {
+      "id": "dc81a53c-ac2e-4ab6-b92d-76be784c8fc7",
+      "title": "Linux Service Won't Start",
+      "description": "Linux systemd service failing to start. Diagnostic and troubleshooting steps.",
+      "device_type": "computer_linux",
+      "category": "software",
+      "solution_steps": [
+        "Check service status (systemctl status servicename)",
+        "View service logs (journalctl -u servicename)",
+        "Check service configuration file",
+        "Verify dependencies are installed",
+        "Check for syntax errors in config",
+        "Test service configuration (systemd-analyze verify)",
+        "Reload systemd daemon",
+        "Start service and check for errors"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "15-30 minutes",
+      "tools_needed": [],
+      "prerequisites": [
+        "Root/sudo access",
+        "Service name"
+      ],
+      "warnings": [
+        "Check logs carefully before modifying system services"
+      ],
+      "tags": [
+        "service",
+        "systemd",
+        "linux",
+        "troubleshooting"
+      ],
+      "created_at": "2026-01-14T02:34:00.264482+00:00",
+      "updated_at": "2026-01-14T02:34:00.264485+00:00"
+    },
+    {
+      "id": "478f2c85-c4e1-4519-b094-e96c8f82b99e",
       "title": "Android Phone Boot Loop",
       "description": "Android device is stuck in boot loop, continuously restarting.",
       "device_type": "android_phone",
@@ -96,11 +367,115 @@
         "recovery",
         "reset"
       ],
-      "created_at": "2026-01-11T22:28:48.039353+00:00",
-      "updated_at": "2026-01-11T22:28:48.039355+00:00"
+      "created_at": "2026-01-14T02:34:00.264494+00:00",
+      "updated_at": "2026-01-14T02:34:00.264496+00:00"
     },
     {
-      "id": "56ae5bb4-5fc3-4773-90c0-2dfc2c931eb9",
+      "id": "6c8ea4bb-dfdb-4bb0-be68-bea3fa7907a7",
+      "title": "Android Phone Won't Charge",
+      "description": "Android device is not charging or charging slowly. Diagnostic steps.",
+      "device_type": "android_phone",
+      "category": "hardware",
+      "solution_steps": [
+        "Check charging cable and adapter",
+        "Try different power source",
+        "Clean charging port with compressed air",
+        "Check for physical damage to port",
+        "Try wireless charging if supported",
+        "Boot into Safe Mode to rule out software",
+        "Check battery health in settings",
+        "Replace charging port or battery if needed"
+      ],
+      "difficulty": "easy",
+      "estimated_time": "15-20 minutes",
+      "tools_needed": [
+        "Charging cable",
+        "Adapter",
+        "Compressed air"
+      ],
+      "prerequisites": [],
+      "warnings": [
+        "May require hardware repair"
+      ],
+      "tags": [
+        "charging",
+        "battery",
+        "hardware",
+        "android"
+      ],
+      "created_at": "2026-01-14T02:34:00.264505+00:00",
+      "updated_at": "2026-01-14T02:34:00.264507+00:00"
+    },
+    {
+      "id": "18198cc7-1883-4292-ae47-1960a807265f",
+      "title": "Android App Crashes Continuously",
+      "description": "Specific Android app keeps crashing. Troubleshooting and resolution steps.",
+      "device_type": "android_phone",
+      "category": "software",
+      "solution_steps": [
+        "Force stop the app in Settings",
+        "Clear app cache",
+        "Clear app data (if acceptable)",
+        "Uninstall and reinstall app",
+        "Check for app updates",
+        "Update Android OS",
+        "Check available storage space",
+        "Boot into Safe Mode to test"
+      ],
+      "difficulty": "easy",
+      "estimated_time": "10-15 minutes",
+      "tools_needed": [],
+      "prerequisites": [],
+      "warnings": [
+        "Clearing app data will reset app to default"
+      ],
+      "tags": [
+        "app",
+        "crash",
+        "software",
+        "android",
+        "troubleshooting"
+      ],
+      "created_at": "2026-01-14T02:34:00.264516+00:00",
+      "updated_at": "2026-01-14T02:34:00.264518+00:00"
+    },
+    {
+      "id": "0b2f98b6-723f-4c8d-9a21-c8c08b0aba4a",
+      "title": "Android Tablet Slow Performance",
+      "description": "Android tablet is running slowly or lagging. Optimization steps.",
+      "device_type": "android_tablet",
+      "category": "performance",
+      "solution_steps": [
+        "Restart the tablet",
+        "Clear cache for all apps",
+        "Uninstall unused apps",
+        "Free up storage space (keep 20% free)",
+        "Disable or uninstall bloatware",
+        "Update Android OS",
+        "Factory reset as last resort",
+        "Consider device age - may need replacement"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "20-40 minutes",
+      "tools_needed": [],
+      "prerequisites": [
+        "Backup data"
+      ],
+      "warnings": [
+        "Factory reset will erase all data"
+      ],
+      "tags": [
+        "performance",
+        "slow",
+        "optimization",
+        "android",
+        "tablet"
+      ],
+      "created_at": "2026-01-14T02:34:00.264527+00:00",
+      "updated_at": "2026-01-14T02:34:00.264529+00:00"
+    },
+    {
+      "id": "8db341c4-b01a-4bcf-b2ba-4ed6efd71e9e",
       "title": "iPhone Won't Turn On",
       "description": "iPhone is completely unresponsive, won't turn on or charge.",
       "device_type": "ios_iphone",
@@ -129,8 +504,113 @@
         "hardware",
         "charging"
       ],
-      "created_at": "2026-01-11T22:28:48.039364+00:00",
-      "updated_at": "2026-01-11T22:28:48.039366+00:00"
+      "created_at": "2026-01-14T02:34:00.264538+00:00",
+      "updated_at": "2026-01-14T02:34:00.264540+00:00"
+    },
+    {
+      "id": "275b18da-fccd-42a8-bd29-5069f410f300",
+      "title": "iPhone Stuck in Recovery Mode",
+      "description": "iPhone is stuck in recovery mode (connect to iTunes/Finder screen).",
+      "device_type": "ios_iphone",
+      "category": "boot",
+      "solution_steps": [
+        "Connect to computer with iTunes/Finder",
+        "Try 'Update' first (preserves data)",
+        "If update fails, try 'Restore'",
+        "If restore fails, use DFU mode",
+        "Use recovery tools if available",
+        "If all else fails, check for hardware issues"
+      ],
+      "difficulty": "hard",
+      "estimated_time": "30-60 minutes",
+      "tools_needed": [
+        "Computer with iTunes/Finder",
+        "USB cable"
+      ],
+      "prerequisites": [],
+      "warnings": [
+        "Restore will erase all data",
+        "DFU mode is complex"
+      ],
+      "tags": [
+        "recovery",
+        "dfu",
+        "restore",
+        "iphone",
+        "itunes"
+      ],
+      "created_at": "2026-01-14T02:34:00.264548+00:00",
+      "updated_at": "2026-01-14T02:34:00.264551+00:00"
+    },
+    {
+      "id": "22cb4adf-9ac5-46f2-94f2-4ba47dd2ba64",
+      "title": "iPad Touch Screen Not Responding",
+      "description": "iPad touch screen is unresponsive or erratic. Troubleshooting steps.",
+      "device_type": "ios_ipad",
+      "category": "hardware",
+      "solution_steps": [
+        "Restart the iPad",
+        "Remove screen protector or case",
+        "Clean screen with microfiber cloth",
+        "Check for software updates",
+        "Reset all settings",
+        "Restore from backup",
+        "If issue persists, check for screen damage",
+        "May require screen replacement"
+      ],
+      "difficulty": "medium",
+      "estimated_time": "20-40 minutes",
+      "tools_needed": [
+        "Microfiber cloth"
+      ],
+      "prerequisites": [
+        "Backup data"
+      ],
+      "warnings": [
+        "May require hardware repair",
+        "Reset all settings removes preferences"
+      ],
+      "tags": [
+        "touch",
+        "screen",
+        "hardware",
+        "ipad",
+        "troubleshooting"
+      ],
+      "created_at": "2026-01-14T02:34:00.264560+00:00",
+      "updated_at": "2026-01-14T02:34:00.264563+00:00"
+    },
+    {
+      "id": "bc70314e-c3a1-4ff1-bf14-4feb38cad7fa",
+      "title": "iPhone Overheating",
+      "description": "iPhone is overheating during use or charging. Diagnostic and resolution steps.",
+      "device_type": "ios_iphone",
+      "category": "hardware",
+      "solution_steps": [
+        "Remove from case during charging",
+        "Stop using device until cool",
+        "Check for resource-intensive apps",
+        "Close background apps",
+        "Disable location services if not needed",
+        "Update iOS to latest version",
+        "Check battery health",
+        "If persistent, may need battery replacement"
+      ],
+      "difficulty": "easy",
+      "estimated_time": "15-20 minutes",
+      "tools_needed": [],
+      "prerequisites": [],
+      "warnings": [
+        "Overheating can damage battery permanently"
+      ],
+      "tags": [
+        "overheating",
+        "battery",
+        "temperature",
+        "iphone"
+      ],
+      "created_at": "2026-01-14T02:34:00.264571+00:00",
+      "updated_at": "2026-01-14T02:34:00.264574+00:00"
     }
   ]
 }
