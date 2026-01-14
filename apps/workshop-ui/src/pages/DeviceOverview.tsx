@@ -101,11 +101,17 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
     }
   };
 
+  const getConfidenceColor = (confidence: number) => {
+    if (confidence >= 0.85) return 'var(--state-success)';
+    if (confidence >= 0.50) return 'var(--state-warning)';
+    return 'var(--state-error)';
+  };
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Device Insight</h2>
-        <p className="text-gray-400">
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Device Insight</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>
           Read-only summary of observed device metadata and protection posture
         </p>
       </div>
@@ -114,9 +120,13 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
         <ErrorAlert message={error} onDismiss={() => setError("")} />
       )}
 
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
+      <div className="rounded-lg p-6 space-y-4" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-2">
+          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>
             Device Metadata
           </label>
           <div className="flex gap-2">
@@ -125,98 +135,123 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
               value={deviceMetadata}
               onChange={(e) => setDeviceMetadata(e.target.value)}
               placeholder="e.g., iPhone 13 Pro - Clean device"
-              className="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-4 py-2 rounded-lg transition-all duration-300"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
               onKeyPress={(e) => e.key === "Enter" && analyzeDevice()}
             />
             <button
               onClick={analyzeDevice}
               disabled={loading}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
+              className="px-6 py-2 rounded-lg font-medium transition-all duration-300"
+              style={{
+                backgroundColor: loading ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
+                color: loading ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+                boxShadow: loading ? 'none' : 'var(--glow-gold)',
+                cursor: loading ? 'not-allowed' : 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                }
+              }}
             >
               {loading ? "Analyzing..." : "Analyze Device"}
             </button>
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs mt-2" style={{ color: 'var(--ink-muted)' }}>
             Enter device information to begin read-only analysis
           </p>
         </div>
       </div>
 
       {loading && (
-        <div className="bg-gray-800 rounded-lg p-12 text-center">
+        <div className="rounded-lg p-12 text-center" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
           <LoadingSpinner size="lg" text="Analyzing device..." />
         </div>
       )}
 
       {device && !loading && (
-        <div className="bg-gray-800 rounded-lg p-6 space-y-4">
+        <div className="rounded-lg p-6 space-y-4" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
           <div>
-            <label className="text-sm text-gray-400">Device Model</label>
-            <div className="text-lg font-semibold">{device.model}</div>
+            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Device Model</label>
+            <div className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>{device.model}</div>
           </div>
 
           <div>
-            <label className="text-sm text-gray-400">Manufacturer</label>
-            <div className="text-lg">{device.manufacturer}</div>
+            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Manufacturer</label>
+            <div className="text-lg" style={{ color: 'var(--ink-primary)' }}>{device.manufacturer}</div>
           </div>
 
           <div>
-            <label className="text-sm text-gray-400">Platform</label>
-            <div className="text-lg uppercase">{device.platform}</div>
+            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Platform</label>
+            <div className="text-lg uppercase" style={{ color: 'var(--ink-primary)' }}>{device.platform}</div>
           </div>
 
           <div>
-            <label className="text-sm text-gray-400">Observed Protection Layer</label>
-            <div className="text-lg">{device.security_state}</div>
+            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Observed Protection Layer</label>
+            <div className="text-lg" style={{ color: 'var(--ink-primary)' }}>{device.security_state}</div>
           </div>
 
           <div>
-            <label className="text-sm text-gray-400">Capability Class</label>
-            <div className="text-lg">{device.capability_class}</div>
-            <p className="text-sm text-gray-500 mt-1">
+            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Capability Class</label>
+            <div className="text-lg" style={{ color: 'var(--ink-primary)' }}>{device.capability_class}</div>
+            <p className="text-sm mt-1" style={{ color: 'var(--ink-muted)' }}>
               This assessment documents analysis only. No modification or circumvention is performed.
             </p>
           </div>
 
           {device.restrictions.length > 0 && (
             <div>
-              <label className="text-sm text-gray-400">Restrictions</label>
-              <ul className="list-disc list-inside text-gray-300 mt-1 space-y-1">
+              <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Restrictions</label>
+              <ul className="list-disc list-inside mt-1 space-y-1">
                 {device.restrictions.map((restriction, idx) => (
-                  <li key={idx} className="text-sm">{restriction}</li>
+                  <li key={idx} className="text-sm" style={{ color: 'var(--ink-secondary)' }}>{restriction}</li>
                 ))}
               </ul>
             </div>
           )}
 
           {ownership && (
-            <div className="border-t border-gray-700 pt-4 mt-4">
-              <label className="text-sm text-gray-400">Ownership Confidence</label>
+            <div className="pt-4 mt-4" style={{ borderTop: '1px solid var(--border-primary)' }}>
+              <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Ownership Confidence</label>
               <div className="mt-2">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-gray-300">
+                  <span className="text-sm" style={{ color: 'var(--ink-secondary)' }}>
                     {ownership.verified ? "Verified" : "Not Verified"}
                   </span>
-                  <span className={`text-sm font-semibold ${
-                    ownership.confidence >= 0.85 ? "text-green-400" :
-                    ownership.confidence >= 0.50 ? "text-amber-400" :
-                    "text-red-400"
-                  }`}>
+                  <span className="text-sm font-semibold" style={{ color: getConfidenceColor(ownership.confidence) }}>
                     {Math.round(ownership.confidence * 100)}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="w-full rounded-full h-2" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
                   <div
-                    className={`h-2 rounded-full transition-all ${
-                      ownership.confidence >= 0.85 ? "bg-green-500" :
-                      ownership.confidence >= 0.50 ? "bg-amber-500" :
-                      "bg-red-500"
-                    }`}
-                    style={{ width: `${ownership.confidence * 100}%` }}
+                    className="h-2 rounded-full transition-all"
+                    style={{ 
+                      width: `${ownership.confidence * 100}%`,
+                      backgroundColor: getConfidenceColor(ownership.confidence)
+                    }}
                   />
                 </div>
                 {ownership.required_authorization && (
-                  <p className="text-xs text-amber-300 mt-1">
+                  <p className="text-xs mt-1" style={{ color: 'var(--state-warning)' }}>
                     Additional authorization required: {ownership.required_authorization}
                   </p>
                 )}

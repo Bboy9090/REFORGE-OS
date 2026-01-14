@@ -123,14 +123,19 @@ export default function CustodianVaultGate({
   if (ownershipConfidence < 85) {
     return (
       <div className="space-y-6 fade-in">
-        <div className="card bg-amber-900/20 border-amber-700/50">
-          <h3 className="text-lg font-semibold text-amber-200 mb-2">
+        <div className="card rounded-lg p-6" style={{ 
+          backgroundColor: 'var(--state-warning)',
+          borderColor: 'var(--state-warning)',
+          border: '1px solid var(--state-warning)',
+          opacity: 0.1
+        }}>
+          <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--state-warning)' }}>
             Ownership Confidence Insufficient
           </h3>
-          <p className="text-amber-100">
+          <p style={{ color: 'var(--ink-primary)' }}>
             Additional documentation may be required to access the Custodial Closet.
           </p>
-          <p className="text-sm text-amber-200/80 mt-2">
+          <p className="text-sm mt-2" style={{ color: 'var(--ink-secondary)' }}>
             External authorization may be required.
           </p>
         </div>
@@ -141,10 +146,10 @@ export default function CustodianVaultGate({
   return (
     <div className="space-y-6 fade-in">
       <div>
-        <h2 className="text-3xl font-bold mb-2">
+        <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>
           Custodial Closet — Solutions Database
         </h2>
-        <p className="text-gray-400">
+        <p style={{ color: 'var(--ink-muted)' }}>
           Access repair solutions for all device types. Analysis and documentation only.
         </p>
       </div>
@@ -168,164 +173,68 @@ export default function CustodianVaultGate({
       {deviceId && ownershipConfidence >= 85 && (
         <div className="card" style={{ 
           backgroundColor: 'var(--surface-secondary)', 
-          borderColor: 'var(--border-bronze)',
+          borderColor: 'var(--border-primary)',
           borderWidth: '1px',
           borderStyle: 'solid'
         }}>
-          <h3 className="font-semibold mb-3" style={{ color: 'var(--accent-bronze)' }}>
-            Interpretive Review
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold" style={{ color: 'var(--ink-primary)' }}>Interpretive Review Access</h3>
+            <button
+              onClick={() => loadInterpretiveReview(deviceId, "device_analysis")}
+              disabled={loading}
+              className="btn btn-outline"
+            >
+              {loading ? "Loading..." : "Request Interpretive Review"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!acknowledged && (
+        <div className="card" style={{ 
+          backgroundColor: 'var(--surface-secondary)', 
+          borderColor: 'var(--border-primary)',
+          borderWidth: '1px',
+          borderStyle: 'solid'
+        }}>
+          <h3 className="font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Acknowledgment Required</h3>
+          <p className="mb-4" style={{ color: 'var(--ink-secondary)' }}>
+            Accessing the Custodial Closet requires acknowledgment of the following:
+          </p>
+          <ul className="list-disc list-inside space-y-2 mb-6" style={{ color: 'var(--ink-secondary)' }}>
+            <li>All solutions are for analysis and documentation purposes only</li>
+            <li>No execution paths or procedural guidance are provided</li>
+            <li>All access is logged for compliance and audit purposes</li>
+            <li>Historical context is provided for risk assessment only</li>
+          </ul>
           <button
-            onClick={() => deviceId && loadInterpretiveReview(deviceId, "device_analysis")}
-            disabled={loading}
-            className="px-4 py-2 rounded-lg font-medium transition-all duration-300 disabled:opacity-50"
-            style={{
-              backgroundColor: 'var(--accent-bronze)',
-              color: 'var(--ink-primary)',
-              boxShadow: 'var(--glow-bronze)',
-            }}
+            onClick={() => setAcknowledledged(true)}
+            className="btn btn-primary"
           >
-            {loading ? "Loading..." : "Request Interpretive Review"}
+            I Acknowledge and Proceed
           </button>
         </div>
       )}
 
-      {showInterpretiveReview && interpretiveReview && (
+      {acknowledged && (
         <div className="card" style={{ 
-          backgroundColor: 'var(--surface-workbench-steel)', 
-          borderColor: 'rgba(45, 212, 255, 0.5)',
-          borderWidth: '2px',
+          backgroundColor: 'var(--surface-secondary)', 
+          borderColor: 'var(--border-primary)',
+          borderWidth: '1px',
           borderStyle: 'solid'
         }}>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold" style={{ color: 'var(--accent-spray-cyan)' }}>
-              Interpretive Review Results
-            </h3>
-            <button
-              onClick={() => setShowInterpretiveReview(false)}
-              className="text-sm"
-              style={{ color: 'var(--ink-muted)' }}
-            >
-              Close
-            </button>
-          </div>
-          
-          {interpretiveReview.risk_framing && (
-            <div className="mb-4">
-              <h4 className="font-semibold mb-2" style={{ color: 'var(--ink-primary)' }}>Risk Framing</h4>
-              <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
-                {interpretiveReview.risk_framing}
-              </p>
-            </div>
-          )}
-
-          {interpretiveReview.authority_paths && interpretiveReview.authority_paths.length > 0 && (
-            <div className="mb-4">
-              <h4 className="font-semibold mb-2" style={{ color: 'var(--ink-primary)' }}>External Authorization Pathways</h4>
-              <ul className="list-disc list-inside space-y-1 text-sm" style={{ color: 'var(--ink-muted)' }}>
-                {interpretiveReview.authority_paths.map((path: string, idx: number) => (
-                  <li key={idx}>{path}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="mt-4 p-3 rounded" style={{ 
-            backgroundColor: 'rgba(205, 127, 50, 0.1)',
-            borderLeft: '3px solid var(--accent-bronze)'
-          }}>
-            <p className="text-xs" style={{ color: 'var(--ink-muted)' }}>
-              ⚠️ This review provides contextual analysis only. No procedural guidance is displayed.
-              External authorization may be required before proceeding.
-            </p>
-          </div>
-        </div>
-      )}
-
-      <div className="space-y-3">
-        <label className="flex items-start space-x-3 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={acknowledged}
-            onChange={(e) => setAcknowledledged(e.target.checked)}
-            className="mt-1"
-          />
-          <span className="text-sm text-gray-300">
-            I understand this provides repair solutions for legitimate repair purposes only.
-            All activity is logged for compliance.
-          </span>
-        </label>
-      </div>
-
-      {acknowledged && (
-        <div className="space-y-6">
-          {/* Filters */}
-          <div className="card">
-            <h3 className="text-lg font-semibold mb-4">Search Solutions</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Device Type</label>
-                <select
-                  value={selectedDeviceType}
-                  onChange={(e) => setSelectedDeviceType(e.target.value)}
-                  className="input"
-                >
-                  <option value="">All Devices</option>
-                  <option value="computer_windows">Windows PC</option>
-                  <option value="computer_linux">Linux PC</option>
-                  <option value="macbook">MacBook</option>
-                  <option value="imac">iMac</option>
-                  <option value="android_phone">Android Phone</option>
-                  <option value="android_tablet">Android Tablet</option>
-                  <option value="ios_iphone">iPhone</option>
-                  <option value="ios_ipad">iPad</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Category</label>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="input"
-                >
-                  <option value="">All Categories</option>
-                  <option value="boot">Boot Issues</option>
-                  <option value="hardware">Hardware</option>
-                  <option value="software">Software</option>
-                  <option value="performance">Performance</option>
-                  <option value="network">Network</option>
-                  <option value="data">Data</option>
-                  <option value="security">Security</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Search</label>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search solutions..."
-                  className="input"
-                />
-              </div>
-            </div>
-          </div>
-
           {error && (
             <ErrorAlert message={error} onDismiss={() => setError("")} />
           )}
 
           {loading && (
-            <div className="card">
+            <div className="text-center py-8">
               <LoadingSpinner size="lg" text="Loading solutions..." />
             </div>
           )}
 
           {!loading && selectedSolution && (
-            <div className="card">
+            <div>
               <button
                 onClick={() => setSelectedSolution(null)}
                 className="btn btn-outline mb-4"
@@ -335,8 +244,8 @@ export default function CustodianVaultGate({
 
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">{selectedSolution.title}</h3>
-                  <p className="text-gray-400 mb-4">{selectedSolution.description}</p>
+                  <h3 className="text-2xl font-bold mb-2" style={{ color: 'var(--ink-primary)' }}>{selectedSolution.title}</h3>
+                  <p className="mb-4" style={{ color: 'var(--ink-muted)' }}>{selectedSolution.description}</p>
                   
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className={`badge ${DIFFICULTY_COLORS[selectedSolution.difficulty] || "badge-info"}`}>
@@ -354,8 +263,8 @@ export default function CustodianVaultGate({
                 {selectedSolution.warnings.length > 0 && (
                   <div className="alert alert-warning">
                     <div>
-                      <strong className="font-semibold">Warnings:</strong>
-                      <ul className="list-disc list-inside mt-2 space-y-1">
+                      <strong className="font-semibold" style={{ color: 'var(--ink-primary)' }}>Warnings:</strong>
+                      <ul className="list-disc list-inside mt-2 space-y-1" style={{ color: 'var(--ink-secondary)' }}>
                         {selectedSolution.warnings.map((warning, idx) => (
                           <li key={idx}>{warning}</li>
                         ))}
@@ -366,8 +275,8 @@ export default function CustodianVaultGate({
 
                 {selectedSolution.tools_needed.length > 0 && (
                   <div>
-                    <h4 className="font-semibold mb-2">Tools Needed:</h4>
-                    <ul className="list-disc list-inside text-gray-300">
+                    <h4 className="font-semibold mb-2" style={{ color: 'var(--ink-primary)' }}>Tools Needed:</h4>
+                    <ul className="list-disc list-inside" style={{ color: 'var(--ink-secondary)' }}>
                       {selectedSolution.tools_needed.map((tool, idx) => (
                         <li key={idx}>{tool}</li>
                       ))}
@@ -376,8 +285,8 @@ export default function CustodianVaultGate({
                 )}
 
                 <div>
-                  <h4 className="font-semibold mb-3">Solution Steps:</h4>
-                  <ol className="list-decimal list-inside space-y-2 text-gray-300">
+                  <h4 className="font-semibold mb-3" style={{ color: 'var(--ink-primary)' }}>Solution Steps:</h4>
+                  <ol className="list-decimal list-inside space-y-2" style={{ color: 'var(--ink-secondary)' }}>
                     {selectedSolution.solution_steps.map((step, idx) => (
                       <li key={idx} className="pl-2">{step}</li>
                     ))}
@@ -390,31 +299,40 @@ export default function CustodianVaultGate({
           {!loading && !selectedSolution && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">
+                <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>
                   Solutions ({solutions.length})
                 </h3>
               </div>
 
               {solutions.length === 0 ? (
                 <div className="card text-center py-8">
-                  <p className="text-gray-400">No solutions found. Try adjusting your filters.</p>
+                  <p style={{ color: 'var(--ink-muted)' }}>No solutions found. Try adjusting your filters.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {solutions.map((solution) => (
                     <div
                       key={solution.id}
-                      className="card cursor-pointer hover:border-primary transition-all"
+                      className="card cursor-pointer transition-all"
                       onClick={() => setSelectedSolution(solution)}
+                      style={{
+                        borderColor: 'var(--border-primary)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--border-gold)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--border-primary)';
+                      }}
                     >
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-semibold text-lg flex-1">{solution.title}</h4>
+                        <h4 className="font-semibold text-lg flex-1" style={{ color: 'var(--ink-primary)' }}>{solution.title}</h4>
                         <span className={`badge ${DIFFICULTY_COLORS[solution.difficulty] || "badge-info"} ml-2`}>
                           {solution.difficulty}
                         </span>
                       </div>
                       
-                      <p className="text-sm text-gray-400 mb-3 line-clamp-2">
+                      <p className="text-sm mb-3 line-clamp-2" style={{ color: 'var(--ink-muted)' }}>
                         {solution.description}
                       </p>
 
