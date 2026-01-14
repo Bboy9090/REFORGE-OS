@@ -1,11 +1,11 @@
 # Theme Consistency Progress Report
 
 **Date:** 2025-01-XX  
-**Status:** In Progress (Phase 5 Complete - 59%)
+**Status:** In Progress (Phase 6 Complete - 69%)
 
 ---
 
-## ✅ COMPLETED (17 Pages - 59%)
+## ✅ COMPLETED (20 Pages - 69%)
 
 ### Phase 1 (5 pages):
 1. ✅ **Settings.tsx** - All sections, buttons, inputs
@@ -34,17 +34,19 @@
 16. ✅ **ConsoleTab.tsx** - Console output, command input, buttons
 17. ✅ **RecoveryTab.tsx** - Firmware lookup, recovery guidance, inputs, buttons
 
+### Phase 6 (3 pages):
+18. ✅ **JobsTab.tsx** - Cases, master tickets, case details, attach interface
+19. ✅ **DrivesTab.tsx** - Drive list, SMART data display, buttons
+20. ✅ **DiagnosticsTab.tsx** - Device detection, policy gates, results, buttons
+
 ---
 
-## 🔄 REMAINING (12 Pages - 41%)
+## 🔄 REMAINING (9 Pages - 31%)
 
 ### Medium Priority:
 - **IntakeTab.tsx** - Case intake form
 - **EvidenceBundleTab.tsx** - Evidence bundle interface
 - **AuditLogTab.tsx** - Audit log viewer
-- **DiagnosticsTab.tsx** - Diagnostics interface
-- **JobsTab.tsx** - Job management
-- **DrivesTab.tsx** - Drive management
 - **ImagingTab.tsx** - Imaging interface
 - **DevModeTab.tsx** - Developer mode
 
@@ -72,6 +74,7 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 ### Buttons:
 - `bg-blue-600` → `backgroundColor: 'var(--accent-gold)'`
 - `bg-purple-600` → `backgroundColor: 'var(--accent-bronze)'`
+- `bg-cyan-600` → `backgroundColor: 'var(--accent-steel)'`
 - `hover:bg-blue-700` → `onMouseEnter` with `var(--accent-gold-light)`
 - Add `boxShadow: 'var(--glow-gold)'` for primary actions
 - Add `color: 'var(--ink-inverse)'`
@@ -89,8 +92,8 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 
 ## 🎯 NEXT STEPS
 
-1. Continue with remaining 12 pages systematically
-2. Update 3-5 pages per batch
+1. Continue with remaining 9 pages systematically
+2. Update 3-4 pages per batch
 3. Test after each batch
 4. Commit progress after each batch
 5. Verify all pages build successfully
@@ -100,7 +103,7 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 ## 📊 STATISTICS
 
 - **Total Pages:** 29
-- **Updated:** 17 (59%)
-- **Remaining:** 12 (41%)
+- **Updated:** 20 (69%)
+- **Remaining:** 9 (31%)
 - **Build Status:** ✅ All updated pages build successfully
 - **Helper Created:** ✅ `theme-update-helper.md` for reference
