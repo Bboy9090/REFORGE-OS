@@ -90,12 +90,12 @@ export default function NotificationsCenter() {
     }
   };
 
-  const getTypeColor = (type: string) => {
+  const getTypeBorderColor = (type: string) => {
     switch (type) {
-      case 'error': return 'border-red-200 bg-red-50';
-      case 'warning': return 'border-yellow-200 bg-yellow-50';
-      case 'success': return 'border-green-200 bg-green-50';
-      default: return 'border-blue-200 bg-blue-50';
+      case 'error': return 'var(--state-error)';
+      case 'warning': return 'var(--state-warning)';
+      case 'success': return 'var(--state-success)';
+      default: return 'var(--accent-steel)';
     }
   };
 
@@ -104,15 +104,26 @@ export default function NotificationsCenter() {
       <div className="container max-w-4xl mx-auto py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold mb-2">Notifications</h2>
-            <p className="text-gray-600">
+            <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Notifications</h2>
+            <p style={{ color: 'var(--ink-secondary)' }}>
               {unreadCount > 0 ? `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}` : 'All caught up'}
             </p>
           </div>
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="px-4 py-2 text-sm rounded-lg transition-all duration-300"
+              style={{
+                backgroundColor: 'var(--accent-gold)',
+                color: 'var(--ink-inverse)',
+                boxShadow: 'var(--glow-gold)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+              }}
             >
               Mark All as Read
             </button>
@@ -120,17 +131,33 @@ export default function NotificationsCenter() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
+        <div className="rounded-lg shadow-sm border p-4 mb-6" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)'
+        }}>
           <div className="flex space-x-2">
             {(['all', 'unread', 'read'] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                  filter === f
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  filter === f ? '' : ''
                 }`}
+                style={{
+                  backgroundColor: filter === f ? 'var(--accent-gold)' : 'var(--surface-tertiary)',
+                  color: filter === f ? 'var(--ink-inverse)' : 'var(--ink-secondary)',
+                  boxShadow: filter === f ? 'var(--glow-gold)' : 'none'
+                }}
+                onMouseEnter={(e) => {
+                  if (filter !== f) {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (filter !== f) {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-tertiary)';
+                  }
+                }}
               >
                 {f.charAt(0).toUpperCase() + f.slice(1)}
               </button>
@@ -141,29 +168,36 @@ export default function NotificationsCenter() {
         {/* Notifications List */}
         <div className="space-y-3">
           {filteredNotifications.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-sm border p-12 text-center">
-              <p className="text-gray-500">No notifications found</p>
+            <div className="rounded-lg shadow-sm border p-12 text-center" style={{ 
+              backgroundColor: 'var(--surface-secondary)',
+              borderColor: 'var(--border-primary)'
+            }}>
+              <p style={{ color: 'var(--ink-muted)' }}>No notifications found</p>
             </div>
           ) : (
             filteredNotifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`border rounded-lg p-4 ${getTypeColor(notification.type)} ${
-                  !notification.read ? 'border-l-4' : ''
-                }`}
+                className="border rounded-lg p-4"
+                style={{
+                  backgroundColor: 'var(--surface-secondary)',
+                  borderColor: getTypeBorderColor(notification.type),
+                  borderLeftWidth: !notification.read ? '4px' : '1px',
+                  borderLeftStyle: 'solid'
+                }}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-3 flex-1">
                     <span className="text-2xl">{getTypeIcon(notification.type)}</span>
                     <div className="flex-1">
                       <div className="flex items-center space-x-2">
-                        <h3 className="font-semibold">{notification.title}</h3>
+                        <h3 className="font-semibold" style={{ color: 'var(--ink-primary)' }}>{notification.title}</h3>
                         {!notification.read && (
-                          <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: 'var(--accent-gold)' }}></span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-700 mt-1">{notification.message}</p>
-                      <p className="text-xs text-gray-500 mt-2">
+                      <p className="text-sm mt-1" style={{ color: 'var(--ink-secondary)' }}>{notification.message}</p>
+                      <p className="text-xs mt-2" style={{ color: 'var(--ink-muted)' }}>
                         {new Date(notification.timestamp).toLocaleString()}
                       </p>
                     </div>
@@ -172,14 +206,28 @@ export default function NotificationsCenter() {
                     {!notification.read && (
                       <button
                         onClick={() => markAsRead(notification.id)}
-                        className="text-xs text-blue-600 hover:text-blue-800"
+                        className="text-xs transition-colors"
+                        style={{ color: 'var(--accent-gold)' }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = 'var(--accent-gold-light)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = 'var(--accent-gold)';
+                        }}
                       >
                         Mark Read
                       </button>
                     )}
                     <button
                       onClick={() => deleteNotification(notification.id)}
-                      className="text-xs text-red-600 hover:text-red-800"
+                      className="text-xs transition-colors"
+                      style={{ color: 'var(--state-error)' }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.opacity = '0.8';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.opacity = '1';
+                      }}
                     >
                       Delete
                     </button>
