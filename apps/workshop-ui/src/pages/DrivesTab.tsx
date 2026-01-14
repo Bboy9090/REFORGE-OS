@@ -46,31 +46,48 @@ export default function DrivesTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Drives</h2>
-        <p className="text-gray-400">View physical drives and SMART health data</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Drives</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>View physical drives and SMART health data</p>
       </div>
 
-      <div className="bg-gray-800 rounded-lg p-6">
-        <h3 className="text-lg font-semibold mb-4">Detected Drives</h3>
+      <div className="rounded-lg p-6" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Detected Drives</h3>
         <div className="space-y-2">
           {drives.map((drive) => (
             <div
               key={drive.id}
-              className={`p-4 rounded bg-gray-700 cursor-pointer hover:bg-gray-600 ${
-                selectedDrive === drive.id ? "ring-2 ring-yellow-500" : ""
-              }`}
+              className="p-4 rounded cursor-pointer transition-colors"
+              style={{
+                backgroundColor: selectedDrive === drive.id ? 'var(--surface-tertiary)' : 'var(--surface-primary)',
+                borderColor: selectedDrive === drive.id ? 'var(--accent-gold)' : 'var(--border-primary)',
+                border: selectedDrive === drive.id ? '2px solid var(--accent-gold)' : '1px solid var(--border-primary)'
+              }}
               onClick={() => {
                 setSelectedDrive(drive.id);
                 loadSmartData(drive.id);
               }}
+              onMouseEnter={(e) => {
+                if (selectedDrive !== drive.id) {
+                  e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (selectedDrive !== drive.id) {
+                  e.currentTarget.style.backgroundColor = 'var(--surface-primary)';
+                }
+              }}
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <div className="font-semibold">{drive.id}</div>
-                  <div className="text-sm text-gray-400">
+                  <div className="font-semibold" style={{ color: 'var(--ink-primary)' }}>{drive.id}</div>
+                  <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
                     {drive.model} • {drive.size_gb.toFixed(1)} GB
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>
                     {drive.is_ssd ? "SSD" : "HDD"} • {drive.is_removable ? "Removable" : "Fixed"}
                   </div>
                 </div>
@@ -79,7 +96,18 @@ export default function DrivesTab() {
                     e.stopPropagation();
                     loadSmartData(drive.id);
                   }}
-                  className="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-sm"
+                  className="px-3 py-1 rounded text-sm transition-all duration-300"
+                  style={{
+                    backgroundColor: 'var(--accent-gold)',
+                    color: 'var(--ink-inverse)',
+                    boxShadow: 'var(--glow-gold)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                  }}
                 >
                   SMART
                 </button>
@@ -90,12 +118,19 @@ export default function DrivesTab() {
       </div>
 
       {smartData && (
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">SMART Health Data</h3>
+        <div className="rounded-lg p-6" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>SMART Health Data</h3>
           {loading ? (
-            <div className="text-gray-400">Loading...</div>
+            <div style={{ color: 'var(--ink-muted)' }}>Loading...</div>
           ) : (
-            <pre className="font-mono text-sm bg-gray-900 p-4 rounded overflow-auto max-h-96 text-gray-300">
+            <pre className="font-mono text-sm p-4 rounded overflow-auto max-h-96" style={{ 
+              backgroundColor: 'var(--surface-primary)',
+              color: 'var(--ink-secondary)'
+            }}>
               {smartData}
             </pre>
           )}

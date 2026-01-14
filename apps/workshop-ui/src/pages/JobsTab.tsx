@@ -80,13 +80,17 @@ export default function JobsTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Jobs & Cases</h2>
-        <p className="text-gray-400">View case files and manage master tickets</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Jobs & Cases</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>View case files and manage master tickets</p>
       </div>
 
       <div className="grid grid-cols-2 gap-6">
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">Cases</h3>
+        <div className="rounded-lg p-6" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Cases</h3>
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {cases.map((c) => (
               <button
@@ -95,30 +99,61 @@ export default function JobsTab() {
                   setSelectedCaseId(c.id);
                   loadCaseDetails(c.id);
                 }}
-                className={`w-full text-left p-3 rounded bg-gray-700 hover:bg-gray-600 ${
-                  selectedCaseId === c.id ? "ring-2 ring-cyan-500" : ""
-                }`}
+                className="w-full text-left p-3 rounded transition-colors"
+                style={{
+                  backgroundColor: selectedCaseId === c.id ? 'var(--surface-tertiary)' : 'var(--surface-primary)',
+                  borderColor: selectedCaseId === c.id ? 'var(--accent-steel)' : 'var(--border-primary)',
+                  border: selectedCaseId === c.id ? '2px solid var(--accent-steel)' : '1px solid var(--border-primary)'
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedCaseId !== c.id) {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedCaseId !== c.id) {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-primary)';
+                  }
+                }}
               >
-                <div className="font-mono text-sm">{c.id}</div>
-                {c.type && <div className="text-xs text-gray-400">{c.type}</div>}
+                <div className="font-mono text-sm" style={{ color: 'var(--ink-primary)' }}>{c.id}</div>
+                {c.type && <div className="text-xs" style={{ color: 'var(--ink-muted)' }}>{c.type}</div>}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">Master Tickets</h3>
+        <div className="rounded-lg p-6" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Master Tickets</h3>
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {masterTickets.map((t) => (
               <div
                 key={t.id}
-                className={`p-3 rounded bg-gray-700 ${
-                  selectedMasterId === t.id ? "ring-2 ring-cyan-500" : ""
-                }`}
+                className="p-3 rounded transition-colors cursor-pointer"
+                style={{
+                  backgroundColor: selectedMasterId === t.id ? 'var(--surface-tertiary)' : 'var(--surface-primary)',
+                  borderColor: selectedMasterId === t.id ? 'var(--accent-steel)' : 'var(--border-primary)',
+                  border: selectedMasterId === t.id ? '2px solid var(--accent-steel)' : '1px solid var(--border-primary)'
+                }}
+                onClick={() => setSelectedMasterId(t.id)}
+                onMouseEnter={(e) => {
+                  if (selectedMasterId !== t.id) {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedMasterId !== t.id) {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-primary)';
+                  }
+                }}
               >
-                <div className="font-semibold">{t.label}</div>
-                {t.description && <div className="text-sm text-gray-400">{t.description}</div>}
-                <div className="text-xs text-gray-500 mt-1">{t.cases.length} cases</div>
+                <div className="font-semibold" style={{ color: 'var(--ink-primary)' }}>{t.label}</div>
+                {t.description && <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>{t.description}</div>}
+                <div className="text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>{t.cases.length} cases</div>
               </div>
             ))}
           </div>
@@ -126,21 +161,38 @@ export default function JobsTab() {
       </div>
 
       {caseDetails && (
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">Case Details</h3>
-          <pre className="bg-gray-900 p-4 rounded text-sm overflow-auto max-h-96">
+        <div className="rounded-lg p-6" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Case Details</h3>
+          <pre className="p-4 rounded text-sm overflow-auto max-h-96" style={{ 
+            backgroundColor: 'var(--surface-primary)',
+            color: 'var(--ink-secondary)'
+          }}>
             {JSON.stringify(caseDetails, null, 2)}
           </pre>
         </div>
       )}
 
-      <div className="bg-gray-800 rounded-lg p-6">
-        <h3 className="text-lg font-semibold mb-4">Attach Case to Master Ticket</h3>
+      <div className="rounded-lg p-6" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Attach Case to Master Ticket</h3>
         <div className="flex gap-4">
           <select
             value={selectedCaseId}
             onChange={(e) => setSelectedCaseId(e.target.value)}
-            className="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2"
+            className="flex-1 rounded px-3 py-2"
+            style={{
+              backgroundColor: 'var(--surface-tertiary)',
+              borderColor: 'var(--border-primary)',
+              color: 'var(--ink-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
           >
             <option value="">Select case...</option>
             {cases.map((c) => (
@@ -152,7 +204,13 @@ export default function JobsTab() {
           <select
             value={selectedMasterId}
             onChange={(e) => setSelectedMasterId(e.target.value)}
-            className="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2"
+            className="flex-1 rounded px-3 py-2"
+            style={{
+              backgroundColor: 'var(--surface-tertiary)',
+              borderColor: 'var(--border-primary)',
+              color: 'var(--ink-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
           >
             <option value="">Select master ticket...</option>
             {masterTickets.map((t) => (
@@ -164,7 +222,22 @@ export default function JobsTab() {
           <button
             onClick={handleAttachCase}
             disabled={!selectedCaseId || !selectedMasterId}
-            className="bg-cyan-600 hover:bg-cyan-700 disabled:bg-gray-600 px-4 py-2 rounded"
+            className="px-4 py-2 rounded transition-all duration-300"
+            style={{
+              backgroundColor: (!selectedCaseId || !selectedMasterId) ? 'var(--surface-tertiary)' : 'var(--accent-steel)',
+              color: (!selectedCaseId || !selectedMasterId) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+              cursor: (!selectedCaseId || !selectedMasterId) ? 'not-allowed' : 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              if (selectedCaseId && selectedMasterId) {
+                e.currentTarget.style.opacity = '0.9';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (selectedCaseId && selectedMasterId) {
+                e.currentTarget.style.opacity = '1';
+              }
+            }}
           >
             Attach
           </button>

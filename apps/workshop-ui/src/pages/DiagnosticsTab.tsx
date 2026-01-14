@@ -96,31 +96,56 @@ export default function DiagnosticsTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Device Diagnostics</h2>
-        <p className="text-gray-400">Run authorized diagnostics on connected devices</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Device Diagnostics</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>Run authorized diagnostics on connected devices</p>
       </div>
 
       {/* Device Detection */}
-      <div className="bg-gray-800 rounded-lg p-6">
+      <div className="rounded-lg p-6" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Available Devices</h3>
+          <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>Available Devices</h3>
           <button
             onClick={detectDevices}
             disabled={detecting}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 rounded text-sm"
+            className="px-4 py-2 rounded text-sm transition-all duration-300"
+            style={{
+              backgroundColor: detecting ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
+              color: detecting ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+              boxShadow: detecting ? 'none' : 'var(--glow-gold)',
+              cursor: detecting ? 'not-allowed' : 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              if (!detecting) {
+                e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!detecting) {
+                e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+              }
+            }}
           >
             {detecting ? "Detecting..." : "Refresh Devices"}
           </button>
         </div>
 
         {error && !results && (
-          <div className="mb-4 p-3 bg-red-900/50 text-red-200 rounded">
-            {error}
+          <div className="mb-4 p-3 rounded" style={{ 
+            backgroundColor: 'var(--state-error)',
+            borderColor: 'var(--state-error)',
+            border: '1px solid var(--state-error)',
+            opacity: 0.1
+          }}>
+            <div style={{ color: 'var(--state-error)' }}>{error}</div>
           </div>
         )}
 
         {devices.length === 0 && !detecting ? (
-          <div className="text-center py-8 text-gray-400">
+          <div className="text-center py-8" style={{ color: 'var(--ink-muted)' }}>
             No devices detected. Ensure device is connected and authorized (ADB for Android, paired for iOS).
           </div>
         ) : (
@@ -129,25 +154,38 @@ export default function DiagnosticsTab() {
               <div
                 key={idx}
                 onClick={() => handleDeviceSelect(device)}
-                className={`p-4 rounded cursor-pointer border-2 transition-colors ${
-                  selectedDevice?.serial === device.serial || selectedDevice?.id === device.id
-                    ? "border-blue-500 bg-blue-900/20"
-                    : "border-gray-700 bg-gray-700/50 hover:border-gray-600"
-                }`}
+                className="p-4 rounded cursor-pointer transition-colors"
+                style={{
+                  backgroundColor: (selectedDevice?.serial === device.serial || selectedDevice?.id === device.id) ? 'var(--surface-tertiary)' : 'var(--surface-primary)',
+                  borderColor: (selectedDevice?.serial === device.serial || selectedDevice?.id === device.id) ? 'var(--accent-steel)' : 'var(--border-primary)',
+                  border: '2px solid var(--border-primary)'
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedDevice?.serial !== device.serial && selectedDevice?.id !== device.id) {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                    e.currentTarget.style.borderColor = 'var(--accent-steel)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedDevice?.serial !== device.serial && selectedDevice?.id !== device.id) {
+                    e.currentTarget.style.backgroundColor = 'var(--surface-primary)';
+                    e.currentTarget.style.borderColor = 'var(--border-primary)';
+                  }
+                }}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium">
+                    <div className="font-medium" style={{ color: 'var(--ink-primary)' }}>
                       {device.platform.toUpperCase()} - {device.model || "Unknown Model"}
                     </div>
-                    <div className="text-sm text-gray-400">
+                    <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
                       Serial: {device.serial || device.id || "N/A"} | 
                       Status: {device.connection_state} |
                       Authorized: {device.trust_state?.adb_authorized || device.trust_state?.paired ? "Yes" : "No"}
                     </div>
                   </div>
                   {(selectedDevice?.serial === device.serial || selectedDevice?.id === device.id) && (
-                    <div className="text-blue-400">✓ Selected</div>
+                    <div style={{ color: 'var(--accent-steel)' }}>✓ Selected</div>
                   )}
                 </div>
               </div>
@@ -158,8 +196,12 @@ export default function DiagnosticsTab() {
 
       {/* Policy Gates */}
       {selectedDevice && (
-        <div className="bg-gray-800 rounded-lg p-6 space-y-4">
-          <h3 className="text-lg font-semibold">Policy Gates</h3>
+        <div className="rounded-lg p-6 space-y-4" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>Policy Gates</h3>
           
           <div>
             <label className="flex items-center gap-2 cursor-pointer">
@@ -168,15 +210,16 @@ export default function DiagnosticsTab() {
                 checked={ownershipAttested}
                 onChange={(e) => setOwnershipAttested(e.target.checked)}
                 className="w-4 h-4"
+                style={{ accentColor: 'var(--accent-gold)' }}
               />
-              <span className="text-sm">
+              <span className="text-sm" style={{ color: 'var(--ink-secondary)' }}>
                 I own this device or have written permission to service it *
               </span>
             </label>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>
               Confirmation Phrase (Optional)
             </label>
             <input
@@ -184,12 +227,18 @@ export default function DiagnosticsTab() {
               value={confirmationPhrase}
               onChange={(e) => setConfirmationPhrase(e.target.value)}
               placeholder="Type 'I CONFIRM AUTHORIZED SERVICE' to confirm"
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm"
+              className="w-full rounded px-3 py-2 text-sm"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Diagnostics Operations</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Diagnostics Operations</label>
             <div className="space-y-2">
               <label className="flex items-center gap-2">
                 <input
@@ -203,8 +252,9 @@ export default function DiagnosticsTab() {
                     }
                   }}
                   className="w-4 h-4"
+                  style={{ accentColor: 'var(--accent-gold)' }}
                 />
-                <span className="text-sm">Device Properties</span>
+                <span className="text-sm" style={{ color: 'var(--ink-secondary)' }}>Device Properties</span>
               </label>
               <label className="flex items-center gap-2">
                 <input
@@ -218,8 +268,9 @@ export default function DiagnosticsTab() {
                     }
                   }}
                   className="w-4 h-4"
+                  style={{ accentColor: 'var(--accent-gold)' }}
                 />
-                <span className="text-sm">Logcat Snapshot</span>
+                <span className="text-sm" style={{ color: 'var(--ink-secondary)' }}>Logcat Snapshot</span>
               </label>
               <label className="flex items-center gap-2">
                 <input
@@ -233,8 +284,9 @@ export default function DiagnosticsTab() {
                     }
                   }}
                   className="w-4 h-4"
+                  style={{ accentColor: 'var(--accent-gold)' }}
                 />
-                <span className="text-sm">Bugreport (takes longer)</span>
+                <span className="text-sm" style={{ color: 'var(--ink-secondary)' }}>Bugreport (takes longer)</span>
               </label>
             </div>
           </div>
@@ -242,7 +294,22 @@ export default function DiagnosticsTab() {
           <button
             onClick={runDiagnostics}
             disabled={running || !ownershipAttested || operations.length === 0}
-            className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 px-4 py-2 rounded font-medium"
+            className="w-full px-4 py-2 rounded font-medium transition-all duration-300"
+            style={{
+              backgroundColor: (running || !ownershipAttested || operations.length === 0) ? 'var(--surface-tertiary)' : 'var(--accent-bronze)',
+              color: (running || !ownershipAttested || operations.length === 0) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+              cursor: (running || !ownershipAttested || operations.length === 0) ? 'not-allowed' : 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              if (!running && ownershipAttested && operations.length > 0) {
+                e.currentTarget.style.opacity = '0.9';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!running && ownershipAttested && operations.length > 0) {
+                e.currentTarget.style.opacity = '1';
+              }
+            }}
           >
             {running ? "Running Diagnostics..." : "Run Diagnostics"}
           </button>
@@ -251,16 +318,20 @@ export default function DiagnosticsTab() {
 
       {/* Results */}
       {results && results.diagnostics && (
-        <div className="bg-gray-800 rounded-lg p-6 space-y-4">
-          <h3 className="text-lg font-semibold">Diagnostics Results</h3>
+        <div className="rounded-lg p-6 space-y-4" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>Diagnostics Results</h3>
           
           {results.diagnostics.authorized ? (
             <div className="space-y-4">
               {results.diagnostics.operations?.properties && (
                 <div>
-                  <h4 className="font-medium mb-2">Device Properties</h4>
-                  <div className="bg-gray-900 rounded p-4 overflow-auto max-h-64">
-                    <pre className="text-xs">
+                  <h4 className="font-medium mb-2" style={{ color: 'var(--ink-primary)' }}>Device Properties</h4>
+                  <div className="rounded p-4 overflow-auto max-h-64" style={{ backgroundColor: 'var(--surface-primary)' }}>
+                    <pre className="text-xs" style={{ color: 'var(--ink-secondary)' }}>
                       {JSON.stringify(
                         results.diagnostics.operations.properties.data?.properties || {},
                         null,
@@ -273,12 +344,12 @@ export default function DiagnosticsTab() {
 
               {results.diagnostics.operations?.logcat && (
                 <div>
-                  <h4 className="font-medium mb-2">Logcat Snapshot</h4>
-                  <div className="bg-gray-900 rounded p-4">
-                    <div className="text-sm text-gray-400 mb-2">
+                  <h4 className="font-medium mb-2" style={{ color: 'var(--ink-primary)' }}>Logcat Snapshot</h4>
+                  <div className="rounded p-4" style={{ backgroundColor: 'var(--surface-primary)' }}>
+                    <div className="text-sm mb-2" style={{ color: 'var(--ink-muted)' }}>
                       File: {results.diagnostics.operations.logcat.data?.output_file || "N/A"}
                     </div>
-                    <div className="text-xs text-gray-500 max-h-32 overflow-auto">
+                    <div className="text-xs max-h-32 overflow-auto" style={{ color: 'var(--ink-muted)' }}>
                       {results.diagnostics.operations.logcat.stdout || "No output"}
                     </div>
                   </div>
@@ -287,12 +358,12 @@ export default function DiagnosticsTab() {
 
               {results.diagnostics.operations?.bugreport && (
                 <div>
-                  <h4 className="font-medium mb-2">Bugreport</h4>
-                  <div className="bg-gray-900 rounded p-4">
-                    <div className="text-sm">
+                  <h4 className="font-medium mb-2" style={{ color: 'var(--ink-primary)' }}>Bugreport</h4>
+                  <div className="rounded p-4" style={{ backgroundColor: 'var(--surface-primary)' }}>
+                    <div className="text-sm" style={{ color: 'var(--ink-primary)' }}>
                       File: {results.diagnostics.operations.bugreport.data?.output_file || "N/A"}
                     </div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs" style={{ color: 'var(--ink-muted)' }}>
                       Size: {results.diagnostics.operations.bugreport.data?.file_size || 0} bytes
                     </div>
                   </div>
@@ -300,22 +371,37 @@ export default function DiagnosticsTab() {
               )}
 
               {results.report_path && (
-                <div className="p-3 bg-green-900/50 text-green-200 rounded">
-                  Report generated: {results.report_path}
+                <div className="p-3 rounded" style={{ 
+                  backgroundColor: 'var(--state-success)',
+                  borderColor: 'var(--state-success)',
+                  border: '1px solid var(--state-success)',
+                  opacity: 0.1
+                }}>
+                  <div style={{ color: 'var(--state-success)' }}>Report generated: {results.report_path}</div>
                 </div>
               )}
             </div>
           ) : (
-            <div className="p-3 bg-red-900/50 text-red-200 rounded">
-              Device not authorized. Please accept ADB RSA key on device.
+            <div className="p-3 rounded" style={{ 
+              backgroundColor: 'var(--state-error)',
+              borderColor: 'var(--state-error)',
+              border: '1px solid var(--state-error)',
+              opacity: 0.1
+            }}>
+              <div style={{ color: 'var(--state-error)' }}>Device not authorized. Please accept ADB RSA key on device.</div>
             </div>
           )}
         </div>
       )}
 
       {error && results && (
-        <div className="p-3 bg-red-900/50 text-red-200 rounded">
-          {error}
+        <div className="p-3 rounded" style={{ 
+          backgroundColor: 'var(--state-error)',
+          borderColor: 'var(--state-error)',
+          border: '1px solid var(--state-error)',
+          opacity: 0.1
+        }}>
+          <div style={{ color: 'var(--state-error)' }}>{error}</div>
         </div>
       )}
     </div>
