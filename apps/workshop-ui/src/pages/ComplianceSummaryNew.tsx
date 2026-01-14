@@ -15,6 +15,7 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     if (deviceId) {
@@ -117,7 +118,7 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
       {deviceId && !result && !loading && (
         <div className="rounded-lg p-6" style={{ 
           backgroundColor: 'var(--surface-secondary)',
-          border: '1px solid rgba(45, 212, 255, 0.3)'
+          border: '1px solid var(--border-primary)'
         }}>
           <button
             onClick={loadCompliance}
@@ -147,7 +148,7 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
           {/* Device Information */}
           <div className="rounded-lg p-6 fade-in" style={{ 
             backgroundColor: 'var(--surface-secondary)',
-            border: '1px solid rgba(45, 212, 255, 0.3)'
+            border: '1px solid var(--border-primary)'
           }}>
             <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--accent-gold)' }}>Device Information</h3>
             <div className="space-y-3">
@@ -161,7 +162,7 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
               </div>
               <div className="flex justify-between">
                 <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Analysis Type:</span>
-                <span className="text-sm font-semibold" style={{ color: '#2ECC71' }}>
+                <span className="text-sm font-semibold" style={{ color: 'var(--state-success)' }}>
                   {result.device?.non_invasive ? "Non-Invasive (Read-Only)" : "Analysis"}
                 </span>
               </div>
@@ -171,14 +172,14 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
           {/* Ownership Assessment */}
           <div className="rounded-lg p-6 fade-in" style={{ 
             backgroundColor: 'var(--surface-secondary)',
-            border: '1px solid rgba(45, 212, 255, 0.3)'
+            border: '1px solid var(--border-primary)'
           }}>
-            <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--accent-spray-cyan)' }}>Ownership Assessment</h3>
+            <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--accent-gold)' }}>Ownership Assessment</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Verification Status:</span>
                 <span className="text-sm font-semibold" style={{
-                  color: result.ownership?.verified ? '#2ECC71' : '#F1C40F'
+                  color: result.ownership?.verified ? 'var(--state-success)' : 'var(--state-warning)'
                 }}>
                   {result.ownership?.verified ? "Verified" : "Not Verified"}
                 </span>
@@ -187,8 +188,8 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Confidence Score:</span>
                   <span className="text-sm font-semibold" style={{
-                    color: (result.ownership?.confidence || 0) >= 0.85 ? '#2ECC71' :
-                           (result.ownership?.confidence || 0) >= 0.50 ? '#F1C40F' : '#E74C3C'
+                    color: (result.ownership?.confidence || 0) >= 0.85 ? 'var(--state-success)' :
+                           (result.ownership?.confidence || 0) >= 0.50 ? 'var(--state-warning)' : 'var(--state-error)'
                   }}>
                     {Math.round((result.ownership?.confidence || 0) * 100)}%
                   </span>
@@ -198,8 +199,8 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
                     className="h-2 rounded-full transition-all"
                     style={{ 
                       width: `${(result.ownership?.confidence || 0) * 100}%`,
-                      backgroundColor: (result.ownership?.confidence || 0) >= 0.85 ? '#2ECC71' :
-                                      (result.ownership?.confidence || 0) >= 0.50 ? '#F1C40F' : '#E74C3C'
+                      backgroundColor: (result.ownership?.confidence || 0) >= 0.85 ? 'var(--state-success)' :
+                                      (result.ownership?.confidence || 0) >= 0.50 ? 'var(--state-warning)' : 'var(--state-error)'
                     }}
                   />
                 </div>
@@ -210,7 +211,7 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
           {/* Legal Classification */}
           <div className="rounded-lg p-6 fade-in" style={{ 
             backgroundColor: 'var(--surface-secondary)',
-            border: '1px solid rgba(45, 212, 255, 0.3)'
+            border: '1px solid var(--border-primary)'
           }}>
             <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--accent-gold)' }}>Legal Classification</h3>
             <div className="space-y-3">
@@ -225,9 +226,9 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
               <div className="flex justify-between">
                 <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Risk Level:</span>
                 <span className="text-sm font-semibold" style={{
-                  color: result.legal?.risk_level === "Low" ? '#2ECC71' :
-                         result.legal?.risk_level === "Medium" ? '#F1C40F' :
-                         result.legal?.risk_level === "High" ? '#E67E22' : '#E74C3C'
+                  color: result.legal?.risk_level === "Low" ? 'var(--state-success)' :
+                         result.legal?.risk_level === "Medium" ? 'var(--state-warning)' :
+                         result.legal?.risk_level === "High" ? 'var(--state-warning)' : 'var(--state-error)'
                 }}>
                   {result.legal?.risk_level || "Unknown"}
                 </span>
@@ -239,7 +240,7 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
           {result.routing && (
             <div className="rounded-lg p-6 fade-in" style={{ 
               backgroundColor: 'var(--surface-secondary)',
-              border: '1px solid rgba(255, 61, 187, 0.3)'
+              border: '1px solid var(--border-primary)'
             }}>
               <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--accent-bronze)' }}>External Authorization Pathways</h3>
               <div className="space-y-2">
@@ -259,22 +260,26 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
           {result.audit_entries && result.audit_entries.length > 0 && (
             <div className="rounded-lg p-6 fade-in" style={{ 
               backgroundColor: 'var(--surface-secondary)',
-              border: '1px solid rgba(45, 212, 255, 0.3)'
+              border: '1px solid var(--border-primary)'
             }}>
               <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--accent-gold)' }}>Audit Trail</h3>
               <div className="space-y-2">
                 {result.audit_entries.map((entry: any, idx: number) => (
-                  <div key={idx} className="rounded p-3" style={{ backgroundColor: 'var(--surface-midnight-room)' }}>
+                  <div key={idx} className="rounded p-3" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium" style={{ color: 'var(--ink-primary)' }}>{entry.action}</span>
                       <span className="text-xs px-2 py-1 rounded" style={{
-                        backgroundColor: entry.result === "Allowed" ? 'rgba(46, 204, 113, 0.2)' :
-                                        entry.result === "Blocked" ? 'rgba(231, 76, 60, 0.2)' :
-                                        'rgba(241, 196, 15, 0.2)',
-                        color: entry.result === "Allowed" ? '#2ECC71' :
-                               entry.result === "Blocked" ? '#E74C3C' : '#F1C40F'
+                        backgroundColor: entry.result === "Allowed" ? 'var(--state-success)' :
+                                        entry.result === "Blocked" ? 'var(--state-error)' :
+                                        'var(--state-warning)',
+                        color: 'var(--ink-inverse)',
+                        opacity: 0.2
                       }}>
-                        {entry.result}
+                        <span style={{ 
+                          color: entry.result === "Allowed" ? 'var(--state-success)' :
+                                 entry.result === "Blocked" ? 'var(--state-error)' :
+                                 'var(--state-warning)'
+                        }}>{entry.result}</span>
                       </span>
                     </div>
                     <div className="text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>{entry.timestamp}</div>
@@ -282,12 +287,12 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
                 ))}
               </div>
               <div className="mt-3 flex items-center gap-2">
-                <span className={`text-sm ${
-                  result.audit_integrity_verified ? "text-green-400" : "text-red-400"
-                }`}>
+                <span className="text-sm" style={{
+                  color: result.audit_integrity_verified ? 'var(--state-success)' : 'var(--state-error)'
+                }}>
                   {result.audit_integrity_verified ? "✓" : "✗"}
                 </span>
-                <span className="text-sm text-gray-400">
+                <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>
                   Audit integrity {result.audit_integrity_verified ? "verified" : "failed"}
                 </span>
               </div>
@@ -295,7 +300,10 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
           )}
 
           {/* Compliance Disclaimer */}
-          <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+          <div className="rounded-lg p-4 border" style={{ 
+            backgroundColor: 'var(--surface-primary)',
+            borderColor: 'var(--border-primary)'
+          }}>
             <h3 className="text-sm font-semibold mb-2" style={{ color: 'var(--ink-primary)' }}>Compliance Statement</h3>
             <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
               This platform provides analysis and documentation only.
@@ -313,12 +321,23 @@ export default function ComplianceSummary({ deviceId }: ComplianceSummaryProps) 
           <div>
             <button
               onClick={handleExportPDF}
-              disabled={loading || !result}
-              className="w-full px-6 py-3 rounded-lg font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || !result || exporting}
+              className="w-full px-6 py-3 rounded-lg font-medium transition-all duration-300"
               style={{
-                backgroundColor: 'var(--accent-spray-cyan)',
-                color: 'var(--surface-midnight-room)',
-                boxShadow: result ? 'var(--glow-neon-buzz)' : 'none',
+                backgroundColor: (loading || !result || exporting) ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
+                color: (loading || !result || exporting) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+                boxShadow: (loading || !result || exporting) ? 'none' : 'var(--glow-gold)',
+                cursor: (loading || !result || exporting) ? 'not-allowed' : 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                if (!loading && result && !exporting) {
+                  e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading && result && !exporting) {
+                  e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                }
               }}
             >
               {exporting ? (
