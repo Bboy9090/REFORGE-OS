@@ -64,18 +64,28 @@ export default function DevModeTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Bobby Dev Mode</h2>
-        <p className="text-gray-400">Run diagnostic modules on connected devices</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Bobby Dev Mode</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>Run diagnostic modules on connected devices</p>
       </div>
 
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
+      <div className="rounded-lg p-6 space-y-4" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Device Profile</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Device Profile</label>
             <select
               value={selectedProfile}
               onChange={(e) => setSelectedProfile(e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+              className="w-full rounded px-3 py-2"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             >
               <option value="">Select profile...</option>
               {profiles.map((p) => (
@@ -87,11 +97,17 @@ export default function DevModeTab() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Module</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Module</label>
             <select
               value={selectedModule}
               onChange={(e) => setSelectedModule(e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+              className="w-full rounded px-3 py-2"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             >
               <option value="">Select module...</option>
               {modules.map((m) => (
@@ -106,24 +122,50 @@ export default function DevModeTab() {
         <button
           onClick={handleRun}
           disabled={loading || !selectedProfile || !selectedModule}
-          className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-600 px-4 py-2 rounded font-medium"
+          className="w-full px-4 py-2 rounded font-medium transition-all duration-300"
+          style={{
+            backgroundColor: (loading || !selectedProfile || !selectedModule) ? 'var(--surface-tertiary)' : 'var(--accent-bronze)',
+            color: (loading || !selectedProfile || !selectedModule) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+            cursor: (loading || !selectedProfile || !selectedModule) ? 'not-allowed' : 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading && selectedProfile && selectedModule) {
+              e.currentTarget.style.opacity = '0.9';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading && selectedProfile && selectedModule) {
+              e.currentTarget.style.opacity = '1';
+            }
+          }}
         >
           {loading ? "Running..." : "Run Module"}
         </button>
       </div>
 
       {output && (
-        <div className="bg-gray-900 rounded-lg p-4">
+        <div className="rounded-lg p-4" style={{ 
+          backgroundColor: 'var(--surface-primary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
           <div className="flex justify-between items-center mb-2">
-            <h3 className="font-semibold">Output</h3>
+            <h3 className="font-semibold" style={{ color: 'var(--ink-primary)' }}>Output</h3>
             <button
               onClick={() => setOutput("")}
-              className="text-sm text-gray-400 hover:text-gray-300"
+              className="text-sm transition-colors"
+              style={{ color: 'var(--ink-muted)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--ink-secondary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--ink-muted)';
+              }}
             >
               Clear
             </button>
           </div>
-          <pre className="font-mono text-sm whitespace-pre-wrap overflow-auto max-h-96 text-gray-300">
+          <pre className="font-mono text-sm whitespace-pre-wrap overflow-auto max-h-96" style={{ color: 'var(--ink-secondary)' }}>
             {output}
           </pre>
         </div>

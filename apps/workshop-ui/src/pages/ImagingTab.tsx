@@ -70,17 +70,27 @@ export default function ImagingTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">OS Imaging & Deployment</h2>
-        <p className="text-gray-400">Deploy OS images to drives using Phoenix Key recipes</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>OS Imaging & Deployment</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>Deploy OS images to drives using Phoenix Key recipes</p>
       </div>
 
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
+      <div className="rounded-lg p-6 space-y-4" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
         <div>
-          <label className="block text-sm font-medium mb-2">Target Drive</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Target Drive</label>
           <select
             value={selectedDrive}
             onChange={(e) => setSelectedDrive(e.target.value)}
-            className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+            className="w-full rounded px-3 py-2"
+            style={{
+              backgroundColor: 'var(--surface-tertiary)',
+              borderColor: 'var(--border-primary)',
+              color: 'var(--ink-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
           >
             <option value="">Select drive...</option>
             {drives.map((d) => (
@@ -92,11 +102,17 @@ export default function ImagingTab() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">OS Recipe</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>OS Recipe</label>
           <select
             value={selectedRecipe}
             onChange={(e) => setSelectedRecipe(e.target.value)}
-            className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+            className="w-full rounded px-3 py-2"
+            style={{
+              backgroundColor: 'var(--surface-tertiary)',
+              borderColor: 'var(--border-primary)',
+              color: 'var(--ink-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
           >
             <option value="">Select recipe...</option>
             {recipes.map((r) => (
@@ -107,23 +123,51 @@ export default function ImagingTab() {
           </select>
         </div>
 
-        <div className="bg-red-900/20 border border-red-700/50 rounded p-3 text-sm text-red-200">
-          ⚠️ Warning: This operation will overwrite all data on the selected drive. Make sure you have selected the correct target.
+        <div className="border rounded p-3 text-sm" style={{ 
+          backgroundColor: 'var(--state-error)',
+          borderColor: 'var(--state-error)',
+          opacity: 0.1
+        }}>
+          <div style={{ color: 'var(--state-error)' }}>
+            ⚠️ Warning: This operation will overwrite all data on the selected drive. Make sure you have selected the correct target.
+          </div>
         </div>
 
         <button
           onClick={handleDeploy}
           disabled={loading || !selectedRecipe || !selectedDrive}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-600 px-4 py-2 rounded font-medium"
+          className="w-full px-4 py-2 rounded font-medium transition-all duration-300"
+          style={{
+            backgroundColor: (loading || !selectedRecipe || !selectedDrive) ? 'var(--surface-tertiary)' : 'var(--accent-bronze)',
+            color: (loading || !selectedRecipe || !selectedDrive) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+            cursor: (loading || !selectedRecipe || !selectedDrive) ? 'not-allowed' : 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading && selectedRecipe && selectedDrive) {
+              e.currentTarget.style.opacity = '0.9';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading && selectedRecipe && selectedDrive) {
+              e.currentTarget.style.opacity = '1';
+            }
+          }}
         >
           {loading ? "Deploying..." : "Deploy OS"}
         </button>
       </div>
 
       {progress && (
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">Deployment Status</h3>
-          <pre className="font-mono text-sm bg-gray-900 p-4 rounded overflow-auto max-h-96 text-gray-300">
+        <div className="rounded-lg p-6" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)',
+          border: '1px solid var(--border-primary)'
+        }}>
+          <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Deployment Status</h3>
+          <pre className="font-mono text-sm p-4 rounded overflow-auto max-h-96" style={{ 
+            backgroundColor: 'var(--surface-primary)',
+            color: 'var(--ink-secondary)'
+          }}>
             {progress}
           </pre>
         </div>
