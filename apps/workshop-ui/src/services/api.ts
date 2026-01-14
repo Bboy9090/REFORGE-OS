@@ -29,10 +29,6 @@ import {
   SolutionResponse
 } from '../types/custodial-closet';
 
-// Use environment variables with fallback to localhost
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-const FORGEWORKS_API_URL = import.meta.env.VITE_FORGEWORKS_API_URL || 'http://localhost:8001';
-
 const API_BASE = '/api/v1';
 const TRAPDOOR_BASE = '/api/trapdoor';
 

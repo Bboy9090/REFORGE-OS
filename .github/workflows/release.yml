@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 3.0.0)'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/workshop-ui/package-lock.json
+      
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      
+      - name: Install dependencies
+        working-directory: apps/workshop-ui
+        run: npm ci
+      
+      - name: Build application
+        working-directory: apps/workshop-ui
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL || 'http://localhost:8000' }}
+          VITE_FORGEWORKS_API_URL: ${{ secrets.VITE_FORGEWORKS_API_URL || 'http://localhost:8001' }}
+      
+      - name: Create release archive
+        run: |
+          mkdir -p release
+          tar -czf release/REFORGE-OS-${{ github.ref_name || inputs.version }}-windows.tar.gz \
+            apps/workshop-ui/src-tauri/target/release/*.exe \
+            apps/workshop-ui/dist \
+            README.md \
+            CHANGELOG.md \
+            LICENSE
+      
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: REFORGE-OS-${{ github.ref_name || inputs.version }}
+          path: release/
+          retention-days: 30
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/*
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
