@@ -75,34 +75,56 @@ export default function HelpViewer() {
   return (
     <section className="help-viewer">
       <div className="container max-w-7xl mx-auto py-8">
-        <h2 className="text-3xl font-bold mb-2">Help & Documentation</h2>
-        <p className="text-gray-600 mb-8">Find answers and learn about platform features</p>
+        <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Help & Documentation</h2>
+        <p className="mb-8" style={{ color: 'var(--ink-secondary)' }}>Find answers and learn about platform features</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border p-4 mb-4">
+            <div className="rounded-lg shadow-sm border p-4 mb-4" style={{ 
+              backgroundColor: 'var(--surface-secondary)',
+              borderColor: 'var(--border-primary)'
+            }}>
               <input
                 type="text"
                 placeholder="Search help topics..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 rounded-lg"
+                style={{
+                  backgroundColor: 'var(--surface-tertiary)',
+                  borderColor: 'var(--border-primary)',
+                  color: 'var(--ink-primary)',
+                  border: '1px solid var(--border-primary)'
+                }}
               />
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border p-4 mb-4">
-              <h3 className="font-semibold mb-3">Categories</h3>
+            <div className="rounded-lg shadow-sm border p-4 mb-4" style={{ 
+              backgroundColor: 'var(--surface-secondary)',
+              borderColor: 'var(--border-primary)'
+            }}>
+              <h3 className="font-semibold mb-3" style={{ color: 'var(--ink-primary)' }}>Categories</h3>
               <div className="space-y-1">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`w-full text-left px-3 py-2 rounded text-sm ${
-                      selectedCategory === cat
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'hover:bg-gray-50'
-                    }`}
+                    className="w-full text-left px-3 py-2 rounded text-sm transition-colors"
+                    style={{
+                      backgroundColor: selectedCategory === cat ? 'var(--accent-gold)' : 'transparent',
+                      color: selectedCategory === cat ? 'var(--ink-inverse)' : 'var(--ink-secondary)'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (selectedCategory !== cat) {
+                        e.currentTarget.style.backgroundColor = 'var(--surface-tertiary)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (selectedCategory !== cat) {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                      }
+                    }}
                   >
                     {cat}
                   </button>
@@ -110,18 +132,31 @@ export default function HelpViewer() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border p-4">
-              <h3 className="font-semibold mb-3">Topics</h3>
+            <div className="rounded-lg shadow-sm border p-4" style={{ 
+              backgroundColor: 'var(--surface-secondary)',
+              borderColor: 'var(--border-primary)'
+            }}>
+              <h3 className="font-semibold mb-3" style={{ color: 'var(--ink-primary)' }}>Topics</h3>
               <div className="space-y-1 max-h-96 overflow-y-auto">
                 {filteredTopics.map((topic) => (
                   <button
                     key={topic.id}
                     onClick={() => setSelectedTopic(topic)}
-                    className={`w-full text-left px-3 py-2 rounded text-sm ${
-                      selectedTopic?.id === topic.id
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'hover:bg-gray-50'
-                    }`}
+                    className="w-full text-left px-3 py-2 rounded text-sm transition-colors"
+                    style={{
+                      backgroundColor: selectedTopic?.id === topic.id ? 'var(--accent-gold)' : 'transparent',
+                      color: selectedTopic?.id === topic.id ? 'var(--ink-inverse)' : 'var(--ink-secondary)'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (selectedTopic?.id !== topic.id) {
+                        e.currentTarget.style.backgroundColor = 'var(--surface-tertiary)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (selectedTopic?.id !== topic.id) {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                      }
+                    }}
                   >
                     {topic.title}
                   </button>
@@ -133,19 +168,25 @@ export default function HelpViewer() {
           {/* Content Area */}
           <div className="lg:col-span-2">
             {selectedTopic ? (
-              <div className="bg-white rounded-lg shadow-sm border p-6">
+              <div className="rounded-lg shadow-sm border p-6" style={{ 
+                backgroundColor: 'var(--surface-secondary)',
+                borderColor: 'var(--border-primary)'
+              }}>
                 <div className="mb-4">
-                  <span className="text-xs px-2 py-1 bg-gray-100 rounded">
+                  <span className="text-xs px-2 py-1 rounded" style={{
+                    backgroundColor: 'var(--surface-tertiary)',
+                    color: 'var(--ink-secondary)'
+                  }}>
                     {selectedTopic.category}
                   </span>
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{selectedTopic.title}</h3>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--accent-gold)' }}>{selectedTopic.title}</h3>
                 <div className="prose max-w-none">
-                  <p className="text-gray-700 leading-relaxed">{selectedTopic.content}</p>
+                  <p className="leading-relaxed" style={{ color: 'var(--ink-secondary)' }}>{selectedTopic.content}</p>
                 </div>
                 {selectedTopic.relatedTopics && selectedTopic.relatedTopics.length > 0 && (
-                  <div className="mt-6 pt-6 border-t">
-                    <h4 className="font-semibold mb-2">Related Topics</h4>
+                  <div className="mt-6 pt-6" style={{ borderTop: '1px solid var(--border-primary)' }}>
+                    <h4 className="font-semibold mb-2" style={{ color: 'var(--ink-primary)' }}>Related Topics</h4>
                     <div className="flex flex-wrap gap-2">
                       {selectedTopic.relatedTopics.map((topicId) => {
                         const topic = helpTopics.find(t => t.id === topicId);
@@ -153,7 +194,20 @@ export default function HelpViewer() {
                           <button
                             key={topicId}
                             onClick={() => setSelectedTopic(topic)}
-                            className="px-3 py-1 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100"
+                            className="px-3 py-1 text-sm rounded transition-all duration-300"
+                            style={{
+                              backgroundColor: 'var(--surface-tertiary)',
+                              color: 'var(--accent-gold)',
+                              border: '1px solid var(--border-primary)'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                              e.currentTarget.style.color = 'var(--accent-gold-light)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = 'var(--surface-tertiary)';
+                              e.currentTarget.style.color = 'var(--accent-gold)';
+                            }}
                           >
                             {topic.title}
                           </button>
@@ -164,8 +218,11 @@ export default function HelpViewer() {
                 )}
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow-sm border p-12 text-center">
-                <p className="text-gray-500">Select a topic from the sidebar to view help content</p>
+              <div className="rounded-lg shadow-sm border p-12 text-center" style={{ 
+                backgroundColor: 'var(--surface-secondary)',
+                borderColor: 'var(--border-primary)'
+              }}>
+                <p style={{ color: 'var(--ink-muted)' }}>Select a topic from the sidebar to view help content</p>
               </div>
             )}
           </div>

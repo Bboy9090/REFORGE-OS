@@ -83,39 +83,56 @@ export default function DeviceComparison() {
 
   const getClassificationColor = (classification: string) => {
     switch (classification) {
-      case 'permitted': return 'text-green-600';
-      case 'conditional': return 'text-yellow-600';
-      case 'prohibited': return 'text-red-600';
-      default: return 'text-gray-600';
+      case 'permitted': return 'var(--state-success)';
+      case 'conditional': return 'var(--state-warning)';
+      case 'prohibited': return 'var(--state-error)';
+      default: return 'var(--ink-muted)';
     }
   };
 
   return (
     <section className="device-comparison">
       <div className="container max-w-7xl mx-auto py-8">
-        <h2 className="text-3xl font-bold mb-2">Device Comparison</h2>
-        <p className="text-gray-600 mb-8">Compare multiple devices side-by-side</p>
+        <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Device Comparison</h2>
+        <p className="mb-8" style={{ color: 'var(--ink-secondary)' }}>Compare multiple devices side-by-side</p>
 
         {/* Device Selection */}
-        <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-          <h3 className="font-semibold mb-4">Select Devices to Compare (Max 4)</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="rounded-lg shadow-sm border p-6 mb-6" style={{ 
+          backgroundColor: 'var(--surface-secondary)',
+          borderColor: 'var(--border-primary)'
+        }}>
+          <h3 className="font-semibold mb-4" style={{ color: 'var(--ink-primary)' }}>Available Devices</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {availableDevices.map((device) => (
               <div
                 key={device.id}
-                className={`p-3 border rounded-lg cursor-pointer hover:bg-gray-50 ${
-                  selectedDevices.find(d => d.id === device.id) ? 'border-blue-500 bg-blue-50' : ''
-                }`}
+                className="border rounded-lg p-4 cursor-pointer transition-colors"
+                style={{
+                  backgroundColor: 'var(--surface-tertiary)',
+                  borderColor: 'var(--border-primary)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--surface-tertiary)';
+                }}
                 onClick={() => addDevice(device)}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium">{device.profile.model}</p>
-                    <p className="text-sm text-gray-600">{device.profile.platform}</p>
+                    <h4 className="font-semibold" style={{ color: 'var(--ink-primary)' }}>{device.profile.model}</h4>
+                    <p className="text-sm mt-1" style={{ color: 'var(--ink-secondary)' }}>
+                      {device.profile.platform} • {device.ownership.confidence}% confidence
+                    </p>
                   </div>
-                  {selectedDevices.find(d => d.id === device.id) && (
-                    <span className="text-blue-600">✓ Selected</span>
-                  )}
+                  <span className="text-xs px-2 py-1 rounded" style={{
+                    backgroundColor: getClassificationColor(device.legal.classification),
+                    color: 'var(--ink-primary)',
+                    opacity: 0.2
+                  }}>
+                    {device.legal.classification}
+                  </span>
                 </div>
               </div>
             ))}
@@ -123,19 +140,29 @@ export default function DeviceComparison() {
         </div>
 
         {/* Comparison Table */}
-        {selectedDevices.length > 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border overflow-x-auto">
+        {selectedDevices.length > 0 && (
+          <div className="rounded-lg shadow-sm border overflow-x-auto" style={{ 
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--border-primary)'
+          }}>
             <table className="w-full">
               <thead>
-                <tr className="border-b">
-                  <th className="text-left p-4">Property</th>
+                <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
+                  <th className="text-left p-4 font-semibold" style={{ color: 'var(--ink-primary)' }}>Device</th>
                   {selectedDevices.map((device) => (
-                    <th key={device.id} className="text-left p-4 min-w-[200px]">
+                    <th key={device.id} className="text-left p-4 font-semibold" style={{ color: 'var(--ink-primary)' }}>
                       <div className="flex items-center justify-between">
                         <span>{device.profile.model}</span>
                         <button
                           onClick={() => removeDevice(device.id)}
-                          className="text-red-600 hover:text-red-800"
+                          className="text-sm transition-colors"
+                          style={{ color: 'var(--state-error)' }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.opacity = '0.8';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.opacity = '1';
+                          }}
                         >
                           ✕
                         </button>
@@ -145,72 +172,49 @@ export default function DeviceComparison() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b">
-                  <td className="p-4 font-medium">Platform</td>
+                <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
+                  <td className="p-4 font-medium" style={{ color: 'var(--ink-secondary)' }}>Platform</td>
                   {selectedDevices.map((device) => (
-                    <td key={device.id} className="p-4">{device.profile.platform}</td>
+                    <td key={device.id} className="p-4" style={{ color: 'var(--ink-primary)' }}>{device.profile.platform}</td>
                   ))}
                 </tr>
-                <tr className="border-b">
-                  <td className="p-4 font-medium">Device Class</td>
+                <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
+                  <td className="p-4 font-medium" style={{ color: 'var(--ink-secondary)' }}>Ownership Confidence</td>
                   {selectedDevices.map((device) => (
-                    <td key={device.id} className="p-4">{device.profile.deviceClass}</td>
+                    <td key={device.id} className="p-4" style={{ color: 'var(--ink-primary)' }}>{device.ownership.confidence}%</td>
                   ))}
                 </tr>
-                <tr className="border-b">
-                  <td className="p-4 font-medium">Security State</td>
-                  {selectedDevices.map((device) => (
-                    <td key={device.id} className="p-4">{device.profile.securityState}</td>
-                  ))}
-                </tr>
-                <tr className="border-b">
-                  <td className="p-4 font-medium">Capability Class</td>
-                  {selectedDevices.map((device) => (
-                    <td key={device.id} className="p-4">{device.profile.capabilityClass}</td>
-                  ))}
-                </tr>
-                <tr className="border-b">
-                  <td className="p-4 font-medium">Ownership Confidence</td>
+                <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
+                  <td className="p-4 font-medium" style={{ color: 'var(--ink-secondary)' }}>Legal Classification</td>
                   {selectedDevices.map((device) => (
                     <td key={device.id} className="p-4">
-                      <span className={`font-medium ${
-                        device.ownership.confidence >= 85 ? 'text-green-600' :
-                        device.ownership.confidence >= 70 ? 'text-yellow-600' :
-                        'text-red-600'
-                      }`}>
-                        {device.ownership.confidence}%
+                      <span className="px-2 py-1 text-xs rounded" style={{
+                        backgroundColor: getClassificationColor(device.legal.classification),
+                        color: 'var(--ink-primary)',
+                        opacity: 0.2
+                      }}>
+                        {device.legal.classification}
                       </span>
                     </td>
                   ))}
                 </tr>
-                <tr className="border-b">
-                  <td className="p-4 font-medium">Legal Classification</td>
-                  {selectedDevices.map((device) => (
-                    <td key={device.id} className={`p-4 ${getClassificationColor(device.legal.classification)}`}>
-                      {device.legal.classification}
-                    </td>
-                  ))}
-                </tr>
                 <tr>
-                  <td className="p-4 font-medium">Jurisdiction</td>
+                  <td className="p-4 font-medium" style={{ color: 'var(--ink-secondary)' }}>Jurisdiction</td>
                   {selectedDevices.map((device) => (
-                    <td key={device.id} className="p-4">{device.legal.jurisdiction.toUpperCase()}</td>
+                    <td key={device.id} className="p-4" style={{ color: 'var(--ink-primary)' }}>{device.legal.jurisdiction}</td>
                   ))}
                 </tr>
               </tbody>
             </table>
           </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow-sm border p-12 text-center">
-            <p className="text-gray-500">Select devices from above to compare</p>
-          </div>
         )}
 
-        {selectedDevices.length > 0 && (
-          <div className="mt-6">
-            <button className="bg-blue-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-blue-700">
-              Export Comparison Report
-            </button>
+        {selectedDevices.length === 0 && (
+          <div className="rounded-lg shadow-sm border p-12 text-center" style={{ 
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--border-primary)'
+          }}>
+            <p style={{ color: 'var(--ink-muted)' }}>Select devices from above to compare</p>
           </div>
         )}
       </div>
