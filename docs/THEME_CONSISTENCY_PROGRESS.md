@@ -1,11 +1,11 @@
 # Theme Consistency Progress Report
 
 **Date:** 2025-01-XX  
-**Status:** In Progress (Phase 4 Complete - 48%)
+**Status:** In Progress (Phase 5 Complete - 59%)
 
 ---
 
-## ✅ COMPLETED (14 Pages - 48%)
+## ✅ COMPLETED (17 Pages - 59%)
 
 ### Phase 1 (5 pages):
 1. ✅ **Settings.tsx** - All sections, buttons, inputs
@@ -29,23 +29,23 @@
 13. ✅ **OwnershipAttestation.tsx** - File upload, verification results, confidence display
 14. ✅ **BatchAnalysis.tsx** - Device input, job queue, progress bars
 
+### Phase 5 (3 pages):
+15. ✅ **CertificationExam.tsx** - Exam selection, questions, results, buttons
+16. ✅ **ConsoleTab.tsx** - Console output, command input, buttons
+17. ✅ **RecoveryTab.tsx** - Firmware lookup, recovery guidance, inputs, buttons
+
 ---
 
-## 🔄 REMAINING (15 Pages - 52%)
-
-### High Priority:
-- **CertificationExam.tsx** - Exam interface
+## 🔄 REMAINING (12 Pages - 41%)
 
 ### Medium Priority:
 - **IntakeTab.tsx** - Case intake form
 - **EvidenceBundleTab.tsx** - Evidence bundle interface
 - **AuditLogTab.tsx** - Audit log viewer
-- **RecoveryTab.tsx** - Recovery interface
 - **DiagnosticsTab.tsx** - Diagnostics interface
 - **JobsTab.tsx** - Job management
 - **DrivesTab.tsx** - Drive management
 - **ImagingTab.tsx** - Imaging interface
-- **ConsoleTab.tsx** - Console interface
 - **DevModeTab.tsx** - Developer mode
 
 ### Lower Priority (may already have theme):
@@ -59,19 +59,21 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 
 ### Standard Replacements:
 - `bg-white` → `backgroundColor: 'var(--surface-secondary)'`
-- `bg-gray-800` → `backgroundColor: 'var(--surface-primary)'` or `'var(--surface-secondary)'`
+- `bg-gray-800` → `backgroundColor: 'var(--surface-secondary)'`
 - `bg-gray-700` → `backgroundColor: 'var(--surface-tertiary)'`
+- `bg-gray-900` → `backgroundColor: 'var(--surface-primary)'`
 - `bg-gray-50` → `backgroundColor: 'var(--surface-tertiary)'`
 - `text-gray-400` → `color: 'var(--ink-muted)'`
 - `text-gray-600` → `color: 'var(--ink-secondary)'`
 - `text-gray-500` → `color: 'var(--ink-muted)'`
-- `border-gray-700` → `borderColor: 'var(--border-primary)'`
+- `border-gray-700`, `border-gray-600` → `borderColor: 'var(--border-primary)'`
 - `hover:bg-gray-50` → `onMouseEnter` with `var(--surface-tertiary)`
 
 ### Buttons:
 - `bg-blue-600` → `backgroundColor: 'var(--accent-gold)'`
+- `bg-purple-600` → `backgroundColor: 'var(--accent-bronze)'`
 - `hover:bg-blue-700` → `onMouseEnter` with `var(--accent-gold-light)`
-- Add `boxShadow: 'var(--glow-gold)'`
+- Add `boxShadow: 'var(--glow-gold)'` for primary actions
 - Add `color: 'var(--ink-inverse)'`
 
 ### Headers:
@@ -87,7 +89,7 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 
 ## 🎯 NEXT STEPS
 
-1. Continue with remaining 15 pages systematically
+1. Continue with remaining 12 pages systematically
 2. Update 3-5 pages per batch
 3. Test after each batch
 4. Commit progress after each batch
@@ -98,7 +100,7 @@ See `apps/workshop-ui/theme-update-helper.md` for detailed pattern reference.
 ## 📊 STATISTICS
 
 - **Total Pages:** 29
-- **Updated:** 14 (48%)
-- **Remaining:** 15 (52%)
+- **Updated:** 17 (59%)
+- **Remaining:** 12 (41%)
 - **Build Status:** ✅ All updated pages build successfully
 - **Helper Created:** ✅ `theme-update-helper.md` for reference
