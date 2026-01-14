@@ -29,16 +29,18 @@ export default function ConsoleTab() {
   return (
     <div className="space-y-4 h-full flex flex-col">
       <div>
-        <h2 className="text-2xl font-bold mb-2">ADB/Fastboot Console</h2>
-        <p className="text-gray-400">Execute ADB and Fastboot commands</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>ADB/Fastboot Console</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>Execute ADB and Fastboot commands</p>
       </div>
 
-      <div className="flex-1 bg-gray-900 rounded-lg p-4 font-mono text-sm overflow-auto">
+      <div className="flex-1 rounded-lg p-4 font-mono text-sm overflow-auto" style={{ 
+        backgroundColor: 'var(--surface-primary)'
+      }}>
         {output.length === 0 ? (
-          <div className="text-gray-500">No output yet. Enter a command below.</div>
+          <div style={{ color: 'var(--ink-muted)' }}>No output yet. Enter a command below.</div>
         ) : (
           output.map((line, i) => (
-            <div key={i} className={line.startsWith("$") ? "text-cyan-400" : "text-gray-300"}>
+            <div key={i} style={{ color: line.startsWith("$") ? 'var(--accent-steel)' : 'var(--ink-secondary)' }}>
               {line}
             </div>
           ))
@@ -51,26 +53,60 @@ export default function ConsoleTab() {
           value={command}
           onChange={(e) => setCommand(e.target.value)}
           placeholder="adb devices or fastboot devices"
-          className="flex-1 bg-gray-800 border border-gray-700 rounded px-4 py-2 font-mono text-sm"
+          className="flex-1 rounded px-4 py-2 font-mono text-sm"
+          style={{
+            backgroundColor: 'var(--surface-tertiary)',
+            borderColor: 'var(--border-primary)',
+            color: 'var(--ink-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
           disabled={loading}
         />
         <button
           type="submit"
           disabled={loading || !command.trim()}
-          className="bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 px-6 py-2 rounded"
+          className="px-6 py-2 rounded transition-all duration-300"
+          style={{
+            backgroundColor: (loading || !command.trim()) ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
+            color: (loading || !command.trim()) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+            boxShadow: (loading || !command.trim()) ? 'none' : 'var(--glow-gold)',
+            cursor: (loading || !command.trim()) ? 'not-allowed' : 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading && command.trim()) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading && command.trim()) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+            }
+          }}
         >
           Execute
         </button>
         <button
           type="button"
           onClick={clearOutput}
-          className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded"
+          className="px-4 py-2 rounded transition-all duration-300"
+          style={{
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--border-primary)',
+            color: 'var(--ink-secondary)',
+            border: '1px solid var(--border-primary)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--surface-tertiary)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--surface-secondary)';
+          }}
         >
           Clear
         </button>
       </form>
 
-      <div className="text-xs text-gray-500">
+      <div className="text-xs" style={{ color: 'var(--ink-muted)' }}>
         Note: Console commands require backend implementation for ADB/Fastboot execution.
       </div>
     </div>

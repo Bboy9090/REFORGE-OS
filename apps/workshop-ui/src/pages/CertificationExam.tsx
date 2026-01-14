@@ -168,19 +168,33 @@ export default function CertificationExam() {
     return (
       <section className="certification-exam">
         <div className="container max-w-4xl mx-auto py-8">
-          <h2 className="text-3xl font-bold mb-2">Certification Exams</h2>
-          <p className="text-gray-600 mb-8">Select a certification level to begin</p>
+          <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Certification Exams</h2>
+          <p className="mb-8" style={{ color: 'var(--ink-secondary)' }}>Select a certification level to begin</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {(['I', 'II', 'III'] as const).map((level) => (
-              <div key={level} className="bg-white rounded-lg shadow-sm border p-6">
-                <h3 className="font-semibold text-lg mb-2">Level {level}</h3>
-                <p className="text-sm text-gray-600 mb-4">
+              <div key={level} className="rounded-lg shadow-sm border p-6" style={{ 
+                backgroundColor: 'var(--surface-secondary)',
+                borderColor: 'var(--border-primary)'
+              }}>
+                <h3 className="font-semibold text-lg mb-2" style={{ color: 'var(--ink-primary)' }}>Level {level}</h3>
+                <p className="text-sm mb-4" style={{ color: 'var(--ink-secondary)' }}>
                   {mockExams[level].description}
                 </p>
                 <button
                   onClick={() => startExam(level)}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700"
+                  className="w-full py-2 px-4 rounded-lg font-medium transition-all duration-300"
+                  style={{
+                    backgroundColor: 'var(--accent-gold)',
+                    color: 'var(--ink-inverse)',
+                    boxShadow: 'var(--glow-gold)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                  }}
                 >
                   Start Exam
                 </button>
@@ -199,45 +213,81 @@ export default function CertificationExam() {
     <section className="certification-exam">
       <div className="container max-w-4xl mx-auto py-8">
         <div className="mb-6">
-          <h2 className="text-3xl font-bold mb-2">{exam.title}</h2>
-          <p className="text-gray-600">Question {currentQuestion + 1} of {exam.questions.length}</p>
+          <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>{exam.title}</h2>
+          <p style={{ color: 'var(--ink-secondary)' }}>Question {currentQuestion + 1} of {exam.questions.length}</p>
         </div>
 
         {showResults ? (
-          <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
-            <h3 className="text-2xl font-bold mb-4">Exam Results</h3>
-            <div className={`text-4xl font-bold mb-4 ${score! >= exam.passingScore ? 'text-green-600' : 'text-red-600'}`}>
+          <div className="rounded-lg shadow-sm border p-8 text-center" style={{ 
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--border-primary)'
+          }}>
+            <h3 className="text-2xl font-bold mb-4" style={{ color: 'var(--ink-primary)' }}>Exam Results</h3>
+            <div className="text-4xl font-bold mb-4" style={{ 
+              color: score! >= exam.passingScore ? 'var(--state-success)' : 'var(--state-error)'
+            }}>
               {score!.toFixed(1)}%
             </div>
-            <p className="text-lg mb-4">
+            <p className="text-lg mb-4" style={{ color: 'var(--ink-secondary)' }}>
               {score! >= exam.passingScore ? 'Congratulations! You passed.' : `You need ${exam.passingScore}% to pass.`}
             </p>
             <button
               onClick={resetExam}
-              className="bg-blue-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-blue-700"
+              className="py-2 px-6 rounded-lg font-medium transition-all duration-300"
+              style={{
+                backgroundColor: 'var(--accent-gold)',
+                color: 'var(--ink-inverse)',
+                boxShadow: 'var(--glow-gold)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+              }}
             >
               Return to Exam Selection
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="rounded-lg shadow-sm border p-6" style={{ 
+            backgroundColor: 'var(--surface-secondary)',
+            borderColor: 'var(--border-primary)'
+          }}>
             {question.scenario && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                <p className="text-sm font-medium text-blue-900 mb-2">Scenario:</p>
-                <p className="text-sm text-blue-800">{question.scenario}</p>
+              <div className="rounded-lg p-4 mb-4" style={{ 
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--accent-steel)',
+                border: '1px solid var(--border-primary)'
+              }}>
+                <p className="text-sm font-medium mb-2" style={{ color: 'var(--ink-primary)' }}>Scenario:</p>
+                <p className="text-sm" style={{ color: 'var(--ink-secondary)' }}>{question.scenario}</p>
               </div>
             )}
 
-            <h3 className="font-semibold text-lg mb-4">{question.question}</h3>
+            <h3 className="font-semibold text-lg mb-4" style={{ color: 'var(--ink-primary)' }}>{question.question}</h3>
 
             {question.options && (
               <div className="space-y-2 mb-6">
                 {question.options.map((option, index) => (
                   <label
                     key={index}
-                    className={`flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 ${
-                      answers[question.id] === index ? 'border-blue-500 bg-blue-50' : ''
-                    }`}
+                    className="flex items-center p-3 rounded-lg cursor-pointer transition-colors"
+                    style={{
+                      backgroundColor: answers[question.id] === index ? 'var(--surface-tertiary)' : 'var(--surface-primary)',
+                      borderColor: answers[question.id] === index ? 'var(--accent-gold)' : 'var(--border-primary)',
+                      border: '1px solid var(--border-primary)'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (answers[question.id] !== index) {
+                        e.currentTarget.style.backgroundColor = 'var(--surface-elevated)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (answers[question.id] !== index) {
+                        e.currentTarget.style.backgroundColor = 'var(--surface-primary)';
+                      }
+                    }}
                   >
                     <input
                       type="radio"
@@ -246,8 +296,9 @@ export default function CertificationExam() {
                       checked={answers[question.id] === index}
                       onChange={() => handleAnswer(question.id, index)}
                       className="mr-3"
+                      style={{ accentColor: 'var(--accent-gold)' }}
                     />
-                    <span>{option}</span>
+                    <span style={{ color: 'var(--ink-primary)' }}>{option}</span>
                   </label>
                 ))}
               </div>
@@ -257,21 +308,49 @@ export default function CertificationExam() {
               <button
                 onClick={previousQuestion}
                 disabled={currentQuestion === 0}
-                className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-lg transition-colors"
+                style={{
+                  backgroundColor: currentQuestion === 0 ? 'var(--surface-tertiary)' : 'var(--surface-secondary)',
+                  borderColor: 'var(--border-primary)',
+                  color: currentQuestion === 0 ? 'var(--ink-muted)' : 'var(--ink-secondary)',
+                  border: '1px solid var(--border-primary)',
+                  cursor: currentQuestion === 0 ? 'not-allowed' : 'pointer'
+                }}
               >
                 Previous
               </button>
               {isLastQuestion ? (
                 <button
                   onClick={submitExam}
-                  className="bg-green-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-green-700"
+                  className="py-2 px-6 rounded-lg font-medium transition-all duration-300"
+                  style={{
+                    backgroundColor: 'var(--state-success)',
+                    color: 'var(--ink-inverse)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.9';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                  }}
                 >
                   Submit Exam
                 </button>
               ) : (
                 <button
                   onClick={nextQuestion}
-                  className="bg-blue-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-blue-700"
+                  className="py-2 px-6 rounded-lg font-medium transition-all duration-300"
+                  style={{
+                    backgroundColor: 'var(--accent-gold)',
+                    color: 'var(--ink-inverse)',
+                    boxShadow: 'var(--glow-gold)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+                  }}
                 >
                   Next
                 </button>

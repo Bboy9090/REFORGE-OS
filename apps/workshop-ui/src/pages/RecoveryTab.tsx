@@ -68,33 +68,49 @@ export default function RecoveryTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2">Recovery Guidance</h2>
-        <p className="text-gray-400">Get official OEM firmware sources and recovery instructions</p>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Recovery Guidance</h2>
+        <p style={{ color: 'var(--ink-muted)' }}>Get official OEM firmware sources and recovery instructions</p>
       </div>
 
       {/* Firmware Lookup */}
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
-        <h3 className="text-lg font-semibold">Firmware Source Lookup</h3>
+      <div className="rounded-lg p-6 space-y-4" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>Firmware Source Lookup</h3>
         
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-2">OEM *</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>OEM *</label>
             <input
               type="text"
               value={oem}
               onChange={(e) => setOem(e.target.value)}
               placeholder="e.g., samsung, google, apple"
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+              className="w-full rounded px-3 py-2"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Model (optional)</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Model (optional)</label>
             <input
               type="text"
               value={model}
               onChange={(e) => setModel(e.target.value)}
               placeholder="e.g., Galaxy S21, Pixel 6"
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+              className="w-full rounded px-3 py-2"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             />
           </div>
         </div>
@@ -102,22 +118,47 @@ export default function RecoveryTab() {
         <button
           onClick={lookupFirmware}
           disabled={loading || !oem}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 rounded"
+          className="px-4 py-2 rounded transition-all duration-300"
+          style={{
+            backgroundColor: (loading || !oem) ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
+            color: (loading || !oem) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+            boxShadow: (loading || !oem) ? 'none' : 'var(--glow-gold)',
+            cursor: (loading || !oem) ? 'not-allowed' : 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading && oem) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading && oem) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
+            }
+          }}
         >
           {loading ? "Looking up..." : "Lookup Firmware Source"}
         </button>
 
         {firmwareSource && (
-          <div className="mt-4 p-4 bg-gray-900 rounded space-y-2">
-            <div className="font-medium">{firmwareSource.oem} Firmware Source</div>
+          <div className="mt-4 p-4 rounded space-y-2" style={{ 
+            backgroundColor: 'var(--surface-tertiary)'
+          }}>
+            <div className="font-medium" style={{ color: 'var(--ink-primary)' }}>{firmwareSource.oem} Firmware Source</div>
             {firmwareSource.source_url && (
               <div>
-                <span className="text-sm text-gray-400">Download: </span>
+                <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Download: </span>
                 <a
                   href={firmwareSource.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:underline"
+                  className="hover:underline"
+                  style={{ color: 'var(--accent-steel)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--accent-gold)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--accent-steel)';
+                  }}
                 >
                   {firmwareSource.source_url}
                 </a>
@@ -125,46 +166,69 @@ export default function RecoveryTab() {
             )}
             {firmwareSource.instructions_url && (
               <div>
-                <span className="text-sm text-gray-400">Instructions: </span>
+                <span className="text-sm" style={{ color: 'var(--ink-muted)' }}>Instructions: </span>
                 <a
                   href={firmwareSource.instructions_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:underline"
+                  className="hover:underline"
+                  style={{ color: 'var(--accent-steel)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--accent-gold)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--accent-steel)';
+                  }}
                 >
                   {firmwareSource.instructions_url}
                 </a>
               </div>
             )}
             {firmwareSource.notes && (
-              <div className="text-sm text-gray-400 mt-2">{firmwareSource.notes}</div>
+              <div className="text-sm mt-2" style={{ color: 'var(--ink-muted)' }}>{firmwareSource.notes}</div>
             )}
           </div>
         )}
       </div>
 
       {/* Recovery Guidance */}
-      <div className="bg-gray-800 rounded-lg p-6 space-y-4">
-        <h3 className="text-lg font-semibold">Recovery Guidance</h3>
+      <div className="rounded-lg p-6 space-y-4" style={{ 
+        backgroundColor: 'var(--surface-secondary)',
+        borderColor: 'var(--border-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>Recovery Guidance</h3>
         
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Platform *</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Platform *</label>
             <select
               value={platform}
               onChange={(e) => setPlatform(e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+              className="w-full rounded px-3 py-2"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             >
               <option value="android">Android</option>
               <option value="ios">iOS</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Guidance Type</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>Guidance Type</label>
             <select
               value={guidanceType}
               onChange={(e) => setGuidanceType(e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2"
+              className="w-full rounded px-3 py-2"
+              style={{
+                backgroundColor: 'var(--surface-tertiary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--ink-primary)',
+                border: '1px solid var(--border-primary)'
+              }}
             >
               <option value="restore">Restore</option>
               <option value="update">Update</option>
@@ -176,26 +240,45 @@ export default function RecoveryTab() {
         <button
           onClick={getGuidance}
           disabled={loading || !platform}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 rounded"
+          className="px-4 py-2 rounded transition-all duration-300"
+          style={{
+            backgroundColor: (loading || !platform) ? 'var(--surface-tertiary)' : 'var(--accent-bronze)',
+            color: (loading || !platform) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+            cursor: (loading || !platform) ? 'not-allowed' : 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading && platform) {
+              e.currentTarget.style.opacity = '0.9';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading && platform) {
+              e.currentTarget.style.opacity = '1';
+            }
+          }}
         >
           {loading ? "Generating..." : "Get Recovery Guidance"}
         </button>
 
         {guidance && (
           <div className="mt-4 space-y-4">
-            <div className="p-4 bg-gray-900 rounded">
-              <h4 className="font-medium mb-2">Recovery Steps</h4>
-              <ol className="list-decimal list-inside space-y-1 text-sm">
+            <div className="p-4 rounded" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
+              <h4 className="font-medium mb-2" style={{ color: 'var(--ink-primary)' }}>Recovery Steps</h4>
+              <ol className="list-decimal list-inside space-y-1 text-sm" style={{ color: 'var(--ink-secondary)' }}>
                 {guidance.steps?.map((step: string, idx: number) => (
-                  <li key={idx} className="text-gray-300">{step}</li>
+                  <li key={idx}>{step}</li>
                 ))}
               </ol>
             </div>
 
             {guidance.warnings && guidance.warnings.length > 0 && (
-              <div className="p-4 bg-yellow-900/30 border border-yellow-700 rounded">
-                <h4 className="font-medium mb-2 text-yellow-400">Warnings</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-yellow-200">
+              <div className="p-4 border rounded" style={{ 
+                backgroundColor: 'var(--state-warning)',
+                borderColor: 'var(--state-warning)',
+                opacity: 0.1
+              }}>
+                <h4 className="font-medium mb-2" style={{ color: 'var(--state-warning)' }}>Warnings</h4>
+                <ul className="list-disc list-inside space-y-1 text-sm" style={{ color: 'var(--state-warning)' }}>
                   {guidance.warnings.map((warning: string, idx: number) => (
                     <li key={idx}>{warning}</li>
                   ))}
@@ -204,8 +287,8 @@ export default function RecoveryTab() {
             )}
 
             {guidance.official_links && guidance.official_links.length > 0 && (
-              <div className="p-4 bg-gray-900 rounded">
-                <h4 className="font-medium mb-2">Official Links</h4>
+              <div className="p-4 rounded" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
+                <h4 className="font-medium mb-2" style={{ color: 'var(--ink-primary)' }}>Official Links</h4>
                 <ul className="space-y-2">
                   {guidance.official_links.map((link: any, idx: number) => (
                     <li key={idx}>
@@ -213,7 +296,14 @@ export default function RecoveryTab() {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-400 hover:underline"
+                        className="hover:underline"
+                        style={{ color: 'var(--accent-steel)' }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = 'var(--accent-gold)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = 'var(--accent-steel)';
+                        }}
                       >
                         {link.label}
                       </a>
@@ -224,15 +314,22 @@ export default function RecoveryTab() {
             )}
 
             {guidance.firmware_source && (
-              <div className="p-4 bg-gray-900 rounded">
-                <h4 className="font-medium mb-2">Firmware Source</h4>
+              <div className="p-4 rounded" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
+                <h4 className="font-medium mb-2" style={{ color: 'var(--ink-primary)' }}>Firmware Source</h4>
                 {guidance.firmware_source.source_url && (
                   <div className="text-sm">
                     <a
                       href={guidance.firmware_source.source_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-400 hover:underline"
+                      className="hover:underline"
+                      style={{ color: 'var(--accent-steel)' }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = 'var(--accent-gold)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = 'var(--accent-steel)';
+                      }}
                     >
                       {guidance.firmware_source.source_url}
                     </a>
@@ -245,8 +342,13 @@ export default function RecoveryTab() {
       </div>
 
       {error && (
-        <div className="p-3 bg-red-900/50 text-red-200 rounded">
-          {error}
+        <div className="p-3 rounded" style={{ 
+          backgroundColor: 'var(--state-error)',
+          borderColor: 'var(--state-error)',
+          border: '1px solid var(--state-error)',
+          opacity: 0.1
+        }}>
+          <div style={{ color: 'var(--state-error)' }}>{error}</div>
         </div>
       )}
     </div>
