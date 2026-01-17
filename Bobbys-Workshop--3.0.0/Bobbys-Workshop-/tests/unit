@@ -1,8 +1,0 @@
-const { describe, it, expect } = require('vitest');
-
-describe('Hello World Function', () => {
-    it('should return "Hello, World!"', () => {
-        const helloWorld = () => "Hello, World!";
-        expect(helloWorld()).toBe("Hello, World!");
-    });
-});
