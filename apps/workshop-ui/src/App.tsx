@@ -1,5 +1,19 @@
+/**
+ * REFORGE OS - Final Legendary Form
+ * 
+ * Layer 1: Bobby's Workshop (Public UI)
+ * 
+ * Features:
+ * - Shop Mode / Solo Mode dual presentation
+ * - Custodial Closet (read-only solutions vault)
+ * - Phoenix Key productization
+ * - Full compliance-first architecture
+ */
+
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { ModeProvider, useMode } from "./contexts/ModeContext";
+import ModeSwitcher from "./components/ModeSwitcher";
 import BackendHealthGate from "./components/BackendHealthGate";
 import DeviceOverview from "./pages/DeviceOverview";
 import ComplianceSummary from "./pages/ComplianceSummaryNew";
@@ -27,19 +41,23 @@ import HelpViewer from "./pages/HelpViewer";
 import NotificationsCenter from "./pages/NotificationsCenter";
 import DeviceComparison from "./pages/DeviceComparison";
 import BatchAnalysis from "./pages/BatchAnalysis";
+import CustodialCloset from "./pages/CustodialCloset";
+import PhoenixKeyManager from "./pages/PhoenixKeyManager";
 import "./App.css";
 import "./styles/reforge-professional-theme.css";
 
-// Navigation categories for organized menu
-const NAV_CATEGORIES = {
+// Navigation categories - mode-aware
+const getNavCategories = (isShopMode: boolean) => ({
   core: {
     label: "Core",
     icon: "⚡",
     items: [
       { id: "dashboard", label: "Dashboard", icon: "📊" },
       { id: "analysis", label: "Device Analysis", icon: "🔍" },
-      { id: "intake", label: "Intake", icon: "📥" },
-      { id: "jobs", label: "Jobs", icon: "📋" },
+      ...(isShopMode ? [
+        { id: "intake", label: "Intake", icon: "📥" },
+        { id: "jobs", label: "Work Orders", icon: "📋" },
+      ] : []),
     ]
   },
   compliance: {
@@ -49,51 +67,66 @@ const NAV_CATEGORIES = {
       { id: "compliance", label: "Compliance Summary", icon: "✅" },
       { id: "legal", label: "Legal Classification", icon: "⚖️" },
       { id: "ownership", label: "Ownership", icon: "🔐" },
-      { id: "audit", label: "Audit Log", icon: "📜" },
+      ...(isShopMode ? [{ id: "audit", label: "Audit Log", icon: "📜" }] : []),
     ]
   },
   operations: {
     label: "Operations",
     icon: "🔧",
     items: [
-      { id: "operations", label: "Ops Dashboard", icon: "📈" },
+      ...(isShopMode ? [{ id: "operations", label: "Ops Dashboard", icon: "📈" }] : []),
       { id: "diagnostics", label: "Diagnostics", icon: "🩺" },
       { id: "recovery", label: "Recovery", icon: "🔄" },
-      { id: "drives", label: "Drives", icon: "💾" },
-      { id: "imaging", label: "Imaging", icon: "📀" },
+      ...(isShopMode ? [
+        { id: "drives", label: "Drives", icon: "💾" },
+        { id: "imaging", label: "Imaging", icon: "📀" },
+      ] : []),
     ]
   },
-  advanced: {
-    label: "Advanced",
-    icon: "🔮",
+  knowledge: {
+    label: "Knowledge",
+    icon: "📚",
     items: [
+      { id: "closet", label: "Custodial Closet", icon: "📚" },
       { id: "vault", label: "Custodian Vault", icon: "🏛️" },
-      { id: "certification", label: "Certification", icon: "🎓" },
-      { id: "bundles", label: "Evidence Bundles", icon: "📦" },
-      { id: "batch", label: "Batch Analysis", icon: "📊" },
-      { id: "compare", label: "Compare Devices", icon: "🔄" },
     ]
   },
+  ...(isShopMode ? {
+    advanced: {
+      label: "Advanced",
+      icon: "🔮",
+      items: [
+        { id: "phoenixkey", label: "Phoenix Key", icon: "🔑" },
+        { id: "certification", label: "Certification", icon: "🎓" },
+        { id: "bundles", label: "Evidence Bundles", icon: "📦" },
+        { id: "batch", label: "Batch Analysis", icon: "📊" },
+        { id: "compare", label: "Compare Devices", icon: "🔄" },
+      ]
+    }
+  } : {}),
   system: {
     label: "System",
     icon: "⚙️",
     items: [
-      { id: "reports", label: "Reports", icon: "📄" },
+      ...(isShopMode ? [{ id: "reports", label: "Reports", icon: "📄" }] : []),
       { id: "console", label: "Console", icon: "💻" },
-      { id: "devmode", label: "Dev Mode", icon: "🛠️" },
+      ...(isShopMode ? [{ id: "devmode", label: "Dev Mode", icon: "🛠️" }] : []),
       { id: "settings", label: "Settings", icon: "⚙️" },
       { id: "help", label: "Help", icon: "❓" },
     ]
   }
-};
+});
 
-type TabType = "dashboard" | "analysis" | "compliance" | "legal" | "certification" | "operations" | "vault" | "intake" | "jobs" | "console" | "devmode" | "drives" | "imaging" | "diagnostics" | "recovery" | "audit" | "bundles" | "ownership" | "interpretive" | "reports" | "settings" | "profile" | "exam" | "help" | "notifications" | "compare" | "batch";
+type TabType = "dashboard" | "analysis" | "compliance" | "legal" | "certification" | "operations" | "vault" | "intake" | "jobs" | "console" | "devmode" | "drives" | "imaging" | "diagnostics" | "recovery" | "audit" | "bundles" | "ownership" | "interpretive" | "reports" | "settings" | "profile" | "exam" | "help" | "notifications" | "compare" | "batch" | "closet" | "phoenixkey";
 
-function App() {
+function AppContent() {
+  const { mode, config, isShopMode } = useMode();
   const [activeTab, setActiveTab] = useState<TabType>("dashboard");
   const [deviceId, setDeviceId] = useState<string | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>("core");
+
+  const NAV_CATEGORIES = getNavCategories(isShopMode);
 
   const toggleCategory = (category: string) => {
     setExpandedCategory(expandedCategory === category ? null : category);
@@ -104,7 +137,16 @@ function App() {
       const item = category.items.find(i => i.id === tabId);
       if (item) return item.label;
     }
-    return tabId.charAt(0).toUpperCase() + tabId.slice(1);
+    // Fallback labels
+    const fallbacks: Record<string, string> = {
+      profile: 'Profile',
+      notifications: 'Notifications',
+      exam: 'Certification Exam',
+      interpretive: 'Interpretive Review',
+      closet: 'Custodial Closet',
+      phoenixkey: 'Phoenix Key',
+    };
+    return fallbacks[tabId] || tabId.charAt(0).toUpperCase() + tabId.slice(1);
   };
 
   return (
@@ -133,10 +175,19 @@ function App() {
             {!sidebarCollapsed && (
               <div className="fade-in">
                 <h1 className="text-lg font-bold" style={{ color: 'var(--accent-gold)' }}>REFORGE OS</h1>
-                <p className="text-xs" style={{ color: 'var(--ink-muted)' }}>v3.0.0</p>
+                <p className="text-xs" style={{ color: 'var(--ink-muted)' }}>
+                  {isShopMode ? 'Shop Mode' : 'Solo Mode'}
+                </p>
               </div>
             )}
           </div>
+
+          {/* Mode Indicator (Collapsed) */}
+          {sidebarCollapsed && (
+            <div className="p-2 flex justify-center">
+              <span className="text-lg" title={config.name}>{config.icon}</span>
+            </div>
+          )}
 
           {/* Navigation Categories */}
           <nav className="flex-1 overflow-y-auto py-4 px-2">
@@ -194,8 +245,14 @@ function App() {
             ))}
           </nav>
 
-          {/* Sidebar Toggle & User Section */}
-          <div className="p-4 border-t" style={{ borderColor: 'var(--border-primary)' }}>
+          {/* Sidebar Footer */}
+          <div className="p-4 border-t space-y-2" style={{ borderColor: 'var(--border-primary)' }}>
+            {/* Mode Switcher */}
+            {!sidebarCollapsed && (
+              <ModeSwitcher variant="compact" showDescription={false} />
+            )}
+            
+            {/* Collapse Toggle */}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all duration-200"
@@ -233,11 +290,28 @@ function App() {
                   color: 'var(--ink-muted)'
                 }}
               >
-                Analysis • Classification • Lawful Routing
+                {config.tagline}
               </span>
             </div>
             
             <div className="flex items-center gap-4">
+              {/* Mode Badge */}
+              <div 
+                className="flex items-center gap-2 px-3 py-1 rounded-lg"
+                style={{ 
+                  backgroundColor: isShopMode ? 'rgba(207, 181, 59, 0.1)' : 'rgba(74, 144, 164, 0.1)',
+                  border: `1px solid ${isShopMode ? 'var(--accent-gold)' : '#4A90A4'}`
+                }}
+              >
+                <span>{config.icon}</span>
+                <span 
+                  className="text-sm font-medium"
+                  style={{ color: isShopMode ? 'var(--accent-gold)' : '#4A90A4' }}
+                >
+                  {isShopMode ? 'Shop' : 'Solo'}
+                </span>
+              </div>
+
               {/* Status Indicator */}
               <div className="flex items-center gap-2">
                 <div 
@@ -303,6 +377,8 @@ function App() {
               {activeTab === "notifications" && <NotificationsCenter />}
               {activeTab === "compare" && <DeviceComparison />}
               {activeTab === "batch" && <BatchAnalysis />}
+              {activeTab === "closet" && <CustodialCloset />}
+              {activeTab === "phoenixkey" && <PhoenixKeyManager />}
             </div>
           </main>
 
@@ -315,12 +391,21 @@ function App() {
             }}
           >
             <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
-              This platform provides analysis and documentation only. No modification, circumvention, or account interference is performed or advised.
+              {config.branding.footerText}
             </p>
           </footer>
         </div>
       </div>
     </BackendHealthGate>
+  );
+}
+
+// Main App with ModeProvider wrapper
+function App() {
+  return (
+    <ModeProvider>
+      <AppContent />
+    </ModeProvider>
   );
 }
 
