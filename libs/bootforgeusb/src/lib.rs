@@ -2,6 +2,10 @@ pub mod model;
 pub mod usb_scan;
 pub mod classify;
 pub mod tools;
+pub mod device_state;
+
+// Re-export unified device state for external use
+pub use device_state::UnifiedDeviceState;
 
 use model::{DeviceRecord, Evidence};
 use std::collections::HashMap;
