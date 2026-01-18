@@ -76,6 +76,11 @@ export const devicesApi = {
     return apiRequest<ApiResponse>('/api/v1/devices/detect');
   },
 
+  // Get REAL connected devices from ForgeWorks API
+  getConnected: async () => {
+    return apiRequest<ApiResponse>('/api/v1/devices/connected', {}, true);
+  },
+
   addToCase: async (caseId: string, device: {
     platform: string;
     model?: string;
@@ -217,17 +222,23 @@ export const healthApi = {
 // FORGEWORKS CORE API (Compliance-First Device Analysis)
 // ============================================================================
 
-// Device Analysis
+// Device Analysis - REAL DEVICE INTERACTIONS
 export const deviceAnalysisApi = {
   analyze: async (data: {
     device_metadata: string;
     platform?: string;
     connection_state?: string;
+    device_serial?: string;  // For targeting specific connected device
   }) => {
     return apiRequest<ApiResponse>('/api/v1/device/analyze', {
       method: 'POST',
       body: JSON.stringify(data),
-    });
+    }, true);  // Use ForgeWorks API
+  },
+
+  // Get readiness status with connected device info
+  getReady: async () => {
+    return apiRequest<ApiResponse>('/api/v1/ready', {}, true);
   },
 };
 

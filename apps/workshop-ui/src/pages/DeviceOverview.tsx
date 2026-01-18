@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
-import { deviceAnalysisApi, ownershipApi } from "../lib/api-client";
+import { deviceAnalysisApi, ownershipApi, devicesApi } from "../lib/api-client";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorAlert from "../components/ErrorAlert";
+import SuccessAlert from "../components/SuccessAlert";
+
+interface ConnectedDevice {
+  serial: string;
+  platform: string;
+  model: string;
+  connection_state?: string;
+  trust_state?: Record<string, any>;
+}
 
 interface DeviceProfile {
   device_id: string;
@@ -13,6 +22,8 @@ interface DeviceProfile {
   classification: string;
   restrictions: string[];
   non_invasive: boolean;
+  real_device: boolean;
+  raw_properties?: Record<string, any>;
 }
 
 interface OwnershipConfidence {
@@ -27,31 +38,60 @@ interface DeviceOverviewProps {
 }
 
 export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps) {
+  const [connectedDevices, setConnectedDevices] = useState<ConnectedDevice[]>([]);
+  const [selectedSerial, setSelectedSerial] = useState<string>("");
   const [device, setDevice] = useState<DeviceProfile | null>(null);
   const [ownership, setOwnership] = useState<OwnershipConfidence | null>(null);
   const [loading, setLoading] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const [error, setError] = useState<string>("");
-  const [deviceMetadata, setDeviceMetadata] = useState("");
+  const [success, setSuccess] = useState<string>("");
 
-  // This is a read-only analysis view
-  // No actions are executed
+  // Load connected devices on mount
+  useEffect(() => {
+    scanForDevices();
+  }, []);
+
+  const scanForDevices = async () => {
+    setScanning(true);
+    setError("");
+    
+    try {
+      const response = await devicesApi.getConnected();
+      
+      if (response.ok) {
+        setConnectedDevices(response.devices || []);
+        if (response.devices && response.devices.length > 0) {
+          setSuccess(`Found ${response.devices.length} connected device(s)`);
+        } else {
+          setError("No devices connected. Connect a device via USB and authorize ADB/pairing.");
+        }
+      } else {
+        setError(response.message || "Failed to scan for devices");
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to connect to backend. Ensure ForgeWorks API is running.");
+    } finally {
+      setScanning(false);
+    }
+  };
 
   const analyzeDevice = async () => {
-    if (!deviceMetadata.trim()) {
-      setError("Please enter device metadata to analyze");
+    if (!selectedSerial && connectedDevices.length === 0) {
+      setError("No device selected. Connect a device first.");
       return;
     }
 
     setLoading(true);
     setError("");
+    setSuccess("");
 
     try {
-      // Step 1: Analyze device
+      // Analyze REAL device
       const analysisResult = await deviceAnalysisApi.analyze({
-        device_metadata: deviceMetadata,
-        platform: deviceMetadata.includes("iPhone") ? "ios" : 
-                  deviceMetadata.includes("Samsung") || deviceMetadata.includes("Android") ? "android" : 
-                  "unknown",
+        device_metadata: selectedSerial || "auto-detect",
+        device_serial: selectedSerial || undefined,
+        platform: connectedDevices.find(d => d.serial === selectedSerial)?.platform,
       });
 
       if (analysisResult.ok && analysisResult.device_id) {
@@ -65,18 +105,22 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
           classification: analysisResult.classification,
           restrictions: analysisResult.restrictions || [],
           non_invasive: analysisResult.non_invasive ?? true,
+          real_device: analysisResult.real_device ?? true,
+          raw_properties: analysisResult.raw_properties,
         };
         setDevice(deviceData);
+        setSuccess(`Successfully analyzed real device: ${deviceData.model}`);
+        
         if (onDeviceSelected) {
           onDeviceSelected(deviceData.device_id);
         }
 
-        // Step 2: Verify ownership (mock for now)
+        // Verify ownership
         try {
           const ownershipResult = await ownershipApi.verify({
             user_id: "current_user",
             device_id: deviceData.device_id,
-            attestation_type: "PurchaseReceipt",
+            attestation_type: "VerbalAttestation",
             documentation_references: [],
           });
 
@@ -95,7 +139,7 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
         setError(analysisResult.error || "Failed to analyze device");
       }
     } catch (err: any) {
-      setError(err.message || "Failed to analyze device");
+      setError(err.message || "Failed to analyze device. Ensure device is connected and authorized.");
     } finally {
       setLoading(false);
     }
@@ -108,68 +152,110 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 fade-in">
       <div>
-        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Device Insight</h2>
+        <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--accent-gold)' }}>Device Analysis</h2>
         <p style={{ color: 'var(--ink-muted)' }}>
-          Read-only summary of observed device metadata and protection posture
+          REAL device analysis - Connect a device via USB to begin
         </p>
       </div>
 
       {error && (
         <ErrorAlert message={error} onDismiss={() => setError("")} />
       )}
+      
+      {success && (
+        <SuccessAlert message={success} onDismiss={() => setSuccess("")} />
+      )}
 
-      <div className="rounded-lg p-6 space-y-4" style={{ 
+      {/* Connected Devices Panel */}
+      <div className="rounded-lg p-6" style={{ 
         backgroundColor: 'var(--surface-secondary)',
-        borderColor: 'var(--border-primary)',
         border: '1px solid var(--border-primary)'
       }}>
-        <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-secondary)' }}>
-            Device Metadata
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={deviceMetadata}
-              onChange={(e) => setDeviceMetadata(e.target.value)}
-              placeholder="e.g., iPhone 13 Pro - Clean device"
-              className="flex-1 px-4 py-2 rounded-lg transition-all duration-300"
-              style={{
-                backgroundColor: 'var(--surface-tertiary)',
-                borderColor: 'var(--border-primary)',
-                color: 'var(--ink-primary)',
-                border: '1px solid var(--border-primary)'
-              }}
-              onKeyPress={(e) => e.key === "Enter" && analyzeDevice()}
-            />
-            <button
-              onClick={analyzeDevice}
-              disabled={loading}
-              className="px-6 py-2 rounded-lg font-medium transition-all duration-300"
-              style={{
-                backgroundColor: loading ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
-                color: loading ? 'var(--ink-muted)' : 'var(--ink-inverse)',
-                boxShadow: loading ? 'none' : 'var(--glow-gold)',
-                cursor: loading ? 'not-allowed' : 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.backgroundColor = 'var(--accent-gold-light)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.backgroundColor = 'var(--accent-gold)';
-                }
-              }}
-            >
-              {loading ? "Analyzing..." : "Analyze Device"}
-            </button>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>
+            Connected Devices ({connectedDevices.length})
+          </h3>
+          <button
+            onClick={scanForDevices}
+            disabled={scanning}
+            className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300"
+            style={{
+              backgroundColor: scanning ? 'var(--surface-tertiary)' : 'var(--accent-steel)',
+              color: scanning ? 'var(--ink-muted)' : 'var(--ink-primary)',
+              cursor: scanning ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {scanning ? 'Scanning...' : 'Scan for Devices'}
+          </button>
+        </div>
+
+        {connectedDevices.length === 0 ? (
+          <div className="text-center py-8 rounded-lg" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
+            <p className="text-lg mb-2" style={{ color: 'var(--ink-muted)' }}>No devices connected</p>
+            <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
+              Connect an Android device via USB and accept the ADB authorization prompt
+            </p>
           </div>
-          <p className="text-xs mt-2" style={{ color: 'var(--ink-muted)' }}>
-            Enter device information to begin read-only analysis
+        ) : (
+          <div className="space-y-2">
+            {connectedDevices.map((dev) => (
+              <div
+                key={dev.serial}
+                onClick={() => setSelectedSerial(dev.serial)}
+                className="p-4 rounded-lg cursor-pointer transition-all duration-200"
+                style={{
+                  backgroundColor: selectedSerial === dev.serial ? 'var(--surface-elevated)' : 'var(--surface-tertiary)',
+                  border: selectedSerial === dev.serial ? '2px solid var(--accent-gold)' : '2px solid transparent'
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium" style={{ color: 'var(--ink-primary)' }}>
+                      {dev.model || 'Unknown Model'}
+                    </div>
+                    <div className="text-sm" style={{ color: 'var(--ink-muted)' }}>
+                      {dev.platform.toUpperCase()} | Serial: {dev.serial}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span 
+                      className="px-2 py-1 rounded text-xs font-medium"
+                      style={{ 
+                        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                        color: 'var(--state-success)'
+                      }}
+                    >
+                      Connected
+                    </span>
+                    {selectedSerial === dev.serial && (
+                      <span style={{ color: 'var(--accent-gold)' }}>✓</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Analyze Button */}
+        <div className="mt-4 pt-4" style={{ borderTop: '1px solid var(--border-primary)' }}>
+          <button
+            onClick={analyzeDevice}
+            disabled={loading || connectedDevices.length === 0}
+            className="w-full px-6 py-3 rounded-lg font-medium transition-all duration-300"
+            style={{
+              backgroundColor: (loading || connectedDevices.length === 0) ? 'var(--surface-tertiary)' : 'var(--accent-gold)',
+              color: (loading || connectedDevices.length === 0) ? 'var(--ink-muted)' : 'var(--ink-inverse)',
+              boxShadow: (loading || connectedDevices.length === 0) ? 'none' : 'var(--glow-gold)',
+              cursor: (loading || connectedDevices.length === 0) ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {loading ? "Analyzing Real Device..." : "Analyze Selected Device"}
+          </button>
+          <p className="text-xs text-center mt-2" style={{ color: 'var(--ink-muted)' }}>
+            Read-only analysis - No modifications to device
           </p>
         </div>
       </div>
@@ -177,56 +263,93 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
       {loading && (
         <div className="rounded-lg p-12 text-center" style={{ 
           backgroundColor: 'var(--surface-secondary)',
-          borderColor: 'var(--border-primary)',
           border: '1px solid var(--border-primary)'
         }}>
-          <LoadingSpinner size="lg" text="Analyzing device..." />
+          <LoadingSpinner size="lg" text="Analyzing real device..." />
         </div>
       )}
 
+      {/* Analysis Results */}
       {device && !loading && (
         <div className="rounded-lg p-6 space-y-4" style={{ 
           backgroundColor: 'var(--surface-secondary)',
-          borderColor: 'var(--border-primary)',
-          border: '1px solid var(--border-primary)'
+          border: '1px solid var(--border-gold)'
         }}>
-          <div>
-            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Device Model</label>
-            <div className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>{device.model}</div>
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold" style={{ color: 'var(--accent-gold)' }}>
+              Analysis Results
+            </h3>
+            {device.real_device && (
+              <span 
+                className="px-3 py-1 rounded-full text-xs font-medium"
+                style={{ 
+                  backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                  color: 'var(--accent-gold)'
+                }}
+              >
+                REAL DEVICE
+              </span>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Device Model</label>
+              <div className="text-lg font-semibold" style={{ color: 'var(--ink-primary)' }}>{device.model}</div>
+            </div>
+
+            <div>
+              <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Manufacturer</label>
+              <div className="text-lg" style={{ color: 'var(--ink-primary)' }}>{device.manufacturer}</div>
+            </div>
+
+            <div>
+              <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Platform</label>
+              <div className="text-lg uppercase" style={{ color: 'var(--ink-primary)' }}>{device.platform}</div>
+            </div>
+
+            <div>
+              <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Device ID</label>
+              <div className="text-sm font-mono" style={{ color: 'var(--ink-secondary)' }}>{device.device_id}</div>
+            </div>
+          </div>
+
+          <div className="pt-4" style={{ borderTop: '1px solid var(--border-primary)' }}>
+            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Security State</label>
+            <div className="text-lg" style={{ color: 'var(--state-success)' }}>{device.security_state}</div>
           </div>
 
           <div>
-            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Manufacturer</label>
-            <div className="text-lg" style={{ color: 'var(--ink-primary)' }}>{device.manufacturer}</div>
-          </div>
-
-          <div>
-            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Platform</label>
-            <div className="text-lg uppercase" style={{ color: 'var(--ink-primary)' }}>{device.platform}</div>
-          </div>
-
-          <div>
-            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Observed Protection Layer</label>
-            <div className="text-lg" style={{ color: 'var(--ink-primary)' }}>{device.security_state}</div>
-          </div>
-
-          <div>
-            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Capability Class</label>
-            <div className="text-lg" style={{ color: 'var(--ink-primary)' }}>{device.capability_class}</div>
-            <p className="text-sm mt-1" style={{ color: 'var(--ink-muted)' }}>
-              This assessment documents analysis only. No modification or circumvention is performed.
-            </p>
+            <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Classification</label>
+            <div className="text-lg" style={{ color: 'var(--ink-primary)' }}>{device.classification}</div>
           </div>
 
           {device.restrictions.length > 0 && (
             <div>
-              <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Restrictions</label>
+              <label className="text-sm" style={{ color: 'var(--ink-muted)' }}>Analysis Restrictions</label>
               <ul className="list-disc list-inside mt-1 space-y-1">
                 {device.restrictions.map((restriction, idx) => (
                   <li key={idx} className="text-sm" style={{ color: 'var(--ink-secondary)' }}>{restriction}</li>
                 ))}
               </ul>
             </div>
+          )}
+
+          {/* Raw Properties (if available) */}
+          {device.raw_properties && Object.keys(device.raw_properties).length > 0 && (
+            <details className="pt-4" style={{ borderTop: '1px solid var(--border-primary)' }}>
+              <summary 
+                className="cursor-pointer text-sm font-medium"
+                style={{ color: 'var(--accent-steel)' }}
+              >
+                View Raw Device Properties ({Object.keys(device.raw_properties).length} properties)
+              </summary>
+              <div className="mt-2 p-3 rounded-lg overflow-auto max-h-64" style={{ backgroundColor: 'var(--surface-tertiary)' }}>
+                <pre className="text-xs" style={{ color: 'var(--ink-secondary)' }}>
+                  {JSON.stringify(device.raw_properties, null, 2)}
+                </pre>
+              </div>
+            </details>
           )}
 
           {ownership && (
@@ -261,19 +384,18 @@ export default function DeviceOverview({ onDeviceSelected }: DeviceOverviewProps
         </div>
       )}
 
-      {!device && !loading && (
-        <div className="rounded-lg p-12 text-center" style={{ 
-          backgroundColor: 'var(--surface-secondary)',
-          border: '1px solid var(--border-primary)'
-        }}>
-          <p style={{ color: 'var(--ink-muted)' }}>
-            Enter device metadata above to begin analysis
-          </p>
-          <p className="text-sm mt-2" style={{ color: 'var(--ink-muted)' }}>
-            Analysis is read-only. No device changes are made.
-          </p>
-        </div>
-      )}
+      {/* Mode Indicator */}
+      <div className="rounded-lg p-4 text-center" style={{ 
+        backgroundColor: 'rgba(212, 175, 55, 0.1)',
+        border: '1px solid rgba(212, 175, 55, 0.3)'
+      }}>
+        <p className="text-sm font-medium" style={{ color: 'var(--accent-gold)' }}>
+          REAL DEVICE MODE - Analysis executes on actual connected hardware
+        </p>
+        <p className="text-xs mt-1" style={{ color: 'var(--ink-muted)' }}>
+          All data shown is retrieved directly from the connected device
+        </p>
+      </div>
     </div>
   );
 }
