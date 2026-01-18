@@ -15,9 +15,12 @@ export default defineConfig(async () => ({
   server: {
     port: 1420,
     strictPort: true,
+    watch: {
+      // Tell Vite to ignore watching `src-tauri` to prevent reloads during Rust builds
+      ignored: ["**/src-tauri/**"],
+    },
   },
   // to make use of `TAURI_DEBUG` and other env variables
-  // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
   envPrefix: ["VITE_", "TAURI_"],
   build: {
     // Tauri supports es2021
@@ -26,24 +29,7 @@ export default defineConfig(async () => ({
     minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
     // produce sourcemaps for debug builds
     sourcemap: !!process.env.TAURI_DEBUG,
-    rollupOptions: {
-      external: [
-        "@tauri-apps/api/core",
-        "@tauri-apps/api/tauri",
-        "@tauri-apps/api/window",
-        "@tauri-apps/api/fs",
-        "@tauri-apps/api/path",
-        "@tauri-apps/api/shell",
-        "@tauri-apps/api/dialog",
-        "@tauri-apps/api/notification",
-        "@tauri-apps/api/clipboard",
-        "@tauri-apps/api/http",
-        "@tauri-apps/api/event",
-        "@tauri-apps/api/globalShortcut",
-        "@tauri-apps/api/app",
-        "@tauri-apps/api/os",
-        "@tauri-apps/api/process",
-      ],
-    },
+    // Optimize bundle size
+    chunkSizeWarningLimit: 1000,
   },
 }));

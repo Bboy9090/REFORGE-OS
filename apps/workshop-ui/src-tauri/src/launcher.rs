@@ -5,6 +5,7 @@ use std::process::{Child, Command, Stdio};
 use std::path::PathBuf;
 use std::io::{BufRead, BufReader};
 use std::sync::{Arc, Mutex};
+use std::time::Duration;
 
 pub struct PythonBackend {
     process: Arc<Mutex<Option<Child>>>,

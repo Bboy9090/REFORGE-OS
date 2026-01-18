@@ -6,23 +6,54 @@ Cargo.lock
 node_modules/
 dist/
 .env
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.eggs/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
 
 # OS
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
+*~
 
 # IDE
 .cursor/
 .vscode/
 *.sublime-project
 *.sublime-workspace
+.idea/
 
 # Local DB
 *.sqlite
 *.sqlite-journal
+*.db
 
 # Compiled firmware
 *.bin
 *.hex
 *.elf
 *.sig
+
+# Build artifacts
+build/
+*.bundle.*
+
+# Logs
+logs/*.log
+
+# Test outputs
+test-results/
+coverage/
