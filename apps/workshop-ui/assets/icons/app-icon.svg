@@ -1,39 +1,72 @@
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-  <!-- REFORGE OS App Icon - REFORGE Professional Theme -->
-  <!-- Steel Blue (#5B7FA8) accents on Dark Blue-Grey Background -->
+  <!-- REFORGE OS App Icon - Professional Theme -->
+  <!-- Metallic Gold (#D4AF37) + Bronze (#CD7F32) on Dark Blue-Grey -->
   
   <defs>
-    <linearGradient id="steelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#7A9BC4;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#5B7FA8;stop-opacity:1" />
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5C158;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8941F;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="steelDarkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#5B7FA8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3D5A7A;stop-opacity:1" />
+    <linearGradient id="bronzeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E09A4F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A8651F;stop-opacity:1" />
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+    <filter id="goldGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
       <feMerge>
         <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="innerShadow">
+      <feOffset dx="0" dy="2"/>
+      <feGaussianBlur stdDeviation="2"/>
+      <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+      <feMerge>
+        <feMergeNode/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
   
   <!-- Background Circle (Dark Blue-Grey) -->
-  <circle cx="64" cy="64" r="60" fill="#1A1F2E" stroke="#252B3D" stroke-width="2"/>
+  <circle cx="64" cy="64" r="62" fill="#1A1F2E"/>
+  <circle cx="64" cy="64" r="60" fill="none" stroke="#252B3D" stroke-width="3"/>
   
-  <!-- Shield/Analysis Symbol (Steel Blue) -->
-  <path d="M 64 20 L 90 30 L 90 55 Q 90 75 80 85 Q 70 95 64 100 Q 58 95 48 85 Q 38 75 38 55 L 38 30 Z" 
-        fill="url(#steelGradient)" 
-        opacity="0.9"
-        filter="url(#glow)"/>
+  <!-- Outer Decorative Ring -->
+  <circle cx="64" cy="64" r="56" fill="none" stroke="url(#bronzeGradient)" stroke-width="1" opacity="0.4"/>
   
-  <!-- Inner Circuit/Grid Pattern (Steel Blue accents) -->
-  <circle cx="64" cy="64" r="25" fill="none" stroke="url(#steelDarkGradient)" stroke-width="2" opacity="0.6"/>
-  <line x1="64" y1="39" x2="64" y2="89" stroke="url(#steelDarkGradient)" stroke-width="1.5" opacity="0.5"/>
-  <line x1="39" y1="64" x2="89" y2="64" stroke="url(#steelDarkGradient)" stroke-width="1.5" opacity="0.5"/>
+  <!-- Shield/Analysis Symbol (Metallic Gold) -->
+  <path d="M 64 18 L 94 30 L 94 58 Q 94 80 82 92 Q 70 104 64 108 Q 58 104 46 92 Q 34 80 34 58 L 34 30 Z" 
+        fill="url(#goldGradient)" 
+        opacity="0.95"
+        filter="url(#goldGlow)"/>
   
-  <!-- Center Dot (Glowing Steel Blue) -->
-  <circle cx="64" cy="64" r="8" fill="#5B7FA8" opacity="0.8" filter="url(#glow)"/>
+  <!-- Inner Shield Highlight -->
+  <path d="M 64 24 L 88 34 L 88 56 Q 88 74 78 84 Q 68 94 64 98 Q 60 94 50 84 Q 40 74 40 56 L 40 34 Z" 
+        fill="none" 
+        stroke="#E5C158" 
+        stroke-width="1" 
+        opacity="0.5"/>
+  
+  <!-- Inner Analysis Ring (Bronze) -->
+  <circle cx="64" cy="62" r="26" fill="none" stroke="url(#bronzeGradient)" stroke-width="2.5" opacity="0.7"/>
+  
+  <!-- Cross Pattern (Subtle Grid) -->
+  <line x1="64" y1="36" x2="64" y2="88" stroke="#CD7F32" stroke-width="1.5" opacity="0.4"/>
+  <line x1="38" y1="62" x2="90" y2="62" stroke="#CD7F32" stroke-width="1.5" opacity="0.4"/>
+  
+  <!-- Center R Letterform -->
+  <text x="64" y="72" 
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif" 
+        font-size="36" 
+        font-weight="700" 
+        fill="#1A1F2E" 
+        text-anchor="middle">R</text>
+  
+  <!-- Corner Accent Dots -->
+  <circle cx="64" cy="28" r="4" fill="#D4AF37" opacity="0.9" filter="url(#goldGlow)"/>
+  <circle cx="46" cy="38" r="2.5" fill="#CD7F32" opacity="0.6"/>
+  <circle cx="82" cy="38" r="2.5" fill="#CD7F32" opacity="0.6"/>
 </svg>

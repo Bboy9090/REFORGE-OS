@@ -21,29 +21,45 @@
       50% { opacity: 0.5; }
     }
     
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6)); }
+      50% { filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.9)); }
+    }
+    
     .splash {
       animation: fadeIn 0.5s ease-in;
     }
     
     .splash h1 {
       animation: slideUp 0.6s ease-out 0.2s both;
+      background: linear-gradient(135deg, #D4AF37 0%, #CD7F32 50%, #D4AF37 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: slideUp 0.6s ease-out 0.2s both, shimmer 3s linear infinite;
     }
     
     .splash .subtitle {
       animation: slideUp 0.6s ease-out 0.4s both;
     }
     
-    .splash .loader {
-      animation: pulse 1.5s ease-in-out infinite;
+    .logo-container {
+      animation: glow 2s ease-in-out infinite;
     }
     
     .loader-dot {
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: var(--accent);
-      margin: 0 4px;
+      background: linear-gradient(135deg, #D4AF37, #CD7F32);
+      margin: 0 6px;
       animation: pulse 1.5s ease-in-out infinite;
     }
     
@@ -54,45 +70,75 @@
     .loader-dot:nth-child(3) {
       animation-delay: 0.4s;
     }
+    
+    .version-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: #D4AF37;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
   <div class="splash">
-    <div style="margin-bottom: 2rem;">
-      <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+    <div class="logo-container" style="margin-bottom: 2rem;">
+      <svg width="140" height="140" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="splashCyan" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#2DD4FF;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#0EA5E9;stop-opacity:1" />
+          <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#CD7F32;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
           </linearGradient>
-          <filter id="splashGlow">
-            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <linearGradient id="bronzeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#CD7F32;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#A8651F;stop-opacity:1" />
+          </linearGradient>
+          <filter id="goldGlow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
             <feMerge>
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
         </defs>
-        <circle cx="64" cy="64" r="60" fill="#0F1114" stroke="#161A1F" stroke-width="2"/>
-        <path d="M 64 20 L 90 30 L 90 55 Q 90 75 80 85 Q 70 95 64 100 Q 58 95 48 85 Q 38 75 38 55 L 38 30 Z" 
-              fill="url(#splashCyan)" 
-              opacity="0.9"
-              filter="url(#splashGlow)"/>
-        <circle cx="64" cy="64" r="25" fill="none" stroke="#FF3DBB" stroke-width="2" opacity="0.6"/>
-        <circle cx="64" cy="64" r="8" fill="#2DD4FF" opacity="0.8" filter="url(#splashGlow)"/>
+        <!-- Background circle -->
+        <circle cx="70" cy="70" r="66" fill="#1A1F2E" stroke="#252B3D" stroke-width="2"/>
+        <!-- Shield shape -->
+        <path d="M 70 18 L 100 30 L 100 60 Q 100 85 87 97 Q 74 109 70 112 Q 66 109 53 97 Q 40 85 40 60 L 40 30 Z" 
+              fill="url(#goldGradient)" 
+              opacity="0.95"
+              filter="url(#goldGlow)"/>
+        <!-- Inner ring -->
+        <circle cx="70" cy="68" r="28" fill="none" stroke="url(#bronzeGradient)" stroke-width="2.5" opacity="0.7"/>
+        <!-- Center R letterform -->
+        <text x="70" y="78" 
+              font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif" 
+              font-size="32" 
+              font-weight="700" 
+              fill="#1A1F2E" 
+              text-anchor="middle">R</text>
+        <!-- Decorative dots -->
+        <circle cx="70" cy="35" r="4" fill="#D4AF37" opacity="0.8"/>
+        <circle cx="50" cy="45" r="2.5" fill="#CD7F32" opacity="0.6"/>
+        <circle cx="90" cy="45" r="2.5" fill="#CD7F32" opacity="0.6"/>
       </svg>
     </div>
     
     <h1>REFORGE OS</h1>
-    <p class="subtitle">Analysis • Classification • Lawful Routing</p>
+    <p class="subtitle">Analysis | Classification | Lawful Routing</p>
+    <span class="version-badge">v3.0.0 Final Form</span>
     
-    <div class="loader" style="margin-top: 2rem;">
+    <div style="margin-top: 2.5rem;">
       <span class="loader-dot"></span>
       <span class="loader-dot"></span>
       <span class="loader-dot"></span>
     </div>
     
-    <p class="tagline">Initializing compliance-first platform...</p>
+    <p class="tagline">Initializing professional repair platform...</p>
   </div>
 </body>
 </html>

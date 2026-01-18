@@ -1,114 +1,245 @@
-🧠 REFORGE OS — reforge-os/README.md
+# REFORGE OS
 
-Reforge OS
+## Professional Repair, Diagnostics, and System Recovery Platform
 
-Professional Repair, Diagnostics, and System Recovery Platform
+**Version:** 3.0.0 Final Form  
+**Status:** Production Ready
 
-Overview
+---
 
-Reforge OS is a clean, enterprise-ready platform for diagnosing, recovering, and reviving systems across computers and devices. It is designed for repair shops, IT teams, and enterprises that need reliable, auditable workflows.
+## Overview
 
-Capabilities
-	•	System diagnostics (Windows, macOS, Linux)
-	•	Android & iOS device state detection
-	•	Boot repair and OS recovery
-	•	OS installation and reinstallation
-	•	Evidence and report generation
-	•	Case and device tracking
-	•	Immutable audit logging
-	•	Bulk deployment and licensing
+REFORGE OS is a clean, enterprise-ready platform for diagnosing, recovering, and reviving systems across computers and devices. It is designed for repair shops, IT teams, and enterprises that need reliable, auditable workflows.
 
-Architecture
+### Three-Layer Architecture
 
-Reforge OS
-→ Phoenix Core
-→ libbootforge
-→ BootForge USB
-→ Hardware
+```
+Layer 1: Bobby's Workshop (Public UI)
+├── Technology: Tauri + React + TypeScript
+├── Theme: Professional Dark + Metallic Gold/Bronze
+└── Pages: 25+ professionally-styled pages
 
-Supported Platforms
-	•	Windows PCs
-	•	macOS (Intel & Apple Silicon)
-	•	Linux workstations
-	•	Android devices (ADB/Fastboot)
-	•	iOS devices (state detection)
+Layer 2: ForgeWorks Core (Compliance Spine)
+├── Technology: FastAPI + Rust Services
+├── Features: Device Analysis, Ownership, Legal Classification
+└── API: Complete REST API
 
-Design Principles
-	•	Compliance-first
-	•	Fully auditable
-	•	Analysis over automation
-	•	Professional, defensible workflows
+Layer 3: Pandora Codex (Internal Vault)
+├── Technology: Markdown + TypeScript Risk Models
+├── Access: CI-gated, never ships publicly
+└── Purpose: Risk modeling and language framing
+```
 
-Reforge OS is the public, sellable flagship.
-⸻
-📦 SHARED CORE — bootforge-core/README.md
+---
 
-BootForge Core Stack
+## Capabilities
 
-BootForge Core is the shared infrastructure used by all Bobby platforms. It is not an app and has no UI.
+- **System diagnostics** (Windows, macOS, Linux)
+- **Android & iOS device state detection**
+- **Boot repair and OS recovery**
+- **OS installation and reinstallation**
+- **Evidence and report generation**
+- **Case and device tracking**
+- **Immutable audit logging**
+- **Bulk deployment and licensing**
 
-Components
-	•	BootForge USB — Rust hardware & boot engine
-	•	libbootforge — Cross-platform abstraction bridge
-	•	Phoenix Core — State, policy, and Phoenix Key intelligence
-	•	Phoenix Key — Physical recovery USB built on this stack
+---
 
-What It Does
-	•	Enumerates USB devices across Windows, macOS, Linux
-	•	Detects device states (normal, recovery, DFU, fastboot, bootloader)
-	•	Handles storage, imaging, and bootable media creation
-	•	Normalizes hardware data for higher-level apps
-	•	Generates and validates Phoenix Keys for trusted recovery workflows
+## Key Features
 
-What It Does Not Do
-	•	No UI
-	•	No policy decisions
-	•	No workflow execution
-	•	No cloud dependency
+### Device Analysis
+- Read-only device state analysis
+- Ownership confidence scoring
+- Security state classification
 
-This stack observes, normalizes, and enables. Applications decide how it’s used.
+### Compliance Reporting
+- Complete compliance summaries
+- PDF export with branding
+- Audit trail verification
 
-⸻
-🔑 PHOENIX KEY — phoenix-key/README.md
+### Legal Classification
+- Jurisdiction-aware status
+- Risk level assessment
+- Authority routing guidance
 
-Phoenix Key
+### Custodian Vault (Gated)
+- Interpretive review mode
+- Ownership confidence ≥ 85% required
+- Analysis-only, no instructions
 
-Portable System Recovery & Revival USB
+---
 
-Definition
+## Quick Start
 
-Phoenix Key is a physical recovery USB that can be inserted into a computer or laptop at any system state to diagnose, recover, revive, or reinstall operating systems. It operates independently of the host OS.
+### Development Mode
 
-Capabilities
-	•	Independent boot into recovery environments
-	•	System state detection and snapshotting
-	•	Boot repair and revival
-	•	OS installation/reinstallation (Windows, Linux; macOS where supported)
+```bash
+# Frontend (Tauri + React)
+cd apps/workshop-ui
+pnpm install
+pnpm run dev
 
-Built With
-	•	BootForge USB
-	•	libbootforge
-	•	Phoenix Core
+# Backend API (FastAPI)
+cd api
+python forgeworks_api.py
+```
 
-Used By
-	•	Reforge OS
-	•	
-🔗 FINAL STACK (REFERENCE)
+### Production Build
 
-Super Bobby’s World of Warp Pipes
-              ↓
-       Bobby’s Secret Workshop
-              ↓
-            Reforge OS
-              ↓
-         Phoenix Core
-              ↓
-         libbootforge
-              ↓
-         BootForge USB
-              ↓
-            Hardware
+```bash
+cd apps/workshop-ui
+pnpm run build
+```
 
+---
 
-⸻
+## Supported Platforms
 
+- **Windows PCs** - Full support
+- **macOS** (Intel & Apple Silicon) - Full support
+- **Linux workstations** - Full support
+- **Android devices** (ADB/Fastboot) - Device analysis
+- **iOS devices** - State detection
+
+---
+
+## Design Principles
+
+- **Compliance-first** - All operations are legal and auditable
+- **Fully auditable** - Complete audit trail of all activities
+- **Analysis over automation** - Analyzes and routes, doesn't execute
+- **Professional workflows** - Built for repair shop operations
+- **Ownership respecting** - Verifies ownership before operations
+
+---
+
+## Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| Frontend | React + TypeScript + Tailwind CSS |
+| Desktop | Tauri (Rust + Web) |
+| Backend | FastAPI (Python) |
+| Services | Rust microservices |
+| Database | SQLite (MVP), PostgreSQL (Production) |
+| Theme | Professional Dark + Metallic Gold/Bronze |
+
+---
+
+## Project Structure
+
+```
+REFORGE-OS/
+├── apps/
+│   └── workshop-ui/          # Tauri/React frontend
+│       ├── src/              # React components (25+ pages)
+│       ├── src-tauri/        # Rust backend
+│       └── assets/           # Icons, images
+│
+├── services/                  # Rust microservices
+│   ├── device-analysis/
+│   ├── ownership-verification/
+│   ├── legal-classification/
+│   └── audit-logging/
+│
+├── api/                       # FastAPI backend
+│   ├── main.py               # Main API server
+│   └── forgeworks_api.py     # ForgeWorks Core API
+│
+├── solutions/                # Solutions database
+├── internal/                 # Internal R&D (Pandora Codex)
+├── docs/                     # Documentation
+└── workflows/                # Workflow definitions
+```
+
+---
+
+## Architecture Flow
+
+```
+User Action (Frontend)
+   ↓
+API Client (HTTP)
+   ↓
+ForgeWorks API (FastAPI)
+   ↓
+Rust Services
+   ↓
+Python Worker (optional)
+   ↓
+Response → Frontend Display
+```
+
+---
+
+## Compliance Posture
+
+### Allowed Operations
+- Analysis
+- Classification
+- Routing guidance
+- Documentation
+
+### Never Performed
+- Execution
+- Bypass instructions
+- Tool automation
+- Circumvention guidance
+
+---
+
+## Core Stack
+
+```
+REFORGE OS
+    ↓
+Phoenix Core
+    ↓
+libbootforge
+    ↓
+BootForge USB
+    ↓
+Hardware
+```
+
+### Components
+
+- **BootForge USB** — Rust hardware & boot engine
+- **libbootforge** — Cross-platform abstraction bridge
+- **Phoenix Core** — State, policy, and Phoenix Key intelligence
+- **Phoenix Key** — Physical recovery USB
+
+---
+
+## Phoenix Key
+
+**Portable System Recovery & Revival USB**
+
+Phoenix Key is a physical recovery USB that can be inserted into a computer or laptop at any system state to diagnose, recover, revive, or reinstall operating systems.
+
+### Capabilities
+- Independent boot into recovery environments
+- System state detection and snapshotting
+- Boot repair and revival
+- OS installation/reinstallation
+
+---
+
+## Contributing
+
+This is a professional repair platform. Contributions should maintain:
+
+1. Compliance-first design
+2. Non-invasive analysis approach
+3. Professional UI/UX standards
+4. Complete audit trail integration
+
+---
+
+## License
+
+See LICENSE file for details.
+
+---
+
+*REFORGE OS 3.0.0 Final Form - The Legendary Professional Repair Platform*

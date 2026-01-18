@@ -1,14 +1,33 @@
+/* REFORGE OS Splash Screen Theme */
+/* Professional Dark + Metallic Gold/Bronze */
+
 :root {
-  --bg: #0B1220;
-  --fg: #E5E7EB;
-  --accent: #D4AF37;
-  --secondary: #334155;
+  --bg-primary: #1A1F2E;
+  --bg-gradient-start: #0F1114;
+  --bg-gradient-end: #1A1F2E;
+  --fg: #E8EAED;
+  --fg-muted: #8B949E;
+  --accent-gold: #D4AF37;
+  --accent-bronze: #CD7F32;
+  --accent-glow: rgba(212, 175, 55, 0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
 }
 
 .splash {
-  background: linear-gradient(135deg, #0B1220, #111827);
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
   color: var(--fg);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,23 +37,32 @@
 }
 
 .splash h1 {
-  color: var(--fg);
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  color: var(--accent-gold);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 12px var(--accent-glow);
 }
 
 .splash .subtitle {
-  color: var(--accent);
+  color: var(--fg);
   font-size: 1rem;
   font-weight: 400;
   text-align: center;
-  margin-bottom: 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
 .splash .tagline {
-  color: var(--secondary);
+  color: var(--fg-muted);
   font-size: 0.875rem;
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--accent-gold);
+  color: var(--bg-primary);
 }
