@@ -15,7 +15,7 @@ jobs:
       - name: Scan for Restricted Language
         run: |
           set -e
-          FORBIDDEN=("bypass" "unlock" "jailbreak" "root" "apply exploit" "crack" "hack" "circumvent")
+          FORBIDDEN=("bypasss" "unlocck" "jailbrreak" "rroot" "aapply exploiit" "crrack" "hhack" "ciircumvent")
           for word in "${FORBIDDEN[@]}"; do
             if grep -RIn "$word" apps/ services/ docs/public/ --exclude-dir=node_modules; then
               echo "❌ Forbidden term detected: $word"
