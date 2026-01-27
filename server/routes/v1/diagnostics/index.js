@@ -9,6 +9,8 @@
 import express from 'express';
 import hardwareRouter from './hardware.js';
 import batteryRouter from './battery.js';
+import networkRouter from './network.js';
+import logsRouter from './logs.js';
 
 const router = express.Router();
 
@@ -31,10 +33,9 @@ router.get('/', (req, res) => {
         description: 'Battery health diagnostics and monitoring'
       },
       network: {
-        available: false,
+        available: true,
         endpoint: '/api/v1/diagnostics/network/:serial',
-        description: 'Network diagnostics (WiFi, Bluetooth, cellular) - Coming soon',
-        status: 'not_implemented'
+        description: 'Network diagnostics (WiFi, Bluetooth, cellular)'
       },
       performance: {
         available: true,
@@ -54,6 +55,8 @@ router.get('/', (req, res) => {
 // Mount specialized diagnostic routers
 router.use('/hardware', hardwareRouter);
 router.use('/battery', batteryRouter);
+router.use('/network', networkRouter);
+router.use('/logs', logsRouter);
 
 export default router;
 

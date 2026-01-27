@@ -54,6 +54,7 @@ import evidenceRouter from './routes/v1/evidence.js';
 import featuresRouter from './routes/v1/features.js';
 import snapshotsRouter from './routes/v1/snapshots.js';
 import settingsRouter from './routes/v1/settings.js';
+import ticketsRouter from './routes/v1/tickets.js';
 
 // Initialize logging first
 const LOG_DIR = process.env.BW_LOG_DIR || (process.platform === 'win32' 
@@ -157,6 +158,7 @@ v1Router.use('/evidence', evidenceRouter);
 v1Router.use('/features', featuresRouter);
 v1Router.use('/snapshots', snapshotsRouter);
 v1Router.use('/settings', settingsRouter);
+v1Router.use('/tickets', ticketsRouter);
 
 // Destructive/sensitive operations with rate limiting
 v1Router.use('/fastboot', rateLimiter('fastboot'), fastbootRouter);

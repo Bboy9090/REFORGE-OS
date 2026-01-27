@@ -1,0 +1,50 @@
+name: diagnostic_repair_app
+description: Diagnostic and Repair App for Android and iOS devices
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # HTTP client
+  http: ^1.1.0
+  
+  # WebSocket client
+  web_socket_channel: ^2.4.0
+  
+  # QR/Barcode scanning
+  qr_code_scanner: ^1.0.1
+  mobile_scanner: ^3.5.2
+  
+  # State management
+  provider: ^6.1.1
+  
+  # UI components
+  cupertino_icons: ^1.0.6
+  flutter_spinkit: ^5.2.0
+  
+  # Data persistence
+  shared_preferences: ^2.2.2
+  
+  # UUID generation
+  uuid: ^4.2.1
+  
+  # Date/time formatting
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  # Add assets
+  # assets:
+  #   - assets/images/
+  #   - assets/icons/
