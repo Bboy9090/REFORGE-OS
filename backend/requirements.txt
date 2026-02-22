@@ -4,7 +4,7 @@
 # FastAPI & Web Framework
 fastapi==0.115.0
 uvicorn[standard]==0.32.0
-python-multipart==0.0.12
+python-multipart==0.0.22
 websockets==14.1
 
 # Audio Processing
@@ -30,7 +30,7 @@ yt-dlp==2024.8.6
 
 # Media Processing
 ffmpeg-python==0.2.0
-Pillow==10.4.0
+Pillow==12.1.1
 
 # USB Hardware Detection (Pandora Codex)
 pyusb==1.2.1
