@@ -272,8 +272,15 @@ def get_legal_classification(device_id: Optional[str] = None) -> Dict[str, Any]:
 
 def get_certifications() -> Dict[str, Any]:
     """Get certifications - production implementation."""
-    # In production, this would load from a database or config file
-    # For now, return standard certifications
+    # Production: load from standard policy config
+    try:
+        cert_path = os.path.join(os.path.dirname(__file__), 'certifications.json')
+        if os.path.exists(cert_path):
+            with open(cert_path, 'r') as f:
+                return json.load(f)
+    except Exception:
+        pass
+        
     return {
         "certifications": [
             {
