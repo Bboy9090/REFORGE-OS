@@ -26,7 +26,7 @@ pyannote.core==5.0.1
 webrtcvad==2.0.10
 
 # URL Audio Extraction
-yt-dlp==2024.8.6
+yt-dlp==2026.2.21
 
 # Media Processing
 ffmpeg-python==0.2.0
