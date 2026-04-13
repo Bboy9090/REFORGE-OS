@@ -30,7 +30,7 @@ yt-dlp==2026.2.21
 
 # Media Processing
 ffmpeg-python==0.2.0
-Pillow==12.1.1
+Pillow==12.2.0
 
 # USB Hardware Detection (Pandora Codex)
 pyusb==1.2.1
