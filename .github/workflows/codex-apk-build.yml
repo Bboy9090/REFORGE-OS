@@ -1,0 +1,32 @@
+name: Codex APK Build
+on:
+  push:
+    branches:
+      - 'codex/apk-build-2026-08-23'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/diagnostic-repair-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze --no-fatal-infos
+      - run: flutter build apk --debug
+      - run: sha256sum build/app/outputs/flutter-apk/app-debug.apk > APK-SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: REFORGE-Diagnostic-Repair-debug-APK
+          path: |
+            apps/diagnostic-repair-app/build/app/outputs/flutter-apk/app-debug.apk
+            apps/diagnostic-repair-app/APK-SHA256.txt
+          retention-days: 30
