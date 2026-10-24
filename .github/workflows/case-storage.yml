@@ -1,0 +1,36 @@
+name: Repair case storage
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'cases/**'
+      - 'tests/cases/**'
+      - '.github/workflows/case-storage.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'cases/**'
+      - 'tests/cases/**'
+      - '.github/workflows/case-storage.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  storage-recovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source and exercise storage recovery
+        env:
+          EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE_SHA"
+          test -z "$(git status --porcelain --untracked-files=no)"
+          python -m unittest discover -s tests/cases -v

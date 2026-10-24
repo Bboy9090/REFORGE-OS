@@ -2,6 +2,7 @@
 import os
 import json
 import uuid
+import tempfile
 from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
 
@@ -13,38 +14,75 @@ CASES_FILE = os.path.join(BASE_DIR, "cases.json")
 DEVICES_FILE = os.path.join(BASE_DIR, "case_devices.json")
 
 
-def _load_cases() -> Dict[str, Any]:
-    """Load cases."""
-    if not os.path.exists(CASES_FILE):
-        return {}
+class CaseStorageError(RuntimeError):
+    """Stored repair records could not be safely read or written."""
+
+
+def _load_records(path: str) -> Dict[str, Any]:
+    """Only a missing store is empty; damaged records require recovery."""
     try:
-        with open(CASES_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except:
+        with open(path, "r", encoding="utf-8") as stream:
+            records = json.load(stream)
+    except FileNotFoundError:
         return {}
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise CaseStorageError(
+            f"Cannot read repair records from {os.path.basename(path)}. "
+            "Existing records were preserved; restore a verified backup before retrying."
+        ) from error
+    if not isinstance(records, dict) or any(
+        not isinstance(record, dict) for record in records.values()
+    ):
+        raise CaseStorageError(
+            f"Invalid repair record structure in {os.path.basename(path)}. "
+            "Existing records were preserved; restore a verified backup before retrying."
+        )
+    return records
+
+
+def _save_records(path: str, records: Dict[str, Any]) -> None:
+    """Replace a store only after the complete new contents reach disk."""
+    temporary_path = None
+    try:
+        # A sibling file keeps replacement on the same filesystem. mkstemp
+        # also creates private files rather than exposing customer records.
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=os.path.dirname(path),
+            prefix=f".{os.path.basename(path)}.", suffix=".tmp", delete=False
+        ) as stream:
+            temporary_path = stream.name
+            json.dump(records, stream, indent=2, ensure_ascii=False)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary_path, path)
+        temporary_path = None
+    except (OSError, TypeError, ValueError) as error:
+        raise CaseStorageError(
+            f"Cannot save repair records to {os.path.basename(path)}. "
+            "The previous store was preserved."
+        ) from error
+    finally:
+        if temporary_path is not None:
+            try:
+                os.unlink(temporary_path)
+            except OSError:
+                pass
+
+
+def _load_cases() -> Dict[str, Any]:
+    return _load_records(CASES_FILE)
 
 
 def _save_cases(data: Dict[str, Any]) -> None:
-    """Save cases."""
-    with open(CASES_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    _save_records(CASES_FILE, data)
 
 
 def _load_devices() -> Dict[str, Any]:
-    """Load case devices."""
-    if not os.path.exists(DEVICES_FILE):
-        return {}
-    try:
-        with open(DEVICES_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except:
-        return {}
+    return _load_records(DEVICES_FILE)
 
 
 def _save_devices(data: Dict[str, Any]) -> None:
-    """Save case devices."""
-    with open(DEVICES_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    _save_records(DEVICES_FILE, data)
 
 
 def create_case(
